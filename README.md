@@ -14,7 +14,7 @@ Currently Running:
 * Two talos worker nodes.
 * One Ubuntu Docker host.
 
-
 ## Services:
 
-* Portainer for managing docker containers and ease of use for k8s management.
+* Portainer for managing docker containers and k8s. (I would use ArgoCD but its a little overkill for homelab, don't fight me)
+* Pocket ID for SSO between all future applications.
