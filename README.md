@@ -1,20 +1,66 @@
-## Current Hardware:
+# My Homelab: The Pantheon
 
-### Proxmox Node 1
+Welcome to the documentation for my home infrastructure. This lab is a mix of production services, container orchestration, and high-performance computing experiments.
 
-* ASRock Deskmini 110
-* Intel i5-7600
-* 16GB DDR4
-* 1TB Seagate 2.5 HDD
-* 2TB WD Blue M.2 SSD
+## Network Topology
 
-Currently Running:
+All external traffic enters through a central gateway and is routed via Reverse Proxy to internal services.
 
-* One talos control plane node.
-* Two talos worker nodes.
-* One Ubuntu Docker host.
+- **Domain:** `*.calebbrown.dev`
+- **Gateway:** Nginx Proxy Manager (Atlas)
+- **Internal Network:** 10.0.1.0/24
 
-## Services:
+---
 
-* Portainer for managing docker containers and k8s. (I would use ArgoCD but its a little overkill for homelab, don't fight me)
-* Pocket ID for SSO between all future applications.
+## Hosts
+
+### Atlas (Docker Host)
+*The bearer of the heavens; provides the entry point for all traffic.*
+- **Role:** Edge Gateway & Core Services
+- **OS:** Ubuntu Server 22.04
+- **Key Services:**
+  - **Nginx Proxy Manager:** Handles SSL termination and routing.
+  - **Portainer:** For container management.
+  - **Uptime Kuma:** Monitoring and heartbeats.
+
+### Sisyphus (Kubernetes Cluster)
+*Endless workloads, perpetually managed.*
+- **Role:** Application Orchestration
+- **Distribution:** Talos
+- **Services:**
+  - [No Services Yet]
+- **Integration:** Ingress resources are routed via **Atlas** to the cluster load balancer.
+
+---
+
+## Future Expansion 
+
+### Tartarus (Storage Server)
+*The deep abyss; high-capacity data retention.*
+- **Status:** 🛠️ *Under Construction*
+- **Role:** NAS / Cold Storage
+- **Planned Stack:** TrueNAS
+- **Goal:** Provide persistent volumes (NFS/iSCSI) for the Sisyphus cluster. As well as acting as the NAS for other servers.
+
+### Prometheus (Compute Server)
+*The bringer of fire; high-performance processing.*
+- **Status:** *Planned*
+- **Role:** HPC / AI Training / Video Transcoding
+- **Planned Specs:** High-core count CPU, [e.g., NVIDIA RTX GPU]
+- **Goal:** Handle intensive workloads that exceed the capacity of Sisyphus.
+
+---
+
+## Management & Deployment
+
+### Kubernetes Deployment
+For **Sisyphus**, deployments are managed via:
+- [x] Helm
+- [ ] ArgoCD (Planned)
+- [x] Manual `kubectl` apply
+
+---
+
+## Maintenance Notes
+- **Updates:** Updates are performed Monthly.
+- **Security:** SSH keys only github.com/cnbrown04.keys; root login disabled;
