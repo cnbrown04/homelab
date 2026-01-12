@@ -1,4 +1,4 @@
-# My Homelab: The Pantheon
+# Homelab: The Pantheon
 
 Welcome to the documentation for my home infrastructure. This lab is a mix of production services, container orchestration, and high-performance computing experiments.
 
