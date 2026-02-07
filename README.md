@@ -1,8 +1,8 @@
-Here is the updated documentation for **The Pantheon**, reflecting the consolidation of your hardware and the refined roles for your servers.
+This adds the specific hardware profiles to your documentation. The **R740 (Prometheus)** is now correctly identified as the heavy-lifter for your storage and virtualization, while the **DeskMini (Atlas)** serves as the lean, dedicated head-end for your networking and Kubernetes orchestration.
 
 # Homelab: The Pantheon
 
-Welcome to the documentation for my home infrastructure. This lab is a mix of production services, container orchestration, and virtualization.
+Welcome to the documentation for my home infrastructure. This lab is a mix of production services, container orchestration, and virtualization across two distinct hardware nodes.
 
 ## Network Topology
 
@@ -16,38 +16,40 @@ All external traffic enters through a central gateway and is routed via Reverse 
 
 ## Hosts
 
-### Prometheus (The All-Father / Hypervisor)
-*The bringer of fire; the foundation upon which the Pantheon is built.*
-- **Role:** Virtualization Host (Type-1 Hypervisor)
+### Atlas (The Edge / Hypervisor #1)
+*The bearer of the heavens; compact and resilient.*
+- **Hardware:** ASRock DeskMini 110
+- **Role:** Edge Gateway & Kubernetes Host
 - **OS:** Proxmox VE
+- **Key Workloads:**
+  - **Sisyphus (Kubernetes Cluster):** The primary orchestration engine (Talos) runs here.
+  - **Nginx Proxy Manager:** SSL termination and routing.
+  - **Portainer:** Management for standalone Docker containers.
+
+### Prometheus (The Powerhouse / Hypervisor #2)
+*The bringer of fire; the foundation of the lab's storage and compute.*
+- **Hardware:** Dell PowerEdge R740
 - **Specs:** 16 Cores / 64GB RAM
-- **Key Function:** Hosts the majority of the lab's infrastructure as Virtual Machines and Containers.
+- **Role:** Virtualization & Storage Host
+- **OS:** Proxmox VE
+- **Key Workloads:**
+  - **Tartarus (Storage VM):** The virtualized storage backbone.
+  - **General Compute:** Large-scale VMs and experimental services.
 
 ### Tartarus (Storage VM)
 *The deep abyss; high-capacity data retention.*
 - **Status:** 🟢 *Operational / Virtualized*
-- **Parent Host:** Prometheus
+- **Parent Host:** Prometheus (R740)
 - **Role:** NAS / Data Management
 - **Stack:** TrueNAS
-- **Goal:** Provide persistent volumes (NFS/iSCSI) for the Sisyphus cluster and centralized storage for all network users.
-
-### Atlas (Core Services VM)
-*The bearer of the heavens; provides the entry point for all traffic.*
-- **Parent Host:** Prometheus (or Dedicated Hardware)
-- **Role:** Edge Gateway & Core Services
-- **OS:** Ubuntu Server 22.04
-- **Key Services:**
-  - **Nginx Proxy Manager:** SSL termination and routing.
-  - **Portainer:** Container management for non-K8s workloads.
-  - **Uptime Kuma:** Monitoring and heartbeats.
+- **Goal:** Provide persistent volumes (NFS/iSCSI) for the **Sisyphus** cluster and centralized storage for the network.
 
 ### Sisyphus (Kubernetes Cluster)
 *Endless workloads, perpetually managed.*
-- **Role:** Application Orchestration
-- **Distribution:** Talos (Running as VMs on Prometheus)
-- **Services:**
-  - [No Services Yet]
-- **Integration:** Ingress resources are routed via **Atlas** to the cluster load balancer.
+- **Status:** 🟢 *Operational*
+- **Parent Host:** Atlas (DeskMini 110)
+- **Distribution:** Talos
+- **Integration:** Ingress resources are routed via the Nginx Proxy Manager (Atlas) to the cluster load balancer.
 
 ---
 
@@ -60,7 +62,7 @@ For **Sisyphus**, deployments are managed via:
 - [x] Manual `kubectl` apply
 
 ### Virtualization Management
-- **Proxmox GUI:** Centralized management of Prometheus resources.
+- **Proxmox Cluster:** Centralized management of Atlas and Prometheus resources.
 - **TrueNAS Dashboard:** Storage pool health and share permissions.
 
 ---
@@ -70,4 +72,4 @@ For **Sisyphus**, deployments are managed via:
 - **Security:** 
   - SSH keys only: `github.com/cnbrown04.keys`
   - Root login disabled.
-  - Hardware Passthrough: Ensure HBA/Disks are correctly passed through from Prometheus to Tartarus for ZFS integrity.
+  - **Hardware Passthrough:** Ensure the R740's HBA/Disks are correctly passed through to the Tartarus VM to maintain ZFS pool integrity.
