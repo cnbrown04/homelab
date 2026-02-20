@@ -1,5 +1,3 @@
-This adds the specific hardware profiles to your documentation. The **R740 (Prometheus)** is now correctly identified as the heavy-lifter for your storage and virtualization, while the **DeskMini (Atlas)** serves as the lean, dedicated head-end for your networking and Kubernetes orchestration.
-
 # Homelab: The Pantheon
 
 Welcome to the documentation for my home infrastructure. This lab is a mix of production services, container orchestration, and virtualization across two distinct hardware nodes.
@@ -8,33 +6,35 @@ Welcome to the documentation for my home infrastructure. This lab is a mix of pr
 
 All external traffic enters through a central gateway and is routed via Reverse Proxy to internal services.
 
-- **Domain:** `*.calebbrown.dev`
-- **Gateway:** Nginx Proxy Manager (Atlas)
+- **Domain:** `*.calebbrown.dev` `*.cronarch.com`
+- **Gateway:** Nginx Proxy Manager -> Wireguard (RackNerd VPS)
 - **Internal Network:** 10.0.1.0/24
 
 ---
 
 ## Hosts
 
-### Atlas (The Edge / Hypervisor #1)
-*The bearer of the heavens; compact and resilient.*
+### Atlas (Hypervisor #1)
+*Entrance node, bearer of the heavens*
 - **Hardware:** ASRock DeskMini 110
+- **Specs:** i5-7600 (4c/4t) / 16gb RAM
 - **Role:** Edge Gateway & Kubernetes Host
 - **OS:** Proxmox VE
 - **Key Workloads:**
-  - **Sisyphus (Kubernetes Cluster):** The primary orchestration engine (Talos) runs here.
-  - **Nginx Proxy Manager:** SSL termination and routing.
-  - **Portainer:** Management for standalone Docker containers.
+  - **Tailscale Exit Node:** Primarily serves for internal access to the hypervisor systems.
+  - **Wireguard Tunnel:** Connected to the RackNerd VPS running Nginx Proxy Manager to route to specific things.
 
-### Prometheus (The Powerhouse / Hypervisor #2)
+### Prometheus (Hypervisor #2)
 *The bringer of fire; the foundation of the lab's storage and compute.*
 - **Hardware:** Dell PowerEdge R740
-- **Specs:** 16 Cores / 64GB RAM
+- **Specs:** Dual Xeon Gold 4110 (8c/16t) / 64GB RAM
 - **Role:** Virtualization & Storage Host
 - **OS:** Proxmox VE
 - **Key Workloads:**
   - **Tartarus (Storage VM):** The virtualized storage backbone.
-  - **General Compute:** Large-scale VMs and experimental services.
+  - **Docker Host (Ubuntu VM):** Runs portainer and any docker containers that I don't want to run in the kubernetes cluster.
+
+## Virtual Machines
 
 ### Tartarus (Storage VM)
 *The deep abyss; high-capacity data retention.*
@@ -43,23 +43,11 @@ All external traffic enters through a central gateway and is routed via Reverse 
 - **Role:** NAS / Data Management
 - **Stack:** TrueNAS
 - **Goal:** Provide persistent volumes (NFS/iSCSI) for the **Sisyphus** cluster and centralized storage for the network.
-
-### Sisyphus (Kubernetes Cluster)
-*Endless workloads, perpetually managed.*
-- **Status:** 🟢 *Operational*
-- **Parent Host:** Atlas (DeskMini 110)
-- **Distribution:** Talos
-- **Integration:** Ingress resources are routed via the Nginx Proxy Manager (Atlas) to the cluster load balancer.
+- **Capacity:** Currently running 7 SFF 1.6TB SAS 10k HDD's in a RAIDZ2, around 8tb of usable storage. In the future it will be migrated to an LFF server as a second TrueNAS node.
 
 ---
 
 ## Management & Deployment
-
-### Kubernetes Deployment
-For **Sisyphus**, deployments are managed via:
-- [x] Helm
-- [ ] ArgoCD (Planned)
-- [x] Manual `kubectl` apply
 
 ### Virtualization Management
 - **Proxmox Cluster:** Centralized management of Atlas and Prometheus resources.
