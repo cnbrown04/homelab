@@ -25,7 +25,8 @@ spec:
       name: pocket-id-helm-values
       valuesKey: values.yaml
   values:
-    host: https://auth.calebbrown.dev
+    # Chart prepends https:// — use hostname only (no scheme, no path).
+    host: auth.calebbrown.dev
     trustProxy: true
     trustedPlatform: CF-Connecting-IP
     analyticsDisabled: true
