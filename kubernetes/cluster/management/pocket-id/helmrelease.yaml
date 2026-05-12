@@ -42,9 +42,8 @@ spec:
         traefik.ingress.kubernetes.io/router.tls: "true"
     persistence:
       data:
-        # Cluster has no default StorageClass; use hostPath like Omni PV pattern.
+        # Talos: ad-hoc hostPath under /var/mnt often hits read-only root; emptyDir boots without a StorageClass.
+        # For durable data, add a PV/PVC like omni (manual StorageClass + hostPath in machine config) later.
         enabled: false
         hostPath:
-          enabled: true
-          path: /var/mnt/pocket-id-data
-          type: DirectoryOrCreate
+          enabled: false
