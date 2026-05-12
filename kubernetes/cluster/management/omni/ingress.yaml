@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: omni.calebbrown.dev
+    - host: omni.scylla.calebbrown.dev
       http:
         paths:
           - path: /
@@ -21,7 +21,7 @@ spec:
                 name: omni
                 port:
                   number: 80
-    - host: omni-k8s.calebbrown.dev
+    - host: omni-k8s.scylla.calebbrown.dev
       http:
         paths:
           - path: /
@@ -31,7 +31,7 @@ spec:
                 name: omni
                 port:
                   number: 80
-    - host: omni-siderolink.calebbrown.dev
+    - host: omni-siderolink.scylla.calebbrown.dev
       http:
         paths:
           - path: /
