@@ -1,0 +1,18 @@
+# 10.0.1.0/24 — gateway 10.0.1.1; DHCP 10.0.1.20–10.0.1.200. Pool is above DHCP for Traefik / other LoadBalancers.
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: homelab-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 10.0.1.240-10.0.1.254
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: homelab-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - homelab-pool
