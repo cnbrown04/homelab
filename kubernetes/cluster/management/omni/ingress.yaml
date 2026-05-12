@@ -7,7 +7,7 @@ metadata:
     # NPM can forward HTTPS to Traefik :443 (websecure); use SSL "Full" if Traefik uses its default cert.
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/service.serversscheme: h2c
+    # h2c is configured on Service omni (Omni + SideroLink API); k8s proxy uses Service omni-k8s-proxy without h2c.
 spec:
   ingressClassName: traefik
   rules:
@@ -20,7 +20,7 @@ spec:
               service:
                 name: omni
                 port:
-                  number: 80
+                  name: omni
     - host: omni-k8s.calebbrown.dev
       http:
         paths:
@@ -28,9 +28,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: omni
+                name: omni-k8s-proxy
                 port:
-                  number: 80
+                  name: k8s-proxy
     - host: omni-siderolink.calebbrown.dev
       http:
         paths:
@@ -40,4 +40,4 @@ spec:
               service:
                 name: omni
                 port:
-                  number: 80
+                  name: siderolink-api

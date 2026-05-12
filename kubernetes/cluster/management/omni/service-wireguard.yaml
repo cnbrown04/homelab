@@ -1,0 +1,17 @@
+# UDP WireGuard for SideroLink; must match services.siderolink.wireGuard.advertisedEndpoint in omni-config.
+# Reserve an address from your MetalLB pool (Traefik often uses the first IP in the range).
+apiVersion: v1
+kind: Service
+metadata:
+  name: omni-wireguard
+  namespace: omni-system
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.0.1.241
+  selector:
+    app: omni
+  ports:
+    - name: wireguard
+      protocol: UDP
+      port: 50180
+      targetPort: wireguard

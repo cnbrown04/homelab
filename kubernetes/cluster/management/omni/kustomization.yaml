@@ -5,6 +5,8 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - service.yaml
+  - service-k8s-proxy.yaml
+  - service-wireguard.yaml
   - omni-keys.sops.yaml
   - omni-auth.sops.yaml
   - config.yaml

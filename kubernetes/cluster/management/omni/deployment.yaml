@@ -15,19 +15,49 @@ spec:
       labels:
         app: omni
     spec:
-      securityContext:
-        runAsUser: 0
       containers:
         - name: omni
-          image: ghcr.io/siderolabs/omni:latest # Updated to latest
+          image: ghcr.io/siderolabs/omni:latest
           args:
             - "--config-path=/etc/omni/config/omni.yaml"
             - "--config-path=/etc/omni/auth/omni-auth.yaml"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_ADMIN
           ports:
-            - containerPort: 8080
-              name: web
-            - containerPort: 8081
-              name: api
+            - name: omni
+              containerPort: 8080
+              protocol: TCP
+            - name: siderolink-api
+              containerPort: 8090
+              protocol: TCP
+            - name: k8s-proxy
+              containerPort: 8095
+              protocol: TCP
+            - name: wireguard
+              containerPort: 50180
+              protocol: UDP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: omni
+              scheme: HTTP
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: omni
+              scheme: HTTP
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: data
               mountPath: /data
@@ -40,6 +70,8 @@ spec:
             - name: auth
               mountPath: /etc/omni/auth
               readOnly: true
+            - name: dev-tun
+              mountPath: /dev/net/tun
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -53,3 +85,7 @@ spec:
         - name: auth
           secret:
             secretName: omni-auth
+        - name: dev-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice

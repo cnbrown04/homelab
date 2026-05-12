@@ -24,3 +24,7 @@ data:
         advertisedURL: "https://omni-siderolink.calebbrown.dev"
       kubernetesProxy:
         advertisedURL: "https://omni-k8s.calebbrown.dev"
+      siderolink:
+        wireGuard:
+          # IP:port Talos nodes dial for WireGuard (hostname not supported). Must match omni-wireguard Service.
+          advertisedEndpoint: "10.0.1.241:50180"
