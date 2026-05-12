@@ -22,6 +22,7 @@ spec:
   interval: 10m0s
   path: ./kubernetes/cluster/management
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -29,3 +30,24 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: metallb-pools
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./kubernetes/cluster/management/metallb-pools
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  dependsOn:
+    - name: flux-system
+      namespace: flux-system
