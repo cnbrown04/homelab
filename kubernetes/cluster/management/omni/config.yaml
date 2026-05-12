@@ -15,6 +15,8 @@ data:
           embedded: true
           embeddedDBPath: "/data/etcd"
           privateKeySource: "file:///etc/omni/keys/omni.asc"
+      sqlite:
+        path: "/data/omni-secondary.db"
     auth:
       initialUsers:
         - "caleb@cronarch.com"
