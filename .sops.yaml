@@ -1,0 +1,5 @@
+creation_rules:
+  - path_regex: (.*\.yaml|talosconfig)$
+    key_groups:
+      - age:
+          - age1v9l673n53dy5dl4ucecuk6val9lqulq2nkvsmj5gjxumf8sjh5hsgjj09h

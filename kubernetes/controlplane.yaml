@@ -1,384 +1,401 @@
-version: v1alpha1 # Indicates the schema used to decode the contents.
-debug: false # Enable verbose logging to the console.
-persist: true
-# Provides machine specific configuration options.
+#ENC[AES256_GCM,data:TBMpYlCfLdtiB2EzGvpxAHImqJmaNv0668HUblLtSiRmSF3SbTvtRfxkHcz6nEnTdmM=,iv:wFFTq78jALN4oLQV9pYvJ25L7Du/rTSYe1XClpJqQoU=,tag:LKtGUBLcT7tK+ZM0ovjK3A==,type:comment]
+version: ENC[AES256_GCM,data:/9atdYx0EPk=,iv:WuFYS5opZUGHwmS0squwhnMWVufwSo0dhO8gThlFrac=,tag:umIOfA1J0ZEAZNJDRuZsEg==,type:str]
+#ENC[AES256_GCM,data:Bglqz7hNj7WqIDo9i391mJrbB+i5ZQ5fNMU36XljbcIWAF00rqT9,iv:3wbxVcNqbPOCcLPzDO7IGI41gsMaf1QK/jgbhMB6KMw=,tag:y6ZalpYrEMQtmu4OcEFlyg==,type:comment]
+debug: ENC[AES256_GCM,data:Wl53jd8=,iv:zcdfaMFVn/pZtGjYUUJdTjo/14IffH/cOe+bpBWiGtg=,tag:3fYO/w/A0fqxOJD4BH6QOQ==,type:bool]
+persist: ENC[AES256_GCM,data:G9lXKw==,iv:HJ9qPPWA/4PGsiTYvCdqZALLBFzt/a5HuAHdS1Z5N54=,tag:QUvYEuwUxQrD3DmU8cFy+A==,type:bool]
+#ENC[AES256_GCM,data:o4aP46ScB6NfH98G5w9jb8mpsyqSsxBS8pDQOA3a7+WRm2OyLfk1wF0XH7KNgy9Nzw==,iv:f6ngJVC2xn6WUS0iahkC3Cn2h7PYw4m5uE81pSqlNiI=,tag:a4On1d93H0AwSAa8se/YAA==,type:comment]
 machine:
-    type: controlplane # Defines the role of the machine within the cluster.
-    token: k9rjqd.dx4jgupubvomn0mk # The `token` is used by a machine to join the PKI of the cluster.
-    # The root certificate authority of the PKI.
+    #ENC[AES256_GCM,data:JfLmS/C3Kox3RiUKEYs+uA7RKOqljFWTY6dHKRrt9boiobYSarRti/zccX8gGUMeEw8Y0w==,iv:Vmu0fKstouAJ7mRh0yCq5GzpOIhRg7OAc61mvVJ6BfM=,tag:9I388XlTaz303SP+2AiKow==,type:comment]
+    type: ENC[AES256_GCM,data:pqkfC24ScTxPNTYb,iv:A9zxn6DFviLNeSbxsT7Yf07Bi0juCrOSANP40n1GRCY=,tag:/0qFFPb4Sh1UzP58nsFypw==,type:str]
+    #ENC[AES256_GCM,data:UNLTjv8GQ6jKZkYhOpmagUuzw6IPstcm7UBuv1vYVUN85ejmuPuJ2sx3TA6iq2Va2wBXsAqWvW2Sy5Z/k2VcSn4=,iv:Oz47Huk6Q7uxNrX/zG4DpwTYmGgQvD6mTmS92TeaGfo=,tag:gAI9hgmETYTJI4lWgdcicQ==,type:comment]
+    token: ENC[AES256_GCM,data:Ik39QNk+BNliFG6zwj6cnh/0QhQ6Iwo=,iv:k0+jYvquoTBqvP2+qOqW79HtrPkKr6B5FZ+GVF5i2NA=,tag:HaiCvXWIKaNehVjtEwE5MA==,type:str]
+    #ENC[AES256_GCM,data:lVMFDOT+RU92KT1xS01GvO4Q0qTb/2V0ljIVBbftL+bCvsr4Nv8TntMESg==,iv:yyVyarCHKzQYnFzOv/fj9id3V8MuZgudtE0+f6RYdUw=,tag:LGUJORPeZaCbCq3F7Qd3wg==,type:comment]
     ca:
-        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJQekNCOHFBREFnRUNBaEVBMFE2bXRtbE1zU0hCQ0NZZjR6UVFSekFGQmdNclpYQXdFREVPTUF3R0ExVUUKQ2hNRmRHRnNiM013SGhjTk1qWXdOVEV5TURBeE1UTXpXaGNOTXpZd05UQTVNREF4TVRNeldqQVFNUTR3REFZRApWUVFLRXdWMFlXeHZjekFxTUFVR0F5dGxjQU1oQU5oT2VEQ0ZyS3hpUHlGTFloSERlcUp5ZUhad0JFcGRHMTVoCnVPdmlSOUwybzJFd1h6QU9CZ05WSFE4QkFmOEVCQU1DQW9Rd0hRWURWUjBsQkJZd0ZBWUlLd1lCQlFVSEF3RUcKQ0NzR0FRVUZCd01DTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRkN0R2lqOWRTa01HQjRONApOWDlxajFPSzBVRlZNQVVHQXl0bGNBTkJBQnJtOHdxemdwMVR2MVNPdElSNm5SSlpnYmRkd09NMUY4WHAxV1BBClVWOE92ZEtoYW9PUUIrS0xZVnNDd0dCVjNHNXMrVlRja2MvamExVC9jeTF2OGdZPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-        key: LS0tLS1CRUdJTiBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0KTUM0Q0FRQXdCUVlESzJWd0JDSUVJRWxzRHRDWGtwUEMxcHRlQkRER0sxVUZ6TWgzTnB2VGc3cUdFSUdGOWpKcAotLS0tLUVORCBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0K
-    # Extra certificate subject alternative names for the machine's certificate.
+        crt: ENC[AES256_GCM,data:UrCXn8rElujijwYAMBO0Ee1CiZ4SAhYN1bezSdiWw+ygScqjVjMwPndtPqfMiUS1kiVng+O8ztLxFvUMsV9P93py2sSHwwmHd3TEW8xG+TIAkNpiGVmq+uMqBUHebPrMxEnML46cxa1cC6ixOWUzBZyeh2sJ++Dcsq+qusowPIgADDdokyyaHu0sEEF6S3tpQcg/6WynRAugdfgleg2Qevp/eVZUexLIu7b3/EXzb/kxeVL4FNQunoWK59PCGrwHp8YWXOPrwBXFrNqD7ekpC6fEE0/Y8zfGOao3vxWql9EAvmCdOYgOkX40fgIQBbykr1me1g8UvRLP2cwUahylkP7NYKHvvQwOkS893hb45oK15B3JxigPnQRuoD7yToiIuy0WlK9scx/PMsgtviTLZvHhlREPHCRVKEBSOvcPhE8qBtWEiNr1KaHUJQ/HpZjx8ZSqZ2gVReKlCJSWf9lLyT2c9OOr+b+gTlgTO4HgRBWuut6cUsUqxd6MG5ovEUsbQ70NZHQ89NmLxNDCdRPaAarBFMjIpfyB373gyaPbBQcaFp3ndHPiT/+BQaPdHaOFFesbG2NCvia0lVeKQFU52gW1l2O0t1XfarxfOHdrAFXQ6FofA7vHUQlZ+toT8i9gV9cyXjwAoswQT8SJsBt4f0f+lGJsoQu32e4drYTrwpZ74QUtM5ciizWahU0D/UHzR/hLMT76KU63zk6h1aomJklEffgB2VHLQhfCRWj8yz1nS+OYLaUrYPEWMVDT/K4uGLoPSdORzWgt46y0aRUErKvofFXrd2BCBV+MJbEkD8VNBHw58CTE5irtQ5DwGQKdC4j3DBZ9T94MM2KjY9yag4c6UO3znSQY8B3uPXP9jMcd2urE,iv:m2zMuR229dSLdJz7D3La89bGfMoFWM2zyIY3g1bArW4=,tag:GBxnSxUQJ5YJZW5yvHpAWQ==,type:str]
+        key: ENC[AES256_GCM,data:ggrCW730DI+9G3Rejkzuc8Rf5b6CHSPbtjSgOTBszwTUImfCH+40jE9HT8YwbuniKfk2bTiT3LcNJeKcknFjgA2v39qIz8tYvz0WlEiWxEUqT2W2wfXm3SngQ9zERN3KTnzDnVnjmhxX4vmvdrQJ3gOnWOu5T5Pua3NCu9v4nsLX77Ij+mskpT4bR9bu5Lo22DFbFydxScbgS66imK91mEP3YAsHjCiTzu9TfBhjV/HnyeS2,iv:nuZlXegZuW88uOJ/qpWWRa81Lg3ahf5jE24y8WPSoEM=,tag:OfVOaOETXjkKHRnoCIXJsg==,type:str]
+    #ENC[AES256_GCM,data:7AzIPuy77YwcmJJqlrzFf74W4nzsEFSQuTkCvk7hTd0uX/cRTtfozBlo5mpvFeh/fHejJj0IQDvuSigRYBFgqnrQzRLoWfBX3R/i,iv:t5UEzVegir10XgDlRcSEDTHo/apZz7tH2otJ0IuOe7g=,tag:yAoZkFj8WckBCbYCjiQJ7A==,type:comment]
     certSANs: []
-    #   # Uncomment this to enable SANs.
-    #   - 10.0.0.10
-    #   - 172.16.0.10
-    #   - 192.168.0.10
-
-    # Used to provide additional options to the kubelet.
+    #ENC[AES256_GCM,data:kjTapJ91UhlUv6CrDzlxVs18pczTgTSD+s0HJ+rkvJo1rEU=,iv:BCbyX28fpl4PDLWaTpTKOmNShk7mYD0qZT7Y9uw8kFk=,tag:I/lSfqWX0aH+261CK+a7mQ==,type:comment]
+    #ENC[AES256_GCM,data:lYk9fo94caZpwHse+OQ=,iv:/MtG5ucQM22DjsJNznd65nM6m3kXhalZMober9MEn5w=,tag:tTGASMAV7XLKxbJhErGySA==,type:comment]
+    #ENC[AES256_GCM,data:m5JR0lHFvGxwd2SKuIqSUQ==,iv:svPbw5fkyFALuO0CaXM+BZ2nUL8G8+5Dxnuqlvx2wa8=,tag:BBcve1mCJ8frUo2wHf05rg==,type:comment]
+    #ENC[AES256_GCM,data:DmsXfwPC+tQa7s2yBU473v8=,iv:/ECvXdj/5NOdYL/qFY1GrrA/klv1GjEvhkVimVXbVhg=,tag:ROHYJgRrnIcTYlBiyUodoA==,type:comment]
+    #ENC[AES256_GCM,data:gSoMayRb60qquL8v7rqSezoCp0H/lmn3omhVrgZpESdirmtKq07/zINrT6XYGkbriClX,iv:ZXxY5vgG118MdxQ7vXdf8GnqMyPjNY/+UGVywO5gWgg=,tag:jCH9PP/5iWUmxTKJ4OSBeQ==,type:comment]
     kubelet:
-        image: ghcr.io/siderolabs/kubelet:v1.36.0 # The `image` field is an optional reference to an alternative kubelet image.
-        defaultRuntimeSeccompProfileEnabled: true # Enable container runtime default Seccomp profile.
-        disableManifestsDirectory: true # The `disableManifestsDirectory` field configures the kubelet to get static pod manifests from the /etc/kubernetes/manifests directory.
-        
-        # # The `ClusterDNS` field is an optional reference to an alternative kubelet clusterDNS ip list.
-        # clusterDNS:
-        #     - 10.96.0.10
-        #     - 169.254.2.53
-
-        # # The `extraArgs` field is used to provide additional flags to the kubelet.
-        # extraArgs:
-        #     key: value
-        # extraArgs:
-        #     key:
-        #         - value1
-        #         - value2
-
-        # # The `extraMounts` field is used to add additional mounts to the kubelet container.
-        # extraMounts:
-        #     - destination: /var/lib/example # Destination is the absolute path where the mount will be placed in the container.
-        #       type: bind # Type specifies the mount kind.
-        #       source: /var/lib/example # Source specifies the source path of the mount.
-        #       # Options are fstab style mount options.
-        #       options:
-        #         - bind
-        #         - rshared
-        #         - rw
-
-        # # The `extraConfig` field is used to provide kubelet configuration overrides.
-        # extraConfig:
-        #     serverTLSBootstrap: true
-
-        # # The `KubeletCredentialProviderConfig` field is used to provide kubelet credential configuration.
-        # credentialProviderConfig:
-        #     apiVersion: kubelet.config.k8s.io/v1
-        #     kind: CredentialProviderConfig
-        #     providers:
-        #         - apiVersion: credentialprovider.kubelet.k8s.io/v1
-        #           defaultCacheDuration: 12h
-        #           matchImages:
-        #             - '*.dkr.ecr.*.amazonaws.com'
-        #             - '*.dkr.ecr.*.amazonaws.com.cn'
-        #             - '*.dkr.ecr-fips.*.amazonaws.com'
-        #             - '*.dkr.ecr.us-iso-east-1.c2s.ic.gov'
-        #             - '*.dkr.ecr.us-isob-east-1.sc2s.sgov.gov'
-        #           name: ecr-credential-provider
-
-        # # The `nodeIP` field is used to configure `--node-ip` flag for the kubelet.
-        # nodeIP:
-        #     # The `validSubnets` field configures the networks to pick kubelet node IP from.
-        #     validSubnets:
-        #         - 10.0.0.0/8
-        #         - '!10.0.0.3/32'
-        #         - fdc7::/16
-    # Used to provide instructions for installations.
+        #ENC[AES256_GCM,data:L88lMC/eqe8mqZAipgkcd9dbB7MWuYzyhx7fNnUogh78N8aNnf96pEH3cSaxRgCAlsE92keHPli7A1igqlY6IjTWgj2M091M31zVhw==,iv:/e6LpvF94+nurVNq0OzuQxfiKl62TolE9HrIpUidTRU=,tag:kb8cmcEblqPEm+5o9J2jvg==,type:comment]
+        image: ENC[AES256_GCM,data:djMBldxaPfXL5pBD1ZcmO5H5r8lKsgEwKtbblSD7uloJYw==,iv:iIIwch23j2ai3uU/tg8gzXdCRw6tbsJ0tyrLN+6Zgew=,tag:qxlDvHBKB3HlreSxR0tnpA==,type:str]
+        #ENC[AES256_GCM,data:rChWuNh0bLcfpXw3PecRtET/p0a6ZWBHzWZjZeQ59MRNynYgZcUcrrivVO9EXyUd/Ak=,iv:RKazWqYPcGFpgvN6H1fEng83aNq5Kv71itwa9yqoAy8=,tag:39hg6tinY461ImxuADQhmg==,type:comment]
+        defaultRuntimeSeccompProfileEnabled: ENC[AES256_GCM,data:8F808A==,iv:tjmkCafaN2KLwb8hK+cXpLRxmjDeG4Wxvzen8crod4M=,tag:TfAPCcoI/XEHeiaGsY1QjQ==,type:bool]
+        #ENC[AES256_GCM,data:RfUVq/HyXB6wX2DBAFrvGMJL6nsyz//Y6nFbYaiIHkX8dUrza06IReC0hld6cCD9lVxS1a6mSot9Yg2SnR6kmCjMO2qQzbgKmLjXr9zVVDx8gD5h4W90tHZk2UxBm1Xeqw7B1LFuHHdRhs1mW/irtAJU5kAKkiFznYGFmvBSfpUWXJPDY3to,iv:4nZ4puLcivM4EQZIy8qoie5ekCYlssj596ijwEB9MSA=,tag:QC0heBQRzGbO6s3fkgAzEQ==,type:comment]
+        disableManifestsDirectory: ENC[AES256_GCM,data:OMaYZA==,iv:CQhsr7be1w9dcRml721S4ZBv/bQQdgg8UKdaH3GCxj8=,tag:6XDMDEiwCrani/RxsD2X4Q==,type:bool]
+        #ENC[AES256_GCM,data:H41Qqe7Xh/cxjJF7tTsZYdTo5dVzcebGuuwS6zq09vxX4fXNyrlQ5rY3JM4q5aIKzlbwC84SmKibig+7hrA57wqdw4ysRVi4YiUNr2mNknTh3X76EqK7a593zDSGHLpC,iv:+w0am93jJpkS/wXQ0PNRcFn+xtA9XBjK9vpryuzQJYg=,tag:vrx3Z6E/Y3e9soZGRquCuA==,type:comment]
+        #ENC[AES256_GCM,data:MrgFS9mkEJKipCY+,iv:MRN6x2cI7pBUPx39ecPpu2kUQE2J2R/xYpMA5mpVR6s=,tag:+tvfc+Z+fTcEyYJK68ijfA==,type:comment]
+        #ENC[AES256_GCM,data:+dvRXwGa5EBmdPClE5aGqAc=,iv:IwasBXqSndAnGcsK7rFk7z6o/izCEQlkzNHQ7yDue4Q=,tag:ftYwP3RWbCil9pg8u3i0qQ==,type:comment]
+        #ENC[AES256_GCM,data:U5jTStQXM2lYdE5MSe0n+vVqWw==,iv:Gc6P9FKdHIX70mjfK3xkmSk0H0SEcYLuhHXXGSzRmoI=,tag:5uqLFbLame9TV8oSvfgcng==,type:comment]
+        #ENC[AES256_GCM,data:icWZa/0/017WA20INwkdURaoJbMRgqOvwf1vSPadLDBSk0coGaYe4fYzzXvCsw2/Lsw4BR3xiihZAnCrBCbKyZ4TOyH1SPDLUivA+Q==,iv:8hdnU2HhL7qu9btXFPm3EI/T8YpHVSZbG4JMJyRdijQ=,tag:dteW3zCsRv3zzc/Z00dyqQ==,type:comment]
+        #ENC[AES256_GCM,data:cv/KIY8+QZr9ulQ=,iv:1H8lZ7qHFThZk29UNlxsxAnn2NYMpro8uCkJa+rapxY=,tag:848ofB4W8cCl3V8NYjeDKQ==,type:comment]
+        #ENC[AES256_GCM,data:uKnHGpN6p1KrPjZhpn5c,iv:EYBqRz4SBHcpqdBmIZ0JgZdFo5w1bWNyeIG0cVZhwi8=,tag:QK1J4qw1IrQO0QNd2bpQDA==,type:comment]
+        #ENC[AES256_GCM,data:Ze7WeTwWG0v+GY8=,iv:11pFiyc2xHBBCg7SEw+fdv1reHJzcBv3by+bfCSuKFI=,tag:naY5bgVnpajBy/vGfs7ofQ==,type:comment]
+        #ENC[AES256_GCM,data:7gpNdmBkEmIZ,iv:nF6BC9X6PH6Latg+S/8nnFDnP6QpRjamMJsmnt4BS7w=,tag:5ORsH+iTEdDEv0428QWZGw==,type:comment]
+        #ENC[AES256_GCM,data:P8Uvt+2LCMtKiKjCV2bJbkk=,iv:drBJpBWUJYlbA0b+6zBjJ8r7oC8e1Uy/buwNEBgsH3c=,tag:v+jfCtqdYC+nGZ17mOb0Iw==,type:comment]
+        #ENC[AES256_GCM,data:kgatrZjaAVKfidJYsW7zYwk=,iv:p0SbzkxK8ss2TA6RcTyVJtIA/1Bvkfx4UQsqBtsm0uI=,tag:IZBzQiBMQWW4cBf7AaQWDQ==,type:comment]
+        #ENC[AES256_GCM,data:ixzyKzRgFiozcLZLYwp5ccHDJIYRWwLYJ/CkQSyJu30KeT4xwhUCCyFjc2K3znt+vS+QFek2T1CidSPpvDM8HJz/oK5OdYCR/c9TJRf5lEzFr44ojQ==,iv:zBSySSeapoICjZlINUDDGg2QfMTXjj9uhiVRklKuTP4=,tag:17sV3SS4QFmNi3zi0PgIIQ==,type:comment]
+        #ENC[AES256_GCM,data:Df6vTvDxS4ag76gIJA==,iv:3OLbLkcrqVFatXv9fI9Hkqw9lvL5yXbi4Y+kS+coB84=,tag:iXv/VoveKrcC9LHgF98qTg==,type:comment]
+        #ENC[AES256_GCM,data:thUzHMyvqWWl8LZ9oLYP+MI1M7DzgiE+EsnZZJjhMxkjsLcc+fzrmHQIAkq4l45MZzkOZ/B0M1iA1vRg6lRWSJ3+l8SA00rNfw1FgW2/TPN72RaeeO66mczuN4Q1a9NDd0ajZ9kZS7jg64ikXXOqzEcItl+05q58,iv:acsES3kKj+W5DBoaPHbBhhj8I6uE9GiEGWsbRwdRRn4=,tag:5TBDzcdFXKsoHKgxfXaJpg==,type:comment]
+        #ENC[AES256_GCM,data:xIr+0+9NbGtaqftqVc97NmyU7Pr10dHizIiVtLvBXVhheniRkVq66HQV3+RIH+pxFLY=,iv:LWdlx4D3utHU+Y1/8V21uQvmu7BeFUYmRRSoTEcsFpg=,tag:HuuuusZhmBo1H8G6XgkCag==,type:comment]
+        #ENC[AES256_GCM,data:43CdykaiRHKXggMEAwc4cDlChd3srIuphLxOfWfdPtzM8mvG9jQ+Ze2r+MkTnmdtuwRBOVBGizOtDLxt0Ic+M+2xRVkNuV8jvH53+lyAUjc=,iv:s4bn4Tz2Nflk47VP2mlP4ZXYbDCU2TrIE4IIS9PiF5A=,tag:9TNyTqfjAWrzwAy7d8m5Nw==,type:comment]
+        #ENC[AES256_GCM,data:PVJqkmj+2Ow0m1dNhqIXsdUEEs252E0XO2DS+XGy37Gp5h06+HVbJt1ZmwRlgyM=,iv:SNCgarLQRaCeTXdgc8ScGGvF9CtJDB8LvmlMok01kDQ=,tag:b79cx1zLEtCH6GayrUSwNA==,type:comment]
+        #ENC[AES256_GCM,data:6lfTuxxkQ+1VveXQuNY9,iv:xInzhezzq4mDYhWjxcNmspCvicfujuph6GLB9lr6CrM=,tag:p98iFbnNN2So5vB5Pi++KA==,type:comment]
+        #ENC[AES256_GCM,data:iEpADUaa4qlNb4/lVWo1,iv:sv8E5902qdKbesYYpaXurVAzOgwNLHWtbP/FgMrgHGs=,tag:Iig5Lbs0z94nfbC7BEcK6w==,type:comment]
+        #ENC[AES256_GCM,data:a7vvwpXxev243gdGDnkVue8z,iv:mDOggmF5+7wqzaOSPwbsrMcYJr8gD9rr1dbMblOYEh0=,tag:cPASLEK1VR8Gmk9JZwDpBQ==,type:comment]
+        #ENC[AES256_GCM,data:YH+QgwzWnFKBNqbnPQ==,iv:FSIBltVXpyjrHaCJRUfZJ/+0QTu0bhqmisHhHkVWFss=,tag:yFNzuJc769cqChl4QFTdAw==,type:comment]
+        #ENC[AES256_GCM,data:pIfZYyusrOYbS868oI8/u4Rmci8BRo3nLsAz5bHHeUmQRorCA7ZbKD54YBdtY/feO33Oo+RemyQZE6SalBrIXorOlizC68L2dYKY8TJS,iv:GuQPhqDjZWRy6IJLQBhNUivX+mDvXp/lIsKlHyjnlzw=,tag:oS/dguKUMS3f78k0Do0tdw==,type:comment]
+        #ENC[AES256_GCM,data:DSL/nMl6Ebm8JmHJUg==,iv:nZFZbXFemo+AWVvmsSNCQbnPpIABiCeZ45nR0G8GCTo=,tag:TDDtwW8wHZ6P25MDEdvVeQ==,type:comment]
+        #ENC[AES256_GCM,data:+mIbvDCX/L1s9EOkwxjNrS9UOFLTc1t3QiyrIkQ=,iv:/cIuTXHXKI/9VOO4gJ2SZH7jtR1y2RjG8PRx/DTp8go=,tag:K04UzulPovvtbrY9V7bCdw==,type:comment]
+        #ENC[AES256_GCM,data:kRT1euLHPMcxNxqlTazdsw32wmgVUu2mdUBvP8gTq/mPOFCI0J52LDEaBW4PrRHsmcjNxD0oDxTDckaqJmNXwlEIKPuD94FE2lG9VOM+3TBqop1O40ZrDb2FWaVt/e9aB+wI,iv:cw3REFynEA+U1nTu6vOc1qjWeB/r9atGK53iw0pbAGI=,tag:0SWrdSBiqwY07g0QjPxhqA==,type:comment]
+        #ENC[AES256_GCM,data:iJUS3lA9jUY8e/EIbOjlMKXdJy/6sDi3xYE=,iv:67NLomda2gbOMzYNwGtM/RV/+AQSzOIqEpw7laag7q8=,tag:qHnNoMdBJEsbMhIAdeeIxA==,type:comment]
+        #ENC[AES256_GCM,data:j0rG8x6NNbbMf/3nsIru7Y8c0mTzegByv1Sd5RATBIvzAXV6K57ONoQ=,iv:bQRu48pT9YZw9XrZwrlkEIB7bd4FyKZTmyVYUyI/Fv4=,tag:eJcwJnLUvS2NUULRpUK96g==,type:comment]
+        #ENC[AES256_GCM,data:AknjhDtFouQmEvP2PNNHveHWpX9HuEd1mhUWOtqfQ5jSWXE=,iv:vG0yogzCd8ZzltYtygbtT0qYkKelt6P4FjJmxhE1kkU=,tag:lOnIhalKgmVt9vnqvxDkDw==,type:comment]
+        #ENC[AES256_GCM,data:ixwD0z08fRksDzmTsX9H,iv:xeb/2BKMQ3zzOUWcM27Iyrtyb21sxuZJC5ureGicDgo=,tag:5HTm96r1bD9girRwUPKX4g==,type:comment]
+        #ENC[AES256_GCM,data:KI+9pe4qLh90l+k5k7Ng+Br+eLhuhjiScgYVYVT+Nmvtbu39sIGDxRnLH/WzmYJ7mn7iE9FEYwfe6tk=,iv:BthTnpTDjteQMD8hkl2wFWLb1fR8hFWBF1WCu4bl/k4=,tag:QQ3dnSElh4lLBhFOgO1eKg==,type:comment]
+        #ENC[AES256_GCM,data:YdJMDPpqw8ORXMKQfSZ592Ka3jl8o5SGA2QO/Ww7pQit1Je3,iv:iEJsQ6JnxXo8DPljBws0o+xmuFGBKmrcmLavPNdbcUE=,tag:roC51eWzpxavEgHqYjPvoQ==,type:comment]
+        #ENC[AES256_GCM,data:KfeUn9CNSUuwOvOEOP3duQTxjMhw8to=,iv:mPKH8zV96uJ1mjyNgCv/6/O9beP2qkEjdhAyZA7hwuk=,tag:1wB+EGnMK7QO0ub1j8CC/A==,type:comment]
+        #ENC[AES256_GCM,data:Ao1MJXAUtMfJMvPsT4QlhOcW+m3YzWaA0EKH4RuMuF45Sa0gNDaEBvvT,iv:N+6oJwyBy6hDiNqe3P176SNa44JQYlO5ZedwSEMw5uo=,tag:f5RkClXM+15sE7/43VFvhA==,type:comment]
+        #ENC[AES256_GCM,data:Z70fXlRiIdutt4ej0UQgvHsvw7KkaKcY+NjlFdHOt3yJ42N7zfsxShmSzxYr,iv:MMLgEiQU7LCIV/s2mrAkD1iBjyRXBBhuXsV57YVg428=,tag:Y3ARM9aiiQKj/TCPG2nRaw==,type:comment]
+        #ENC[AES256_GCM,data:kI05oE75JKJHfc1HFpFdbZrcVrdmxyrOyE+I2NY752CoAVOtxpnhpo923LQGluU=,iv:3yuASumULFghv0wxabZ1Nk3fYpkQRtbg9gCFWR80hyI=,tag:hRWN2qZyxL2jvKyGZnVwwg==,type:comment]
+        #ENC[AES256_GCM,data:yInNdapRrkOvXQQTuX+xUYF4u+7BfKw2KqsizWZSqD70S5envOdHTacijdmg24AQB/2S,iv:btcY+fsCzWZAsKz6Iqn3lVUAR8+1yboSQyjio+DCAjA=,tag:h8C0uO1Ja/aZHRJEm8tpYQ==,type:comment]
+        #ENC[AES256_GCM,data:/TsN7MfDq3cKrrha/fsYT/roZP6LSZBG392986x18+hGhT/OzktQvkhkJ732Me2nNyvmwTKM+Q==,iv:NQjftSqlsAqk1klloLVlSM6oaNkELYJ+WLv/mVoGoLE=,tag:t8FZ9izR+Ac5Juh7KZSwJg==,type:comment]
+        #ENC[AES256_GCM,data:d1o8UYDmAw9NqjzC5P7c+F78G+luB94T23GWOJEGLPap6isLPZ39XQ==,iv:Ji+As4UkdrSURcBTs5qkdbV9NXh4XrnWoAQH3InWEnQ=,tag:FrW/dLI2h8K3GJGm0Q3hcQ==,type:comment]
+        #ENC[AES256_GCM,data:1J8xSuDUw1TzKeQFYYbqFY2GhpyAlr5Oc8xgrQwhj2O04MzYnILQadWoGeZ7oYepgQVTckasAgo9G3kXLui5O/sNeYx6QJGtW+uH+Q==,iv:bu9GDiFYKbbVR9BUzFVoX12V4Qnrow1sMJRAQstoRz4=,tag:tTmS92BZ/4CkYTytq9Twkw==,type:comment]
+        #ENC[AES256_GCM,data:xXm9wLKDWgQ=,iv:7JPpecRhl1tqUFHv3p/4X+qtqj2MYsuyH0tsJPU+Yso=,tag:P4IgQ3mNpMTOpm5/ViTqsw==,type:comment]
+        #ENC[AES256_GCM,data:9pe6I4/OAhQ2t4bzFocqhVLExxUHbWZk00mDSKuMI6+P3/4tN4i/uG9AKcAIG7Dbh6O+bx4RXbx4cV01ZGfbEEybuNNB3Kxn/En/c8o5f6g9Qz4N0g==,iv:r1gR6qOiftndL8k59/MraLoAYQFKLrpLfud+DmbkDzk=,tag:seIJzkj+bLwzi3eZVVOruA==,type:comment]
+        #ENC[AES256_GCM,data:QNEEtjOnrmc66oMz8euPvlPs,iv:sqApWp+xfOhVJugnHdQjE3of8i2JrBpIGbNkiOEQYJQ=,tag:BxcUyLQ4wr1VBdX4r3l+ew==,type:comment]
+        #ENC[AES256_GCM,data:d3HR5MOs4+hk1FhC7IOR0RVYR9Gr,iv:EQGMtFXDIR/oVcBJGNCL3fYmDONkFH33a06EZXD2WIs=,tag:XvWQu87NpvvLwBZftNGfTQ==,type:comment]
+        #ENC[AES256_GCM,data:iWFSF11XBxnB4ribHR8ZQ02ScN30nLXm0A==,iv:sfGjeaIJreJOGUcD4Ml98jazTWBc9jdTgefPwCAKurk=,tag:mLDIH8LhB0+dQBWPG159oA==,type:comment]
+        #ENC[AES256_GCM,data:toYU9WJ/t789+cl8iEjuodxMsKA=,iv:VPdpJHN5jjksaSRo7w9rfdhw+/ICD8CVb8oxsoe9eKA=,tag:Q+ZK3uN6GqkNlrOPPGqmpA==,type:comment]
+    #ENC[AES256_GCM,data:34kVK4Xa2msZ/0O+B57GyqWHUxbzTdGJr89mQZ8zTOOTqU64KonAGTcFsHaSl8BS,iv:pa0w/S33afkWNXkvs+Ducq4elbV8Li8wfNnf0FHXptQ=,tag:vLtCeXzO16hA89hdgCm5sQ==,type:comment]
     install:
-        disk: /dev/sda # The disk used for installations.
-        image: ghcr.io/siderolabs/installer:v1.13.0 # Allows for supplying the image used to perform the installation.
-        wipe: false # Indicates if the installation disk should be wiped at installation time.
-        grubUseUKICmdline: true # Indicates if legacy GRUB bootloader should use kernel cmdline from the UKI instead of building it on the host.
-        
-        # # Look up disk using disk attributes like model, size, serial and others.
-        # diskSelector:
-        #     size: 4GB # Disk size.
-        #     model: WDC* # Disk model `/sys/block/<dev>/device/model`.
-        #     busPath: /pci0000:00/0000:00:17.0/ata1/host0/target0:0:0/0:0:0:0 # Disk bus path.
-    # Features describe individual Talos features that can be switched on or off.
+        #ENC[AES256_GCM,data:y/cMb24XfjT3aSLPa6gU18c9GzTcqZBXKjtpvevRS+aO,iv:jQaXZasZQNc7u8MqKTaZ0woqI0shdGFLZt8DQkOMeYQ=,tag:NQPoIc8yTbY0Vku5GdjapA==,type:comment]
+        disk: ENC[AES256_GCM,data:DbmWaT2vTPw=,iv:2V2jbL7jmtkjZENu9U1brZ2VQMEENthkzrNfbHuwRLk=,tag:bG+VXp2Xb82ZDIH3YuV4PA==,type:str]
+        #ENC[AES256_GCM,data:8KtCfGzhC5QS4i+Ci3IoPU6UvvaGTXaqghZ2ZUiAtBDHwlI1W1j704TsLEv3C1ELCoCJLjIvBn0qXY0v5y5F5Os=,iv:ezpPkyFP9HVc6YvSUjAt99xuevBfMrET0iwP20AW55k=,tag:B16o9S3ialeFnCSLgwUeRQ==,type:comment]
+        image: ENC[AES256_GCM,data:lhdRE8pscHU8958bzBd8ZFMxV2phTPEFZczztQflEToBTIEU,iv:Ew9IUBImGSkEBBZ+T69E4xlhZUDN/fsOLjC7l1AO2q8=,tag:d8OBpj+fuKm6CknUCrPQJw==,type:str]
+        #ENC[AES256_GCM,data:YCyVwUSkJbkL5eIGgOUf75xTvzwhwj4uPvDyzsWYru3fpIe/ihsXunrjDPxVuxxRmH1Qla4QMQz8SguezECf8d41MBpA6zzHYw==,iv:SNwAZu2yEj7Q0TsGn9Yn/grxvhaW3Qh2+ebUqP17mE8=,tag:FwLKJCGEC88DtC836SYvgw==,type:comment]
+        wipe: ENC[AES256_GCM,data:EfmVkU0=,iv:6aaoGI0G8zom53z1c6otnJGPo4hZFE3KKBqZyLRPVVg=,tag:uW2OTKgDF++PNwx+fcSkWQ==,type:bool]
+        #ENC[AES256_GCM,data:vZ+tqmjgICLEDC+USS9hFopSgp01fRd06fU2uBWFDkF0YjyeY2LTLZvO4jzjvpID2+tgqajm49B9mnwmUy/r3hmpZp3gw6mSgNiQEoWUhek53Br3zNBMKq5h3iEHZvaJnSKGrookHcZwiI6nKj+u,iv:997UDO1q9H5mlYADCfw7PKXZoVFSucHCFZFyW7dS4dU=,tag:uLJzCUQmO1KG7wg7D8LfSw==,type:comment]
+        grubUseUKICmdline: ENC[AES256_GCM,data:1Fn2vA==,iv:cBFWbAIxdy/wb4R70yqs5OLV/UBBvcgGXSIpbccVywE=,tag:sI5YydcYvq4xhl/uQJg1pg==,type:bool]
+        #ENC[AES256_GCM,data:x4yhAKSIfUAoBZssJ1pFUrbZXHkUI4u00EcJPwcvqiuXX/RBA9uFILZ1RUAhWHhkIfoa1s0wxsqxXNLjn0jYhmH9p4lG7hj0BV8=,iv:PDs5sXBQKlxFMPYbk2gYiY6maNyJVLIcHnvjGv0cFfM=,tag:SZ323b/NLnLKTljQ4958Cg==,type:comment]
+        #ENC[AES256_GCM,data:WxjO3xFNMQpoEnYSIc4=,iv:zzcy0U18EZNgIv33gA4vSW7WdPUGvFbN4WkssoNHUIE=,tag:L/LdgexisPcAO7KWE3OYEA==,type:comment]
+        #ENC[AES256_GCM,data:Ai0N5e5FFhRpLcH9XpRUfiIolYY69gdfC3xM,iv:y28ri3MQ3suDjnt+YwfOTfXJgHR0TbAV7h8kUNZtlOA=,tag:LSxQhpdXY+wITmNl8+W8uQ==,type:comment]
+        #ENC[AES256_GCM,data:BfyDOLSRNQfkgAjSSCTY/EEo5j3h0Z42tXAgyqlxnbonMugJOrjWqSXn7R+XGdQ4MkWKA6pccl43gM7i41o=,iv:Y4QVWTtxGfX6TqMIqRblT25ERq0CWp9Lj9zZ9mGBPkk=,tag:u/oO/5aSr32dNvxOQqevWQ==,type:comment]
+        #ENC[AES256_GCM,data:qpK5WxGFgKPU3R6oS9XSw1Dxm+Y6JT8SPXDafv6nKHegOzHPATMBWTDTbsJ0I7z/6pKDlw9xvAH0aVxsZOwwrrqODb/VFXv8JTeBloVvyB08xXp4hTg=,iv:V6Rswr/adfTlmcr2Cqcwr6Ga58RjYri4UAf66RY2i3s=,tag:2FDkf+1LzJ+XlJc3t+Fx5g==,type:comment]
+    #ENC[AES256_GCM,data:UuU1v6kbPtGStIe1OSufhl3z3SI+ExKQLClQQ5BE6jui3miRM4o2Nt51h6YQsxJI38L0CbtvWxEPN6rNdGh6fRYcpHHUHKb/2MlYqA==,iv:hRYiS1URB754HtRABD1Rv8BG5UA4Wt36FGBzF5z2Zng=,tag:Ld2dqaYFoI6XVpnqgvjgcw==,type:comment]
     features:
-        diskQuotaSupport: true # Enable XFS project quota support for EPHEMERAL partition and user disks.
-        # KubePrism - local proxy/load balancer on defined port that will distribute
+        #ENC[AES256_GCM,data:JIJ0bMLdJ+GhVrD94zxAEYHcwD304U+hED7wS84PuadoBmKnyJurQuFLqfPgypt+Dt2y4PwXy1aeRRPJtEPolRxJQxgaU4Mv9w==,iv:xNXS6JqUHubPx2FwAqK/52OpyLvXqvTozXsA4J+j7qw=,tag:2W3VBxT1iEvDjQlCnX7EFg==,type:comment]
+        diskQuotaSupport: ENC[AES256_GCM,data:WIzdOg==,iv:xJYwhYQNq8E0szxzabLNji7iHYRILX135Fq6tfh4JB4=,tag:JljoLwp5WOEayv1Li2jikA==,type:bool]
+        #ENC[AES256_GCM,data:qQ2YhBJ/3rK9R+0W4Rw92OOTm5f8xEgBsFzkhD2pZ8fBOIFXVDXaly6Xw65jPFzTI6CkloaSFme/AI3uHn2Ovrw+lwO/i/LB9IJC,iv:WehXN3XypYNT6sQhHxPRnHVwcf5N/FCarKxPHluRxu4=,tag:fTU1d1E4KfNVFr9umKClmg==,type:comment]
         kubePrism:
-            enabled: true # Enable KubePrism support - will start local load balancing proxy.
-            port: 7445 # KubePrism port.
-        # Configures host DNS caching resolver.
+            #ENC[AES256_GCM,data:5pCUkputG4XKDyIysud/eoJ3IsSQJbZFgtfrrvQGGSEE+dt6FK5Y39bO/AK6vTcUiWOlXLRluzMZdfRa2oyUKkns,iv:DEuGC9eXVBFgeftSpnYEOkaRoF3mlljpJ3BM45FNg9g=,tag:p8n6dxil+/Q70oRNjN7JIw==,type:comment]
+            enabled: ENC[AES256_GCM,data:1W60Zg==,iv:lRIeB58b9f9oNdfxZAWK6EN0/xt+FttvomkETRigsvc=,tag:P/OcZUakcDpgU5b0TibLTg==,type:bool]
+            #ENC[AES256_GCM,data:4P4U3ZNikj8lzqGTtdyltA==,iv:PHhlnKA2r7tmVKgF94dsBhfNPuZ3pkCioG2C9MMHFuk=,tag:sC8MlmgmpEidU40FC5Guwg==,type:comment]
+            port: ENC[AES256_GCM,data:rSzsog==,iv:k9yQiBhg9nMWy4xPkNfP7RqpfMykrNg2+MLHWsELOX4=,tag:lW9IiQh3Fku9e3RbbSgZhA==,type:int]
+        #ENC[AES256_GCM,data:xo3/gjuqqTc4TpDdAXX8onIUvxw5VCjGv76o7BFSqqh9pJQR3b8=,iv:g0r7vBQkQWp8NJ98eCgpL3aFXgIymm5G1avGL3qKaxc=,tag:ToSLEs6W/CTlh0iDhfyugA==,type:comment]
         hostDNS:
-            enabled: true # Enable host DNS caching resolver.
-            forwardKubeDNSToHost: true # Use the host DNS resolver as upstream for Kubernetes CoreDNS pods.
-        
-        # # Configure Talos API access from Kubernetes pods.
-        # kubernetesTalosAPIAccess:
-        #     enabled: true # Enable Talos API access from Kubernetes pods.
-        #     # The list of Talos API roles which can be granted for access from Kubernetes pods.
-        #     allowedRoles:
-        #         - os:reader
-        #     # The list of Kubernetes namespaces Talos API access is available from.
-        #     allowedKubernetesNamespaces:
-        #         - kube-system
-    # Configures the node labels for the machine.
+            #ENC[AES256_GCM,data:8TOLTyyA/J0JmZax6yr3YiN05YqqnisT+qaVc/uPEiyF1g==,iv:gXLq+yjG8mo2qYFsu+c9b8w3mww2l+kURwD2QTfV3jk=,tag:9Bhd6M5GUbLOSypPgrkRUA==,type:comment]
+            enabled: ENC[AES256_GCM,data:7MLjuQ==,iv:ix7ieJBMyDu6P3+cJdTQxYH/+xc6amOBM8h/5Uvqnqg=,tag:p+EuTduue83b+sDywE6qGg==,type:bool]
+            #ENC[AES256_GCM,data:gZDCVgS6IZnsIu5lhrI9LPKDv9aWStUCuA2u0t1nJM+2UNKuZvOhuyUUsfj5Z2gRKqfnZknhAuO4VoXoK53NVYYmmQ==,iv:0SKDEP+pozWh1NjqqeMujG4PQdsIaMi4onKp/tFRv2Q=,tag:z+hSg2Bys9b+8HyqLmc+eg==,type:comment]
+            forwardKubeDNSToHost: ENC[AES256_GCM,data:8R1W4A==,iv:++mAWdLvPPN/2Y8dam15XZ/yfE1usOSzo7k2bGz0BJg=,tag:dE4aGv0U3ANzQvkCrKWhmQ==,type:bool]
+            #ENC[AES256_GCM,data:5i8qIGym565iM4tqH9IimtqZLYTKhybKexal6cYAfHIF+XqHL5Q/Ia582mRAsWgIoZMP,iv:c96vj3SOZiewu+tonUo4qYqyYgXT9JTmcANrQD1Lq/M=,tag:XtxrwzvIdkQm48h0d0qW/A==,type:comment]
+            #ENC[AES256_GCM,data:gLDv2zz1794+Iu8mdB8d3CQ3c/beDbPXqO0=,iv:4RaRbSb+eSXGI+DpEMmD/PAqyWj+wdJ/0faehAE/YXU=,tag:im/zhk0EZU/VBUWDvtCGyw==,type:comment]
+            #ENC[AES256_GCM,data:ou3HOOhlfPWqMJHA+VBIXJeYUQKtKI7C8sKqtT6DKfwFtq78almEGoPye5fwh+atsAPfAxe6zehEIWsWkqxcIL+T,iv:K2O3R2rMSltrQ6C/GJxVYJ5VN3BU1Xix1FhMKsO3XZ4=,tag:MaIr1NlMssfNxe+uBcbmUw==,type:comment]
+            #ENC[AES256_GCM,data:MPgUZgEfG1auLqfZf51OxGhJ4l9hjS0x589zYtdZ/qxqIxfMrizoXVCtOPx0XgCrK+7Msjm7MBxf11FPTGKroRzxEgZN+wt5gKgqRxCCy/lUjA3/0CNpyw==,iv:9/5XrSK0Mfqfz5qJ+ICIViIXL4lrzvfv3BdJA3ZFyTk=,tag:9kRGZ68rMPMC7hJn64pupg==,type:comment]
+            #ENC[AES256_GCM,data:S5FeMCdd5/hOHa6pMmqLSumj,iv:ylyiLLPvAdlwd8LY16JM4RlgrjGnZD1M9JJohuNhV5c=,tag:sdjG/JC0vdkh31EB25rBFw==,type:comment]
+            #ENC[AES256_GCM,data:McZSXKyxB5k0p+4JLZt9B9sWAdg=,iv:94K1mduwI6peKfK5j33YDe22U0If171nYbEaw1FI/Z4=,tag:HtxuUJAySo5WsfMr4DY7SA==,type:comment]
+            #ENC[AES256_GCM,data:vcILwXXvxUItD25tc6batr/vvviJdkzay6yQLi/TA87xe8gYk8mTUZARtOr31JEqLORvu5Te2geM0dIpDlXdSUjhpmOeXOjvNTeJpw==,iv:Gza6QnnfU9WpHcOSlq6GPkVqa4gthQZwdliW6IAs/EM=,tag:07ZOQBGzbxRVbyFVy2HmMA==,type:comment]
+            #ENC[AES256_GCM,data:gadJdsXvNzv11+M1QJ+RKN6Iio6NDj2wWKg6T4cXWLOB,iv:4+OMBAMJU+fTp4JlreVWskGhcd01l+P0fUmrvmZatR4=,tag:GRu83RZbbHUbD/EdDJS6VQ==,type:comment]
+            #ENC[AES256_GCM,data:/JlKhkMb1CXXpcrapIlMmiZRhX1Lng==,iv:2L/DqqGqjCVpPArxfz6sPWQkGep+3+eFk3xJ2E5r+2c=,tag:SvQaklebXyxPnI/VenxC8Q==,type:comment]
+    #ENC[AES256_GCM,data:ViNb7HIr8/onsyY5I6yKt4MBky6WjiTGFs65O5ZYI1FZOCKvRPlPs6isA+E=,iv:XaBW9F/xat8lHxiVJLfrcXcwjETgQ8AUmbIzrKcE3mU=,tag:hfoikziYKDwUsx5D26Dadg==,type:comment]
     nodeLabels:
         node.kubernetes.io/exclude-from-external-load-balancers: ""
-    
-    # # Provides machine specific control plane configuration options.
-
-    # # ControlPlane definition example.
-    # controlPlane:
-    #     # Controller manager machine specific configuration options.
-    #     controllerManager:
-    #         disabled: false # Disable kube-controller-manager on the node.
-    #     # Scheduler machine specific configuration options.
-    #     scheduler:
-    #         disabled: true # Disable kube-scheduler on the node.
-
-    # # Used to provide static pod definitions to be run by the kubelet directly bypassing the kube-apiserver.
-
-    # # nginx static pod.
-    # pods:
-    #     - apiVersion: v1
-    #       kind: pod
-    #       metadata:
-    #         name: nginx
-    #       spec:
-    #         containers:
-    #             - image: nginx
-    #               name: nginx
-
-    # # Allows the addition of user specified files.
-
-    # # MachineFiles usage example.
-    # files:
-    #     - content: '...' # The contents of the file.
-    #       permissions: 0o666 # The file's permissions in octal.
-    #       path: /tmp/file.txt # The path of the file.
-    #       op: append # The operation to use
-
-    # # Used to configure the machine's sysctls.
-
-    # # MachineSysctls usage example.
-    # sysctls:
-    #     kernel.domainname: talos.dev
-    #     net.ipv4.ip_forward: "0"
-    #     net/ipv6/conf/eth0.100/disable_ipv6: "1"
-
-    # # Used to configure the machine's sysfs.
-
-    # # MachineSysfs usage example.
-    # sysfs:
-    #     devices.system.cpu.cpu0.cpufreq.scaling_governor: performance
-
-    # # Configures the udev system.
-    # udev:
-    #     # List of udev rules to apply to the udev system
-    #     rules:
-    #         - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
-
-    # # Configures the logging system.
-    # logging:
-    #     # Logging destination.
-    #     destinations:
-    #         - endpoint: tcp://1.2.3.4:12345 # Where to send logs. Supported protocols are "tcp" and "udp".
-    #           format: json_lines # Logs format.
-
-    # # Configures the kernel.
-    # kernel:
-    #     # Kernel modules to load.
-    #     modules:
-    #         - name: btrfs # Module name.
-
-    # # Configures the seccomp profiles for the machine.
-    # seccompProfiles:
-    #     - name: audit.json # The `name` field is used to provide the file name of the seccomp profile.
-    #       # The `value` field is used to provide the seccomp profile.
-    #       value:
-    #         defaultAction: SCMP_ACT_LOG
-
-    # # Override (patch) settings in the default OCI runtime spec for CRI containers.
-
-    # # override default open file limit
-    # baseRuntimeSpecOverrides:
-    #     process:
-    #         rlimits:
-    #             - hard: 1024
-    #               soft: 1024
-    #               type: RLIMIT_NOFILE
-
-    # # Configures the node annotations for the machine.
-
-    # # node annotations example.
-    # nodeAnnotations:
-    #     customer.io/rack: r13a25
-
-    # # Configures the node taints for the machine. Effect is optional.
-
-    # # node taints example.
-    # nodeTaints:
-    #     exampleTaint: exampleTaintValue:NoSchedule
-# Provides cluster specific configuration options.
+        #ENC[AES256_GCM,data:NgA4OX/PUMXtuXymbK+EXEEx8J/HlfftFfkof+OoPL9okTvqDvwcvANA0lo89MkwMiuDLbYoaWUsmdKGbRUtc80=,iv:3CQ0XN18Ebtrzxd/65a+Azl1/DjVZNKDWrl2kz+94G4=,tag:UGcK4H5c4Dy9Q13oVybmrA==,type:comment]
+        #ENC[AES256_GCM,data:VyisLWfuybQ+OPVqI3zTrGr9JPje19WVt/OioqD6TWQQ2P0=,iv:5m6mu4Rd1yCkmjB/LT9Zowdl9HPPcMHyZvqr4OCBeyI=,tag:u6orVFhLFMZRe2edRoboKw==,type:comment]
+        #ENC[AES256_GCM,data:aQKBBjLTbRWSs4NrGyQ=,iv:Rb5VuA1HDju3wnaMHhui4gE9nO5D312fhiQJvfEoesw=,tag:GwFPVpH0xQTHlYysigCLkA==,type:comment]
+        #ENC[AES256_GCM,data:Jlqmx9MWFsTzXrA6b1JDxkMETKzpdbSrPfZK92UuRp8AvG/r+iQXvLLIaW1AKL16mvZy00SSvaLP3NB8bR0nuHs=,iv://wZhDvel574wV0/YMHyJXLv3xB3pBFdhVr6BuJsx24=,tag:jrSlqJuIKfCI/rkMnK/LEw==,type:comment]
+        #ENC[AES256_GCM,data:50GWWwOZJ39NRzlZaDqcN2aEvNS7Vfc=,iv:a3Vhm9UfbpVy5A+no9BB+UaZLnqKUT9RXB4F+plK5zs=,tag:yqTfg2+/4RrvfHBoiniyhQ==,type:comment]
+        #ENC[AES256_GCM,data:x8zp8VceWfElJAFd9uqBvXxFqnrO1tv6GM/uYK/jLsNkid2r82aARZWz97MPYFbX0e9+mtRPqhfloRnfZ3fDjbnelItPuKE=,iv:oMHJWd9kV4Z3ZCwDlluwLCc9rnq9X5Tbi8fTrY1KSg8=,tag:XZ/+5abflgAXIz99zqGlbQ==,type:comment]
+        #ENC[AES256_GCM,data:QsX9a8oTjDLjWp4Ch/KFm1+k+V7xZYevYLqKwUoTOQPstuzhhV+wIp9r0obHd44HlH+6T4Mk51c=,iv:EMkHhn0kWIv2kur7PE6CCJ+lEngGGMkBUlVhAHl1BtQ=,tag:CXiuJ3x2EOa7jtuDN28vzg==,type:comment]
+        #ENC[AES256_GCM,data:S0pHZO7AgneMebKMvo3N,iv:db22WVAqF5ubuJRPKzEv1vv+60QO0GoPPWf7HVulsos=,tag:MHMHqqNwSHnFU+opLE8q5Q==,type:comment]
+        #ENC[AES256_GCM,data:6cBsrzak6vOQdZBnTDh8Hl6TRMY+vcLq2G2lvTbvi5j/JQrS7rx7fgtSeGC4gxU9SRkOKhdqFw2RT3aPiQ==,iv:IuNgAAM0OBUbfQSA4ZVqERvNsrCcCEJJqAMKY1tsNmc=,tag:bjJ/wXuJ7M7qyxuTKJMIaw==,type:comment]
+        #ENC[AES256_GCM,data:5xeVKC3d95Bmvcc739NBGWCi9EY6Pv/0zerwqIwvqnNgCdc49WHNSEGt2Z9GCQpqXJtLvxbWZOyPoVATSQ1T1EGRrIcvr/QEuykvRFmHAbN7Nj26Ra+4y+683L1mwri3AenEHnCncXvp,iv:o6xz/CuL5JEcWDStt/xO6MCDDPO2KWSIpckjEioveok=,tag:0dhg7r0Aw02Jn+Mr0GQ48w==,type:comment]
+        #ENC[AES256_GCM,data:OJXDOIfL11u1MhObsEmP4YiibK4=,iv:5KA3TQ95BxrDO+VvrNjrRrThtjsdefDIOOG8Vv/k6VQ=,tag:d8Zd284zcF1cyFBhkDiaYA==,type:comment]
+        #ENC[AES256_GCM,data:mfnUWs/y,iv:BuKvzexIf1kY8ik7AknazkLQLpy6aAwsByBOcCr8jws=,tag:NcHD5Oq1IkE+pdyTRwJRdQ==,type:comment]
+        #ENC[AES256_GCM,data:Vh57e/AU29GJZdxJ83GD+OFkBWEw,iv:WbHqvSG1EGEsQgzA1MMtl9VLvRwjUFvWBDA8Fovs9cs=,tag:K8wRFXCGmTZkLht64yd3kg==,type:comment]
+        #ENC[AES256_GCM,data:wkUShQMo2fyDv54oNUZfMQ==,iv:IVtttGVsoIDglV6vKgUaFnMSm04n3UBG6AzmysWfPI4=,tag:5ZdIoLSmdWxHkLNnNix9TA==,type:comment]
+        #ENC[AES256_GCM,data:avLZiOxEDphC38iT34YJNw==,iv:2pARr8grMyDybMbgo0GSKVglhBFeo1znc6p/BPJmLMI=,tag:T82LF7SD1/4/GjsqMDmiBA==,type:comment]
+        #ENC[AES256_GCM,data:mtwGLYb3M/4hxAiDtT8iQQV3Jcg=,iv:alpr/UjL8TfTCgzKb94TSrox6k4UmevHGY2LIco94sE=,tag:gmn0uNxXbSZW0FLqGXC2jQ==,type:comment]
+        #ENC[AES256_GCM,data:Hbkz1OX1DmUP+2VF,iv:PxiEKJO1sscOcoCRDqdWFehsMHowPaXBSCmmkvhy8BA=,tag:gtGT961l+lXbCLXRIzAVYQ==,type:comment]
+        #ENC[AES256_GCM,data:v/zdV0zSbRuBxtPu3MFgTGY0yk0=,iv:19l+St/P/NGE3guBxXyMATburlneuQg7qRfpYwcRv9s=,tag:qz7LnN33H8I/t7T8g9BZ/A==,type:comment]
+        #ENC[AES256_GCM,data:nCFYfX/6iN0MSa7RAvdxE6TheSsDan8mSQXH,iv:fVmPw85L3iQr+C0PAxhMBgW5JESJpVCT1KyYCQFWkvM=,tag:LA7N8iB/SNFYxxizuVafQw==,type:comment]
+        #ENC[AES256_GCM,data:r1f7Y0ifJjku2MdgOHt77fbCoqWzWe6VxgM=,iv:8UlMXyh8SrJLfBp4VoCPivAtLvSG1kP67w5EHEqfii0=,tag:PFUijSX//8jCh9C2yOtBgw==,type:comment]
+        #ENC[AES256_GCM,data:l/BdYjZYKV/4X6qQCpsSNy8Oga/U4EIg/LcjW5tfMPTOPqdRwxR/urdAol3XQsI=,iv:s8oc8cj72JMtS0AGv328cdt5Up8KI45BKpsKMtWFnFY=,tag:dW8l9/LrFkmcSgTFCpRaQQ==,type:comment]
+        #ENC[AES256_GCM,data:767Y1LsbyivA1nTWANr2Pd7obJkxS3K2fvGowrKi,iv:0VNX4yP87fnHmR3euGgD06WkFsuECqHVsJdI0uSjduE=,tag:fLsGjj6ndhyYz5rwSHARvQ==,type:comment]
+        #ENC[AES256_GCM,data:7m+nDlyJNQ==,iv:EXGx5Ir800KnoEwg8IekeXumwtyO3JLNahJGARZAL2Q=,tag:tMJrgRkw7LLwyUcJBbn1CA==,type:comment]
+        #ENC[AES256_GCM,data:VrKLmWIZhl6Pbyx/hgSuDs+BYIvIq/JE2rocaqlLxx/nS3jyT2oN7mPcul82ugaVew==,iv:0Krk1FXEorjq86uJzQ0VvL5Q8qYnFq8Jr+U8ZmcPFag=,tag:DCByMSFPvbamouVRnod1SQ==,type:comment]
+        #ENC[AES256_GCM,data:xXWJQ3FJw20a5zoI90i+83q16zZ3aWlubKYg/h22UUAHkMxfzTQazVs2J1fu37kONiHLN8Ns8MNdF13f,iv:sUNAEdPfCFnKPXFPuIGnhbXn/56q8Glj2JlE/G/O3eI=,tag:97aJjTRj17CjOqSxUfRPng==,type:comment]
+        #ENC[AES256_GCM,data:N32RQyRAZ2/mFcUYRUyh5BVzUARBWJatroWJXvInEcmNrZ/hk9Ti9jApzl7/QZ+EBBE=,iv:xOcqDSs+A91SkfCDyD1NDlnEBnbM9qQjQox074K4nAM=,tag:P4Ls0V4CJ0mF0IulaAwfUA==,type:comment]
+        #ENC[AES256_GCM,data:kVUAeAs6szplHg9CWjYLiUFVDznf2jhM0aL4iwdWzaEQk2rnreVdiw==,iv:D2iOv0Rd6AlsEAISn9+WnF3rrAB8aj2m3Bq2cI59sr8=,tag:7fjHW9VgdFN3XHZeGM/hYA==,type:comment]
+        #ENC[AES256_GCM,data:sFJ1IiPwruF3h7bYPpkFgCzG8e+ASAd52SR0sM3LabXAf+CYELvoP4zJsQ==,iv:ip369oIY8UCI6ipQGUIcxGXW8nyO5bupSu7oaPzfb5M=,tag:1r93gqN1ThbfwWsMq0X2wA==,type:comment]
+        #ENC[AES256_GCM,data:XW71MfyyqOxjhJBpD3XQxo0szKEjzqLhqbYcODvSw1U=,iv:6N0ygI+pgb8bnfgLU6Qbwb5mtxtLE1zB3KMNKNRY1uk=,tag:bERsMV7UoO8IBDDLvqjaNQ==,type:comment]
+        #ENC[AES256_GCM,data:PUYtktDJ+us5,iv:KDIngaQHPw7nEKWevAtEhsDVZGqg/D7vjDKHzRqJlmw=,tag:tXim+VDbiBeQFNV6BgGEhA==,type:comment]
+        #ENC[AES256_GCM,data:Zd29x5+XlnVwcN/wt/wV+dTohMrhVCLKvQlHmRS7I966,iv:nNI+gQHP6ucqK/mZFzk1Sy1WhvpXfnC1x8yTTATq/go=,tag:zBJrBK2qI+tLwFfw69PeYQ==,type:comment]
+        #ENC[AES256_GCM,data:hsZnRO9ygmbN3Dy8BhuhT5KYStUg1Ubh2ZtQKQA=,iv:LEPG63QFqkRNfBgxkiyzyKtnqkL7TaDRgDE2nH1yF0c=,tag:RpIIqw/j1o5K8MQ9YrPlOg==,type:comment]
+        #ENC[AES256_GCM,data:ELREt4Xb01JH9DV1gA3T9wTm65Ojn23ECXoKHSdFDCzjFkuX02cFRJi8P8A1,iv:7OMa6mxOyjji40RuunPOd4HKwqPf9G6UshQ18sucyUs=,tag:r4x+IlVU36oRVdxHHkoL/Q==,type:comment]
+        #ENC[AES256_GCM,data:1+z6d4KaCW71P3B9+S6vVTyJ0A2anHruZFiyfkuxTeZ4FQ93nH5eC08=,iv:ZExHzTvf79wo/W2seoKCf6jo5AhOw7MxMmHB7mvyHdQ=,tag:xKJ6W7+3uiCW1JrpvNnnSg==,type:comment]
+        #ENC[AES256_GCM,data:l295gMrPVj8pWEmiZUORUxIBaKAmIyuf0piVUDBf,iv:1bxOfS+2jAZ5twrLZA++7fv7m9B3x39HPsnac32B9kI=,tag:iXBIfq0MUygkc2VQ85YzPg==,type:comment]
+        #ENC[AES256_GCM,data:d73EQTn5Cw==,iv:93Y7A/J9NQftPf3aLizcse0vRCV32TX1jEOxhasmJXg=,tag:MVJ27+Kd5fNxkMd/wU/Puw==,type:comment]
+        #ENC[AES256_GCM,data:0aq7pMl+u1EpPLewPMm3RMybQKjq+jq1709gc5IkUWXPF9StpcowOXtaFaf6J5D5BFH+wqr5KrXmM3FnMphz5Tho,iv:yzNQ9X4T53M+EijUq+shDA74SMOK7JYXoenlZofmW/c=,tag:Jxdy+UZIozCzCLOG4yjWqQ==,type:comment]
+        #ENC[AES256_GCM,data:+qK7sY2PYiUVWXy4ifn3ESGp50rpVSvh+Zno4xRN,iv:uVyWTVqYumaX991KuB7qlPhxVDYWJvPXwQd36Qbhwg8=,tag:VzYOAFNbn5ACIpYnXsGIng==,type:comment]
+        #ENC[AES256_GCM,data:8PgD1uUJ,iv:1wj2+7nvRceqrrbf85cmcBfYZ8+FG8REcLAtrHSyXTg=,tag:dOzwoKrEU4u4LCWSw4D4rw==,type:comment]
+        #ENC[AES256_GCM,data:/4q54N4xAaLjZoiYqdDspX+CF2vATrENc7YCgACKcHSeqXqPadKfqG9zRSRYolhxeZ2wxB4=,iv:b0SLapktfMr2Cdde/FA4zurFWdNPNoQO/oWNu4O0bFE=,tag:k/mlQ8O7nrEPottlaSEsEg==,type:comment]
+        #ENC[AES256_GCM,data:V9v61RNI7qK2Bog=,iv:hou6HrQJaxd5E2OXVecw5Ree4/ahCC7hEGKULUnUWAQ=,tag:VauW61LryvD/aE+vExW8Cg==,type:comment]
+        #ENC[AES256_GCM,data:XaOQHQ7djXYRX2SXIwwFjJqiy54zacqtz2/5iiSkl1d+yWN6l5kj7bqDACrcFl4PU3pMd4BgS6iI7r8GgYCIAYB09kYKevqU,iv:Pbo+pJEDubVztp5GndfaL78GVjSNrMOHEq1eaoXPCaI=,tag:1Ki2yejIfvVNdXeaeCD2sA==,type:comment]
+        #ENC[AES256_GCM,data:15JyYz+n4jqnyRYhN67p1XGLctn9ugUUD69/mfW1fINu,iv:zvEnkGoaz9CXvaFVTjNmMC8/0dM+NRnzXQr7fcxir+A=,tag:hTCNq/J6XhTNrhi+dEBZdw==,type:comment]
+        #ENC[AES256_GCM,data:yW6zHYkHJPiT,iv:r5U6IrkR/nyrq5zU/FHCxXN1/cHV3ZrgwQll/ey7zok=,tag:Tj0d4E+IeYK5hqVhRSqCKw==,type:comment]
+        #ENC[AES256_GCM,data:osNRLYyIjM7RLTjKZnUqjCuNEa5Zp4vqdVqP,iv:w1WdDFTrTaSYexRaLjleTM146oWlqj8/ZJS+nCnaI+k=,tag:SzPVP+fJMRM0T9jtNLEKnQ==,type:comment]
+        #ENC[AES256_GCM,data:3HrxbdbSx7enLfSKc8UkgMXZ,iv:blXFl8mQZpWwLa8hAVVKI+H+ElcZC6+Ct3UYpEwaVow=,tag:8huGVgG4bsXqM3SjR7p+lw==,type:comment]
+        #ENC[AES256_GCM,data:SYN/+td/g3d2R+E2MYHbtXmII16x6nr+4YTocekCo9jGaFS/GXD3dSFfsPa6G7jxU4TlJYwU4SARKwhBOd4kfDIFpp2hyVlcPytlYxzMwdWncN1F0QottR+MTgeNgbbfmraGHtRbWw==,iv:JfXO1+a8HcENab8pCPVDx6BgZqEpKanTJf3FHmuUczY=,tag:ce4Y240t3lZTT+M90WDqjQ==,type:comment]
+        #ENC[AES256_GCM,data:8X2xhxH3gVS23AJZqkF+69L1r8hLkBtfkD3GzsKJ2BmZATeJ3dEfO5de0jU=,iv:vAblPBRdDiY0bnLUehfb8I8vGz5kTSto/oILNRushFc=,tag:43SpKiEyNXy7HHZ7Q/7iWg==,type:comment]
+        #ENC[AES256_GCM,data:Dayr+kVY0zP8Ak2fJjV3/rZilc1BSnSslQ==,iv:KYd+ucD2kBDmpeKUrh6rJ5YfBmJxgLsSFSX40KOlAJ8=,tag:XLbdmG/O/tHFHlmocPqj5w==,type:comment]
+        #ENC[AES256_GCM,data:fYTXQt0hfyw=,iv:bxRDNAIl8JK9JKa3Lb6dcaLSyFIuabnefcviD2gaV5g=,tag:OuhF74IT/zDfZUWgngaCiQ==,type:comment]
+        #ENC[AES256_GCM,data:cw/TkOuR39vv5mLA0bDuqweKTfDxa4o8GwxGo2KC,iv:ky+TO50Rkn1GveWPMIE+fLVRjJ/cEaziecTSQaAvg9I=,tag:MIR6+ey1qm06jkOEfvrT9A==,type:comment]
+        #ENC[AES256_GCM,data:mkvx/Eou9VlxJUGhrw==,iv:UqZP3IPPC0lJu2HyBFDii6NHjstEMdW9yI5nLXPPCy8=,tag:8HTuuA4Px95RQgfUYKTR/Q==,type:comment]
+        #ENC[AES256_GCM,data:UqRsumFZKmk18gGLPu29wA4wO0t46QxjpE3sH5r6SVUqWaex5Q==,iv:XvxdkbAGY82CK1+DtIVqq3L5hchbLNpzrxd4N4xME/E=,tag:wTyYebk6daJ5vv15NSPDrw==,type:comment]
+        #ENC[AES256_GCM,data:xgTjl20wTw+Q8Hw1stCoN7BG5IXLogW1zuUomtgyWNo/mp4pDjGaVVc5W7Go2QnHHg7P,iv:FFHjAG6rKpjpDqv1W465QkV5hx5mvDUxjEy1KRm0PJ8=,tag:p5ot8zoszythLVRfJqjPvQ==,type:comment]
+        #ENC[AES256_GCM,data:SFD0y4IyvLhFprBz70/wyeM=,iv:EZhEfJg+CxUZTboNIwI1nmmKvrz3GBxHEelVXVmbOzQ=,tag:SZ+LXN/u5xGSH3W9gNU2Fw==,type:comment]
+        #ENC[AES256_GCM,data:CxMnhR7RbRF72IoLYRIgg3xA5Wa1bl3zhpN8/FGzXoMtuHlxEX+j4ZZ0V3e01uhUiA3bagQiTJAWT0yX7qbBLE4CA8CCumY6uXVTfUQ02AbroKFKNm/GuMNjhXvQRZmhVD1o,iv:f8VXM4EHlsR5L2oQ/h1reYqAm2Akw3mMceSWVmD9uaU=,tag:XaqpJfjuIY+gh+eAPH/ZHg==,type:comment]
+        #ENC[AES256_GCM,data:39dpMPqP53pzalypYty11ueoW66rJl8yur9Mh9qPWLGWFOTO5A/LY4WFDaer5rhs4P2Tfq2jBHhFE4+Wej6KQMJy,iv:zO22Z/RHEVJOFW+xEOu3am/LfG9oUZYzoj8A8v4x/YM=,tag:ABVafZqV1MJlHbwLB7+1Jg==,type:comment]
+        #ENC[AES256_GCM,data:fqeBlyZsVxBpL36jtQ==,iv:FTDEisPaUWePrBnwMPLTrNzrvHmTgMc80odnRQoOhtA=,tag:oSld2OgCAxbNlw14atcLuA==,type:comment]
+        #ENC[AES256_GCM,data:QbuRim78P7llw/bZqxiNh3O0Bv54uDme+uwT8BaUOxqkUcMB,iv:K8dOFY/FSboJJeG4UbDYTnAMwvCpbOEBlxXXOsv0J9c=,tag:JAhThOD6S8kweG84oxvNVg==,type:comment]
+        #ENC[AES256_GCM,data:1agr3k6m3NUmqRZ17OQdEKIoGGh/DAwFiYtgOlAJJdSiBZ606G2IBxbh63ODSPCO1GxS4a/RouzkRh5EapUrlhfy5O3/n7bdzBVEMaS0chw=,iv:Tj8ktdoEsuz3t+ZuVt9/HEywCa//1YpyvRrmPGs3VEk=,tag:jb7HV4G7ogSH7aeqjcLeQw==,type:comment]
+        #ENC[AES256_GCM,data:kIeAqhil9FaxRQQ/NpV+zEGWY84Bu675ud0MmydPZuxGwGE=,iv:tkV+x14WgjjF/6pRSBuDysr4FiNENf5myS6jz/2vGBA=,tag:z1e0X6P9FIVZR4N0a02cYg==,type:comment]
+        #ENC[AES256_GCM,data:boMXM3lZ0kcBUscEK5RSJcqW3vD99KSJiCw=,iv:ZUglY9AHtk8RdlHKsMChZUaE4E+oBCahcRJRCjObKBI=,tag:MwjhWojEGV2ONtKz8bUUdQ==,type:comment]
+        #ENC[AES256_GCM,data:vEYby5XypGA7SpYSLA==,iv:6yTwxFBb53Ga+mq73KFpN1CgmrvH9qregzVuoRFbP3Y=,tag:ksis/sgmyW1mPvFUOr6/8g==,type:comment]
+        #ENC[AES256_GCM,data:GjE5VviKLFf8f+mJ1VhH4pU=,iv:y0wafOsdaQ5Jntp/74ILN4LNhBNbhosD7JbvWh3EXrM=,tag:XhIGJRp75PIhHJ0fBoWukw==,type:comment]
+        #ENC[AES256_GCM,data:zJjcMDxcQV1Oh9pte7jWFjF5GOE++nwvMA==,iv:Wq29naTwnX99fNiK7bPL4It8JQ9AVj7Gi2c2eofo8hM=,tag:5Q2wL8aoGQeZQhQvaM5Q3A==,type:comment]
+        #ENC[AES256_GCM,data:CVwDG7bt65BSVsHWCNLZ4Q6jmuPykfuF6A==,iv:u7TZvqpnMQq/0k2uvnzBgdSGbf+51ikB144uijk33Ic=,tag:rmDGJ92ebIoz9k+suVPuWA==,type:comment]
+        #ENC[AES256_GCM,data:0lYXkXRaMoUmVD+uB8WyCCScrIC4P6KVdcbNuTePRhpMjQ==,iv:x9Pd2JxG7Mmwp7oMiJ/V81Zjo3pgkKcXrGMKpEIfch8=,tag:WAY3eSSKWz51591vkwWFbg==,type:comment]
+        #ENC[AES256_GCM,data:7H51CJQbQlf2wfHhkWlW2LV5+Hq2R0RXIe1DF/yhL3W5tynTBJkbqtmmdCnLFh6WzyNr,iv:cgnK9myEvbp2x7KaqzDmdGzoWY6gmcKggMWE0KN2Fy0=,tag:ZsrbupVVokC/5RGtpGpXpA==,type:comment]
+        #ENC[AES256_GCM,data:OkU7Cb2Ac0hjt8+Ni9msUdqIRdOugnowgnrfDw==,iv:H7mXh9bNAlMSs+r18eEMBB6y9vgOVhJTgYziTTSd4UA=,tag:rGUsUZLLt3kCT7IgyTwCgA==,type:comment]
+        #ENC[AES256_GCM,data:TQ0ZBAdEe4nyI4bNO2Py0LU=,iv:+y40Am1eDvU4B6HpiJbOBH9Rl9Z8U6x6VgT0HMz+ZxQ=,tag:WaxIjOmZRMdPH42RB3iKug==,type:comment]
+        #ENC[AES256_GCM,data:1F0M8Wm1itXuEEUANFgHNBupbfcU+IY+LpqlRwc=,iv:2KOg+yV5pyOAMUF2BapqYzHn3FiNyU1GIqcyU3qmivA=,tag:zsWT/g6fWs/CukEMgsY47g==,type:comment]
+        #ENC[AES256_GCM,data:kc+iiIEVtS0P7kJ7hje6VdyccEolBQLwN5yQIpTumBOBo62eT4uUM1MFSH85p62xlBWNOQMTvCnU6IJvHgl6tdXz,iv:HY+CrR3jnWvztTZJbw+a4GT3KFyOPyGgbLmR5VrL3Rg=,tag:qHrpiYMXafIRd3F1gykhdA==,type:comment]
+        #ENC[AES256_GCM,data:QOvKkFZqYIOFBDfz32Pcofoi2kALL8A=,iv:1PnrrpSfYzx1E40Nj4I3cmIdydrF31ieOSQ/fD9uK/A=,tag:Y671RijwD4VzjjQYbM2OMA==,type:comment]
+        #ENC[AES256_GCM,data:DYlhaAvPeDoaZBZi,iv:7N7LgcDrgcaUFW7eIgmXFB7UKzNwNzt6fITA3ZDVD/s=,tag:mCi4h8visXp8RNQ6LJQbfA==,type:comment]
+        #ENC[AES256_GCM,data:HTlw1Ythb+PhfKU6TFlNEHwI67duqY7ZvdbTcIwvflBUDR86YygAGbt725potXI=,iv:UfBMLWh8UTrc5a1ePkNMlXUcqvXWJEbb2ncs/xzChE8=,tag:Wg6spqHiH9gKKSY9cr8+tw==,type:comment]
+#ENC[AES256_GCM,data:ZAgap9Z5OirraEfFelvM0Qe2TSnUDujfqQhaoaptaVKYOjvG9j6L4klpqFQT/K3F4g==,iv:erTLb0lW9PSFHmIv5C6iMvXTs8ZTA4wfAhKrOZHQng4=,tag:QdYLHqg6TgKuYsfbp7Awgg==,type:comment]
 cluster:
-    id: LknwgyF3dw9HE4hp9cSbW7z4pLL5urVLwivcPQVPMak= # Globally unique identifier for this cluster (base64 encoded random 32 bytes).
-    secret: twTv25bPCvBEefRjbRluhnk03SbE0EMWyb3MvKB6eJE= # Shared secret of cluster (base64 encoded random 32 bytes).
-    # Provides control plane specific configuration options.
+    #ENC[AES256_GCM,data:XCMbTNW0j8LB8VIMR7nHFjqi1j6MEOT/uLAN00h3wKKTBSNrekbjXpi/iII6lKgeBfY/Vrc0D3lvVU/cc9gyPtGuEO36eK+KKKd79KYp,iv:Aedceqq6l2CcrHeg/UxzyfenkGhGoIeHHgqaggn1dLc=,tag:wQI1AwtZRbFVplaPUNaCOQ==,type:comment]
+    id: ENC[AES256_GCM,data:NQtnSIhxWRAhLU2kjKaHG/xcCINBMya9Hi5MCRIluKb7Bg+SYZF747JlE20=,iv:/oQTuicUQN8Top0wVC5q/zkEwfQYu2dzEJiE3XEHAU4=,tag:Ho0Ay4BMOHXmCzbCNkvMdg==,type:str]
+    #ENC[AES256_GCM,data:WPjyMQzLASuc346/qIxIfg2TU6WPK+YQXDx+NjsKuqckAnjQZRGTC06BSkbSt4nBZPveWtLXF4Xllbk=,iv:V9G8ph70fbF7wylvEGYZOqGAU2Evh0JJ/loc3sbj+3o=,tag:UtwNGSwiJ0mB4JTCHKX3BQ==,type:comment]
+    secret: ENC[AES256_GCM,data:/HGgRrQu5+6nM49EUKxYIxgUnt2ywrYPGfA8nog9T6Y69s2amuALFK/kVrs=,iv:eEc/iIwyIulbp8qLHCnhI+vPVUJjm+wDd4rZol/rmGg=,tag:vklW/vepcJfP9RJTSEUgDQ==,type:str]
+    #ENC[AES256_GCM,data:bgcr2EmhFA3oLjZxDGyYl1y9YdoTI0FUNjNHt2yYzhtwL6fYsuBgp9+Ew+Xdw1MPT9U0WdIa7w==,iv:EBxTQryIHZ/xSGT9vyewpSs4lKe0V2RurHn1lG+2JRM=,tag:wypCrts3HyiGstgBA3EHag==,type:comment]
     controlPlane:
-        endpoint: https://10.0.1.138:6443 # Endpoint is the canonical controlplane endpoint, which can be an IP address or a DNS hostname.
-    clusterName: scylla # Configures the cluster's name.
-    # Provides cluster specific network configuration options.
+        #ENC[AES256_GCM,data:tBGkP8EIBc3vXAUwS8lvDgJfNJRyz7bSvaGTSLv5Uj9nsD6tjR21Ip4ik2EEQe0Y9pMBi1mcyiJIg0TNCPWrR3UJf6SKIhDwO3vaII3AgWFYFcEpaA8GpMTdAdIiaKQ=,iv:GYCv9TuBdtTpUV3r2W96YHpb8Td3yURJeeiBHmiG4Y8=,tag:pV3GFEqPA8ghHPrQq0GBvw==,type:comment]
+        endpoint: ENC[AES256_GCM,data:SJdTh1Nmw9n+9iZ+t+IBxCyV7dECm7U=,iv:cnBBmdrLQ6KXpxlcbXq5BnLy+RyxN5Tt8fM5UvKaU7w=,tag:m6GLa0a6EU7ACVG1X2vCqQ==,type:str]
+    #ENC[AES256_GCM,data:+hfzMNCXd6q3kZwU84LWo6pDYqrNER3eKrZoiw2PsQ==,iv:uq+1mjkrp1ExtoRLgINaQdfNwSLNObXlFTbpNbQKQL8=,tag:dPFGxyFMMFX61xPNSszwHQ==,type:comment]
+    clusterName: ENC[AES256_GCM,data:/39KBjBs,iv:Rr6z/5IrXfAYfM55TvYFWcWz4hTvkTpN7YuWDx4Pdck=,tag:yQOA/AAPN9k/gK6fOnXvsQ==,type:str]
+    #ENC[AES256_GCM,data:BhdB7dKM7/PDMPgPwUzEoQeBDrxo66lNAyB/UP2yxk+FMSAdwOCe23Ja98PPj4t41DGdbXoez52y,iv:0zUyWvcVgPY90+iR+SbVw0BJLoNE2bltIQF2yDIYHIE=,tag:L4DUIO8IUGPRf7U8iVcR4Q==,type:comment]
     network:
-        dnsDomain: cluster.local # The domain used by Kubernetes DNS.
-        # The pod subnet CIDR.
+        #ENC[AES256_GCM,data:oQ2pWesf+T5uN4I4s8k0YPfMwNqIKL056zmlaq6eWWKs0oA=,iv:lZw8dEppmiTqP23ZrF+rSUYbYCZw4iAtBbW2BuquV4c=,tag:dV2lK1B8peSb/qE3ZGCv6A==,type:comment]
+        dnsDomain: ENC[AES256_GCM,data:WliZYlJSctJGGaTsvw==,iv:BD5jHXX4rPy5O6DiUQPfu7qK6rkfsBQO2Iujgd/8Eac=,tag:OIm/wUHi3EySdMEwJrXVDQ==,type:str]
+        #ENC[AES256_GCM,data:hdW/jO6NumZ2NUANGm0HWWJ3VpYJ,iv:RxutZ6gk3inWT9u70Qi87XrtFAjCSvETuSXQrV4cu88=,tag:Vikl7q7W1ge8vX6JjZB2Wg==,type:comment]
         podSubnets:
-            - 10.244.0.0/16
-        # The service subnet CIDR.
+            - ENC[AES256_GCM,data:RAPjUImBvts2o7NrxQ==,iv:cKA0JNjcVU5akJKLISpkEqXTCznkJco3/BJ12G8WV0Q=,tag:fjWtxICZPz7PUd2nC+WFNQ==,type:str]
+        #ENC[AES256_GCM,data:pYqGRnvRdblD4Lh/T09zh7waaisdci3BOg==,iv:J6/0jwzCeY4/UhANf9Jgy+XqL8BVSnGtCuqLbRcTPwQ=,tag:2qNgX90XNEpnToMlmRq57g==,type:comment]
         serviceSubnets:
-            - 10.96.0.0/12
-        
-        # # The CNI used.
-        # cni:
-        #     name: custom # Name of CNI to use.
-        #     # URLs containing manifests to apply for the CNI.
-        #     urls:
-        #         - https://docs.projectcalico.org/archive/v3.20/manifests/canal.yaml
-    token: s6vwpv.v9pi3tw2p3sccbz1 # The [bootstrap token](https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/) used to join the cluster.
-    secretboxEncryptionSecret: xd3kEXTqLUT82Hl5IRKFUrCihsaTshnvY7kqEupu1Dw= # A key used for the [encryption of secret data at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
-    # The base64 encoded root certificate authority used by Kubernetes.
+            - ENC[AES256_GCM,data:zVtGXrGILES6Q/E4,iv:6SM42d91p3kxGlN2jQm4KjZ1vtJxwFPV+YrqlgYrCAU=,tag:Uzi64WH/Z4W2KqEOgAIx8w==,type:str]
+            - ENC[AES256_GCM,data:Q9AG3uRJt84/wljtU2k90A==,iv:cq7Aw6v00Iu9IglZFXqLo9SQ97VV2t4+TPeqvAi/7F4=,tag:YIQcF6vz8C+53rVT6eHFDA==,type:comment]
+            - ENC[AES256_GCM,data:9UDmwKE=,iv:94JeWc9f0DytOaR9jjHAPk6TiO+hIxClx65F7rc+JsI=,tag:G12Oq/CSsea7daqrjVk50g==,type:comment]
+            - ENC[AES256_GCM,data:mkYctSNTs1mtMn+nsV95mlVgNxKBQVxoyzPE4Xzttzrud9jCM5hA,iv:3/zFAUHiS77AOfx0f2zJNErMFCgTIueYJo4/qkTa6XY=,tag:/zLoC8u1c1jXXB3zJfj0Jg==,type:comment]
+            - ENC[AES256_GCM,data:BzfH8zuVBNt286kUevYtpqB5qPVFRFA1JfDYR9RZI77lD658eEFw3eZ93MwlZQ0JAYKofRRB,iv:3x+ApXNZ1nGlMyAfYMRTAWvD7XhPOi3RuQbxzuTypjk=,tag:xKcTPCAtYN8GMPV/blragA==,type:comment]
+            - ENC[AES256_GCM,data:FJ2vF75M8d+SpA==,iv:PLkRHLu+y2nBOePF30KQEo8FWBzfUfoLjcV7sr5QpF4=,tag:7gpHLGmjZ5CBKxi0Lsvu/g==,type:comment]
+            - ENC[AES256_GCM,data:iWERE54EvCM5QQCcpgzNFY3Q16dxFZfWxq88prZXKsCttAHnQy4wm0FaDjaL7G15aPHdZg8GXVq/0fCETPbo5y/Vi3DbiTU6+OZasA==,iv:dkZHZREQgVGeLH8YzhhF7MwiVLdXs0yYdF9ZEsWBUEs=,tag:KIKkGZg+F0yzxoovBRkDjQ==,type:comment]
+    #ENC[AES256_GCM,data:n/D6QfZ14wao+ZGlpy+TSY9CwGhMZGtTfr/o0cLR6l7guJJU4LcHADV00MSZQYY6IXlscPy/kwRkKAaPbDdIjL3g+RpOjhEiO1i+SnK5Q/uDIyPVgsOqJqLu51pze/bnlreV3+wQ3lOUr5LOnDyVnqnZEy8nXxOamoLe,iv:pZf+pqnHZAeDsT4nBsd+8qC78aTEQPZ4N7WVadSIIHI=,tag:smm3TELZXck3nPmqt/KZ+g==,type:comment]
+    token: ENC[AES256_GCM,data:bTQZDSrLEc2554lzw+B+aGE+oAcSZ9U=,iv:4rwR0T09ysk6d1x5cfVbKi40ELITacRPpw/4LBYqcXM=,tag:tRMOBE/d9XJGmuPu9Dpy4w==,type:str]
+    #ENC[AES256_GCM,data:cpaM/srFRpNgqr8IywQBwoDJ9M6OE5knfWYgOUoiDcTI9WhlMj/8LD73oIbTZ0zBpNieR3+vPLx7sohxZGWsXIiZi2QrKR287R9PFWeEim4bNaOLRQcwvss2V3T7gxQhWMmaLBT7nByBCjWOCpdkTp4ZLwni4Jf8BRdc,iv:J9BUnU454UbCcKYR55oMQMtabl9L+hh6ZPi84shfbA4=,tag:GjFOFE9QaUSfIUK6uf3kxw==,type:comment]
+    secretboxEncryptionSecret: ENC[AES256_GCM,data:vIAvurMvl8mU88baX9bhMMzHMV7humOTaJLVPYgY/P+C6JnvJkbLftaDVYw=,iv:WVZydUunoZhGaBn0VFTtUbJx2HxA29OdQWJbV0K9zxI=,tag:7+4Hb4m84L/Kl6YYX2+gag==,type:str]
+    #ENC[AES256_GCM,data:0dDiZ8HlbwRnVFNL6Ude8MWvNAiHKs5/rG/92PMqiOLmj4bKCYcfK66CZpB6sGlLDM8oeRHyltb6EW+L2AhB01KZ,iv:I40zjpZPizs1HWuAENovKANaObY9EQjfeKhpTraPx8k=,tag:4xhBr5TsrWHlw/IvPWWt9g==,type:comment]
     ca:
-        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJpekNDQVRDZ0F3SUJBZ0lSQUw2ZkdkRUlPVXczZVNvZG1KTjcxYTB3Q2dZSUtvWkl6ajBFQXdJd0ZURVQKTUJFR0ExVUVDaE1LYTNWaVpYSnVaWFJsY3pBZUZ3MHlOakExTVRJd01ERXhNek5hRncwek5qQTFNRGt3TURFeApNek5hTUJVeEV6QVJCZ05WQkFvVENtdDFZbVZ5Ym1WMFpYTXdXVEFUQmdjcWhrak9QUUlCQmdncWhrak9QUU1CCkJ3TkNBQVFNTHdWMHNFQVdDZVJjSkoyRFhITWVvcHZZNmNsT1h4a3pjdTNmM1hoVmVnNVkraVlUa3pTamd5YmkKS0tOc0RlNVp6SzhtNTJycDVlRjRLaVdRUHNOOG8yRXdYekFPQmdOVkhROEJBZjhFQkFNQ0FvUXdIUVlEVlIwbApCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0hRWURWUjBPCkJCWUVGSDZGOGt3UTR6ZmNnZUZlREwyeWpjM2l4U0kvTUFvR0NDcUdTTTQ5QkFNQ0Ewa0FNRVlDSVFEd3BCZnoKRDErVkcwRTFhS0Y3L0QyeXJ3a0ZNWmtBaE80S2JqWG9XSFlqK1FJaEFPeU5jUGdHUmpsbnZzdi9RSlMrZWl5TQpxcFIwL1JvR0FUNzZ6dkRlcnlHTgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-        key: LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUFyMGRHdXFFaHlVRHVjRXMrV05xWUVweWRWRUNQTUlDOTBmMHNKRmpIQS9vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFREM4RmRMQkFGZ25rWENTZGcxeHpIcUtiMk9uSlRsOFpNM0x0MzkxNFZYb09XUG9tRTVNMApvNE1tNGlpamJBM3VXY3l2SnVkcTZlWGhlQ29sa0Q3RGZBPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
-    # The base64 encoded aggregator certificate authority used by Kubernetes for front-proxy certificate generation.
+        crt: ENC[AES256_GCM,data:Bc9Ok45qvqhIeyQvRnE6l75wcmFxrVhCcgW4FuPOq3fh6XsDoTpyTRMtbvh3jKAy66JHXjyXFsRkOLpfXp0898cHaViJSZo+vr/nBkMsUXDIaMdbav5SQfuG7pEpfRjfKP3VYFJ32WwhK02HSC5NVAh7aBUmOyjtU/An2d7pisv0eRFUZJ+ryiOg2BpWKJ82HcCPTUyPEibxCwVBP7NwwU0LvOzPjPnbKlKqEU5mFkRUCPPeJYXAUiIU/GTbJOKvsKEaXo69U4jGODDrtkk5bRDM+3UwQWTnt4BdrZEGTUiT36uBAEVQ9uciDsD2JVC4GIDNkZyJ6yizq68BIbQpzlodDA0iF+iaaxxuGqGcDR2CIgcxBUb/28qlN8dnc7vHwU8jei/0Y8VW5jTtMCsIs4CxlthmT5aH1THjwZpOVPADZh+YmaHWRHbXx1Nzw6V4OtrVz9AxPvK37BwyYGB3QjoN8e9OJQG1N053eXYnYELc39EgrGHLP6TUhHcLMzVnc4rnViTyksk5Fm1IAlB/067dTHUQ7/pDEU2QPwBBnj6icDwtfbUC9VIFNlRJ0wd7zvIO8GVyrzDS8SJrfyLUzIlmUSFCE80qLcj+A1mBdHGWLY3n/q0znjCxwBw0VrI/VStI7CEZPtZQhli8H8VlYsa2a9CqWUaGvTUxjKADg3D69kuJSTNq3bUIKpZjWQSoS/i2vF0Cm41DmdE92UVqMpTDL8h+LGMaiwkvaGLpLzbVcGU36/TTnccsCQnkigyPvjB1RyLyUnH42g899EvzQCIWr6Xbdfw0gaiuFhQ9yY7V0+crhyY5Vu3HJUdPLMZjg34X8KTi/f5WsSu6VAMUGPtlWwwUKaBoXzQksbfdlnQG0MUcSVRAFzQi+MdDpCxARXa7/d7AuGA5gZtdiCrDaQ5OGx8y1lwivdQN5X1z6pO3xkhppaVNZxvEcTTPW2hMQd31LpnDFqWwklpNQbx1yPCMeaXe4b+HBNBdx2KlimpWSYt5qNhGkMJ2LfrY2flpZwlk9lEXbcaxFIaLZCX/yersag31fWyblFg+CQ==,iv:ZQRR5tE4KwN5EvJX5DwPf7NXi2XVGyAOwrI/yPD0wYA=,tag:Mz2iywfrJcpaNs3e1yejNw==,type:str]
+        key: ENC[AES256_GCM,data:UowujPUGc2CPjryudESh5wAIn+W5PTzUokvMuw+Us6nwPgi2+KTG/9ojxQHxZj+jnrVrMTvCzCNiIoq1JYM77fR/zAwZ70jy3XIep1qtD2WG5vLO1xHPXxaHtgBAFlogbsN1q9Ba5OVmXOzUOu4krFw9416c3X6yAgS+u9xN0/mmQulIVJHLO7wbBnVQlCmzh37h0LX9xBTBoQEShweX8ZGKNniM3obsjhPPs25dSJm7+W7ELDVRgwca6fyBGUshRMdkj0sDjW0EkV4FmVtveZpAY9EYaXbu+EeAMAitAY7OIcDD8P/CKPqQXfoERPvYv3kroualAo3IvraoPQGWQWgIYHEYGMi8yuAY1rRwZeyMjsNcoavf73nDksClCSC99VHsqpp1FTjko2DQdBSgiA==,iv:C4Vv6ur5Pt0tkG6yTC4mgiZfq0cGuadt/S/wcd3qMvM=,tag:cQSQGVqc0TLm3rVOU0xbHw==,type:str]
+    #ENC[AES256_GCM,data:OTe78mP+eYRNZyKO1AzTojrfk4c7XtImsBEnjLIrNU9eykVnC3hwuvsCrWvAyZ+zJzibEL7/C04Lcz1X3ZKUiQoeg7FkOIvYBJp70qN89MXfMcYF+NLcdOoAJO0BdHsnEV9o8pGy6Z5N1WlWLDAv,iv:tIF5Hu202dBJt2OiP9EE1JWiZhcG7uTk/VWAD/YUjiM=,tag:yc6dpbnttF2IPS2pQmTsvA==,type:comment]
     aggregatorCA:
-        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJYekNDQVFhZ0F3SUJBZ0lSQUpIRGhHYkUxODdRRFBVVWszQ1Erc1l3Q2dZSUtvWkl6ajBFQXdJd0FEQWUKRncweU5qQTFNVEl3TURFeE16TmFGdzB6TmpBMU1Ea3dNREV4TXpOYU1BQXdXVEFUQmdjcWhrak9QUUlCQmdncQpoa2pPUFFNQkJ3TkNBQVRGdE12bUpGN3JITzlIRFZScEMrTXE2Y2djYVp5TXV4aFdkWkdDSzNobkl4bHNESDRzCmQ4R3g2aGV2d3pxdFNla29DRlVOdWtuNnZHRXZ4OXhuWjVjN28yRXdYekFPQmdOVkhROEJBZjhFQkFNQ0FvUXcKSFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01BOEdBMVVkRXdFQi93UUZNQU1CQWY4dwpIUVlEVlIwT0JCWUVGTkY0VThsaENVRXVHYm40N3Vacyt4YlZSdGtBTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDCklCVVpKaWN5Vlovb3J4NVorTjB6OGIzNVdSSDRIZ21LQjlEbEM4Z0kzNjJpQWlBeCswTE16SkZuenc3em42aisKU29CZUwveEk5MzJNOWpvVXpIb1NwZm4vdHc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-        key: LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUQ3WFFoQXhmdXREODlKT3Qwb2pKVUlEenU2Qi9taWFqRzBseE1VQ24wdE1vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFeGJUTDVpUmU2eHp2UncxVWFRdmpLdW5JSEdtY2pMc1lWbldSZ2l0NFp5TVpiQXgrTEhmQgpzZW9YcjhNNnJVbnBLQWhWRGJwSityeGhMOGZjWjJlWE93PT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
-    # The base64 encoded private key for service account token generation.
+        crt: ENC[AES256_GCM,data:yT1SjrK7x0CSjiy2zg2iO1JuwAqOG38//gq1dwzsZjYtDeENjBClSmiAYPDwOxX2QhXLFHNr8ZWClEut/gKSymiWoeX/RwVd+5E98Fw1yTiPd1fg4ESVmSUgK4veDobzTdCLp/F8oznyFdSOIDz7zfYpajPFOVzJaQ89jQbTioPZiD6upCoIflQRBqUSH85E1kiqK9CY8yLsIfYGKCWW3vfH1EQiFxuGougMsyfjD5zqk9WLruMFYnLullIwemv92yfMswIIhfrgnh6MWId3L9BJ5fyeCuj/s2n3Js+O8GM/goqhY/EUAqj+HauvrY4yHKv3EFnUZTR/1gzBUXILJDNSwpFKj3OGQFSPqxxtBitaJ6c7OyuK+zj7EoYfU11+uWEt7iRpLgfNmoYqJ31iZiOUqZ0snf21YDeO5rThbrefAO75DzwIErkl+L17fsEafFKpLmkq6CQ1dXTsCqBDcFb/d3BSg7cmhxuIRD0pFDzebcukWaJnB2r3a56Y3JPc4f+964tmT6bTgIMjLjBU7UOg+/gRbd4yoCG1YbPUKT3xUbV7y8GiS/RaFEw83jZXoiboqIr8kQSv2SOlzqgoCE76wO5my+IzLewZOpoEblcxJj2Zt/TXg9y5G27bIaYZ1AtozmF7wNLtycaPr2n14kDpgX+vkWv38MMU1fhTppnspcMK/Mr6daxYYNb7xSoHVMWAgZ3zZ8CLxaoVeNX2+mTRM4iGDAJmDDDS59BqeBVn3GBlUCS04GWqBJ7eztoy8iq7FuLiY2qCy1CcLz3W3bXcYyHuimJXvZOtwuUtN+EnWlx9uyshWZjVDTLLGnrzDKQ1fPGUoepqROILgzhe4QgPRlGxUpmoQrCxuJrruXazZ/sqLrgQn04F7QIXJEtQ5nsDlMXN37c3Oy91Zoc5VFa5K2v4yfp4M4ZP1UQUS6WcuSXEbwtNhMCjCXXIG4cr,iv:nDW/pEFVqPZqeugFDsliBLfNzDWcireJCcAS1GgGXwo=,tag:Vih8PnAmOmlrzehFwKC8Gw==,type:str]
+        key: ENC[AES256_GCM,data:Asnll10VOK6skeWDF0McQz6du32WIrMlpodgsLJMlIEp6j84lnh7UD5T5eNx8ZCidwkN06mZQg1tHjQC8kQlKT/RWwVts9uwD4pZ0E2nOwct7I63fpWEgWS18O/3lLV34UOYJ1LKMGMJqZG3T/1QGwH0YOPLiKIL03U+Ne+ki7StXNGqVIKNKv1Z1FrCyv9EJ9VhNeUM/7zmD+0zPq7YPDqcHOMrF7cyuPFTP4GSCX9Hosow97d/HdGs2/M/iC++U7g1iSHau7fA2jcdi1dZMh2OldxsRExTyLCh7j4kmwgyKDRezyHbeJ5Y6uz9kGiCFUx64hqMO1rwBlLh8aE/7c8zNDIBVGNuOUT94kLFxLOBn0k+aknFLD9PVoYAdimGiNKJFeZCAPkunN68OwfA/Q==,iv:JSBq2+3Gh2dXpdVamHJH7r32kyJlwMqK75td1Aavtyw=,tag:1UfEaE/4LoDmt64ccRr/kQ==,type:str]
+    #ENC[AES256_GCM,data:DQFxV02idUZxj06D5jIhNIrtuz2jgbYWRsr6eIFNnvSVIyG2z3COkL9MYoXe0YEwp4fhtCi/HZKK468Mo6wtks+HfHQ+,iv:ucyaFN2vxOTq1wLWkDHUE8Bp0AIP80tXeUZwFws4mVw=,tag:D/GzTUaBJ63vmd0yqYxHFQ==,type:comment]
     serviceAccount:
-        key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlKS0FJQkFBS0NBZ0VBb3ZYd2J3eEx2T0NwdmVycG0wa2JhWFBXejdpZDEvckY0VjNKN2dNZXpOejErVFVyCjNVYXZkYVZDcC9VK2YyZE1tZXc3SlRBQzFwSWRNSEVXZzhtUUgrM0RxSHkzVXI5ZHlBZGxyWFg0K3BSd3RCL3MKSVRER2R0Q2NPT3A3QTJiZERycHNZdTliZXVzeGdKeXlpTnVpTWkzbDhTcnpxMTIxNUxhd1NUcUduS2dSL1hULwpBa2pSeVRnOGhESkx6aW53eHJTSnBPM2RiTWl6bFFkZTZrekRRaTBCclpFNWdXVHhacC9ybHRVRFF5YWkzQlVUCnFuS0tEeE1mYmV3WmdhWmVub29EU0xVMnR6UzArd25QTi8zVWtNVEg3UDNOYmFmRlBvblRCUUNLRzd3YmZYVE0KbG5NdEVhMDdyZjlYUzlNNHF6d2c1eTVHeEl4bVZ2VW9DVGIreDIzY1VWamdVeHlkN1hSVm90VmVBRFVDZm1jcAo4QmhZdmVpK2NVNkw3cUMwczBpNFlrVVJlOFFaZzE5djNzclJ2emQ0WjkyeE5XTmJpdmh6V2JOa3Jic25ZSTN1CnZhSjFGaGtDdTZzUWs1MzUxUHUydzllQ3Z4MFNFVHJFUE9qOVpsUmJhRjNUNG1IcFRxb1dBUDlGbzcxU0hwdnYKZ0IzWjB4MzB3bUxjT3ZIMFk3b3NocmNOemV6WFhLZnZwTVd4MlpTcUQwdndPOXg1WnFwZnhVRUhLUjBoMXJRZgoyL2xZazNDS1lIZllCeVhGU3gxWEMzVXNoT0dpS21PSm1aRTBHYWJWQnAreVA4ZEJrVklLNitKSFlnTmxuNzdhCk8wQUNMYWdtNVdSVCt6RXFXa3ZPL0xoVDVSaHp1TnU0TU5BbER5Z1JQd3lIaFFCaEI2ZWt5MVVyQkFrQ0F3RUEKQVFLQ0FnQVVCRVdlUGxKblJ1bFNyTEk1SXNlOU1qOW1rSFRDL01pbG9CR1hyTVp4djRwdksvclJXVWRnR2dhUAovdTNJVkhYeVNqUVJvMDRWOFNpb3RKdGhZTGJWVlMwOVd1Umh3NlBQV0NsREgwU1A4di9OQUViTzVPRGI0MC90CkpkQXFZTTR5YXUrNVQxRmJUZHhzd2RLa1FPWXhaN1hnNDdlK2l1bzJ4OEhybk1iQUkxemlWeWFqcnpJbGwwVEgKc0Mzaml2OUtTUTdITlhpSFRqZlF6SEQ2TXFlaFQwbnZlZkVvVmEvWlBUZUE5WFZMSUVuTTRzSGhvK1FWYWZIbwpYS0hkYlFRZVVUR0tFc2cveExlZVJsd3ZzbndUdERnaWdpSmpuOEg0cHBGSEFnUDAyQ3hBUXNLR2tHc3V5cXFUCit0Tk1Pd3V3N05mVnpiZGZtU2RROHhnUjJiRjl0MmJ5SnVNMGZ0akc5ZU5ReWJiV1BGY3NEME5vMkxJRm9abC8KUnBYSlFFSG1VTU9aemRzT09lUTNHMUFYVXdTTUZMTWdXdUFxNE5lcGFncmVncTh3VlY5S2dEelc4VWVCUnVQYQpmclJobUN3QnA5RzJCU3NGWi9tZDY5RlUyTE1wK0RVVTdseWtEbnJjNDBCM0tOK2J0WEN0NDNSN28wQWk0cnRzCmRxT1RISzBmM05kdTY0U2xlQkdoUTg4NmRSRG93aXlrUmxlbzJVTFJWMXhVclM0N0FUeml1SzBRV1ZpV0NLQ1YKYnl5eDJKUTBUSE0wQjlJWjJzRGdHYzZ5bTg3S2ZzQ2dMV3VOVTNudVE0VGxVSmpzekJjazFBTDkyY2JkUkprbgpvRTc2S0FVczd2dnVpNTBldkd0aERhNENnOHkzY0ZyTjEraHEyTDd2Q3hQbDhpQjRTUUtDQVFFQTFMSkZDOHRlCjMxQ0xTUi9Cby9CcVk0VDJxaWZUTXZGZGFQVkpJdXdhWnEvSllzQXp6ZVNKbjRvZ0k4Z2pZMEJZQTN3N2x0TmIKOWcrc08vZE1PTGZMaXJhRThER2ZXUnp4Vk4vZmpFUXliTFQ1bzVrMWRuZTUvZ2hPZFJhblB1NHVRaDJIMWRWawoyMUpuazJ2TFhSN3p0RzZzU1JMZzdEOTlMaWI2WFNYYlRqd29lN1pYN1NKM3Vsd2RaQjFORk4wTWhzam5VcXJUCk4yakY2cXB2eXFPVTJTRHJSRStWZ3hVL2xmbDBTWlpjOTZKbUI1MEI0T0gwb09sWVo4cHFHOWloeFl2dTQyejUKQ0J1eEJ5Z2poaDNLUXMzcVNzaW5XWU50ZU93UlNDdFlKUEdQYTdmWjRURkVLSFlCcHVkcVYvT3g0K1BOYmJORwpCeFFxY1d2TnN4YXhPd0tDQVFFQXhDTnlsRVlDM2N0aTJPWnJMWDhrSDR5bnB5VllYSENuQzkyOGZTRUN5RUxvCmFoTVJPY1dXMTlkcTRWMTgyUm85b1lpakpsbGZpRTlzYzdiZUM4TWNyNGZTaVRkVEl1b0hyL0F3TDE3cEI1ODkKem0rc0RiRFFQR1BUUTJGZUkybWo5Z2hKbnNjRUFtVHVaakJGUEs1RkJhSGt6Y3NvOXhpRXlMMzRTMnRrNlJvNQp5RDg4NE5SNDFub3Y1QldQMTZZZlVrVnhaejN0N1NNZCtmcUlPNWRveDBoWXVFTjloMWVpNzhvcHNTVjAxMER6CmNDOXVyTFhmQjNUZG1kWlN6aXBiaHlBS0gzL0VWREUwcFp3WUFhWUV2QlFtVDZGUzM4dExmYk9xaC9JZFl4L0UKTVNmeExtaVVqTFExTzVaUmdyWXd4aXhiTmErV1ExY3NwcVJSdHYzTGl3S0NBUUVBanNsT2lPaHlQRUI2QVJFTQprZDNuemYrSkNCbk1NcnJPRnBQMEVUbW5UNkJhOWF4S0dzSjlrVmpNMHJpYzZSaGMvWm44OXZmVkdJN1U5VHpECk1xQlFTRUxYWTlnc1BVcXN5R215VFJ2TExpY2dINi9Pc0VVWDIyNEFIYUtqakIraGRra1UwM3g2UkxKQlRqcGoKUDVSenpvRXRyN0M0eG1Db3pMN2wvSHBaaTEvZlhZMi80VFh1WW5GTVdkVkIxZXUvYVF5ZUhtVUhmbjhidnJuRQphcWorVi9VOWU1SmhzS29uRWF0eFlhVkxyQUtkdENhM0NCMG9lSTJ1QjU5Zk5HcHR6NHh0UnNmMU5uaEFrNmxpCmo3cVgrZGo2bkZHdjV1dlFKZ2wwWUpxWWhkU1VqNS9RNk5pR0JST1RjRlNTazVESnIwOVNyWDVZV0pBMUhnZGQKQkFrTDJRS0NBUUErbFF6bk1KdVRoMlRIem1XZVE3WVQ5djQ3ZjlmOHp0a09HVGNlT2QwNFp0amZsNnZrWWg1cQpTa3JKRTlwVkwyRkEzR2NxUWxRUUd6K0FnSFhERFFObklwQlR4ZnBaNXBDRFc4RVVMRlZ3WUNnSmFXcGRoL0E1CmhLU1JHRTFBUVdIV2kvaHBtQmk0WnRvR2N4cDBiU3FLekloRC9iSFpmZEpJZHd6MWk1UE1LTmtOQXRoNjZIQ1MKQnJTbk14WU5lZXoraERmVitGV2xWNUltQkFGWitrcXRZM0VqZ2kxWWRPY0JXZUVKcStqbkVjdGJIVmRUOWtmdQppaVIzQklLeFU2U1dyZXRzOTRoK1VLRDZ3cDZLVUIyc29VVkVIVFpqUCt1YmRTdFJhemhqTzJ5UFBxNWUzM0dlCm41Vm9xT0xqTVJ6STdyZy9uZ0gxQktpemx6U1hqYzFYQW9JQkFHT0krQmtTOElCWVQ4U3FIVEFaVUNydzVyTWMKSVFSQVY0U0dSdGoxVDFzUXdEMzRSV0hCdFJpZXBiTDRrOXlUYUxadmtuNnloaGljM1dtRjYvWFBVT1ZJVDFkSwpaQWZvZWVWR2VObllsbE4wbnZHQTRPTUlUQ1FQdW54djdCL1YzOFQwZXk2OHJnLzZtRzU0cnhQbWFZeTNEbmtKClZKejhRNElWbS9VOVZaQ1FvdGlNUThJUkNBd0dwcjVFU1k0MmY0WTVPUzVLcE5iVUwzSXJrNjBQU21BNFh2cXYKQ2VnMXJmeFhnTnA4eGdCaklvRUNqKzhPS3lXZi81Vm9mdEFScDBJOVcvWjhzdWpRN2ZiVzMwc21ZaVRzUW5jVQpxdndLcmErUXo1a0dmVytGRmhWVStsZkZNQnhrSFpDMGhwSnVBWDJNQjE3MjJiVU84c3E2dWNWTlU4az0KLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0K
-    # API server specific configuration options.
+        key: ENC[AES256_GCM,data:GklgeqLOsPaWluVWwFytM9IeHAG3n9Zuz2Tn7PIvS+s4XZcT1gJQvotYrH77no2g82xzG1d29H8thRT1RKpHmqaRyWvFdLU8/8LzWN8flvbArhz2AejRgXSHGtpyo5eS8SguZV4iUka1eyA6j8k9BYls+lIkIhEtiiC7IkJqlOTWcKznFRrOlz6oIt+62vssW6VQ55aLAQL91RjwKWggox8P4/cT6Ax2QvABCYEjQbjvaqfpbptEidjjO2k4PUClNrfLz6zflg55CrYSxuWFG9JWYzt8zGQrJgFvwNFjvEYK9cOlAcRDPjkZem+j8w/cL1vLBrEDJpe4VUgCQ+EaYQo9+Emj/DBRvIILfBedi2hJEJN5aJAUWFFzLkmjMyNEHYdcOl+kEdmD/WLvWvH1SghtwIvzAn/Vz3ki8DgJp8VRkOBq5xGDyr5+Z1/zG3etcdTnBkWxxoykTJm0by7dcudeINPd0jKD/LrHQlYiFrFgK8kyhzttz71tO9ZkL/7HFXjf86cl0OZ5hsYZnxEBd98GOrDynGwfJ20Px9RzMyyjQRoK5sg19wvlDbAJKLhwrNiMlu/UnbVAbuxEpVgl+APGUgzK+UbwWZg9+U0k+Z8BYdq8SFQdZD0Wc7w5fHchFDLmY3JeYOcELk0XHIk5kFt+J68Gt70UBWB3l+OyQbUxTVmP7HwL+Pqf1N0qQMsnj4/vBSEVzu7zMjv3b2DzVmHgv9DaQOxUQoD7yk7Iil+fkhU+JkIhudi/7abuI0VdulTIbiA4j5+L5YxkmGNoM76G4F1hjllmv33kLHYDgIT0l5zKugpv/51W5ckIoUVkeSGn91d5wMqD3mTjuVffsN/0HfWhMoCVU612AXzniPmECVDneEGXg4xklm5wL4KA87XTAi2mvJj0URMaJ7oIWzPM7SNTEdXHWBQTlPlAOeENZ0C/gOh8QRv1HDokun+vJDBnSlqlQinMNAxkxdEsD2/z4irQXa6+MGVXnYS2G0uaeqSRFqcDeUQrBOTWuNDcJ/2ILEYBNn8riJ4BZVO+ZmizudzKrHwT4NdcZbYZL8Lf6Kei9rkDlBTBUpdme0Pyf5pJMyqO9MVdhhZBHvK6qZQeQ4zAtBn4UAS2h2HZx9Yvb7e+nmJIbyUX1MEBe4tpGLTtcw93my7reccdJdRgo+ZWzSnR5CZOlc7txiNZ+3YS2PMZW5Cm2izKFBmwkXSrpocLBl2oWetund/6SAn3pPcpv4S8Uc6krk2bvIazT9CbHCS9Q80hoR5xHxSCq/h8PhbIXSg8zyMK8z0OTEHQz/zyjXiE4sycH2ubBP0Ah/Fnyye/tee17/CNM4SasC0lvYYaThRGnoZISYLNkuThFUw+iNlQo8T8wZFxYwWX6mJehvZQapumTqb1e3cLuEwU47wxf/SDMXa+uIU3CjA62VvdLSGmdg4xxOKDCDdQJmHz5SCg6go4UpWUi32oNNCp7HP6dSp78qIhaTSZDjoUUfPrIZgDcFg1p8zOfAEBHmYL+caoCY2wMaln8BlLzGDaMXbcfXk+ylJYkNVMSdKusKdWI6iKiSJcIS4s3NrPUyLfhSAZw+TmSZSpu2rrgkYE8hF2rKT1EXTFGHp4ruwoVP4R3TTdw/hR8zC+YgqtYvTUkLFCt9knTFMTxoyEgOf3H+TmvIvolauRDtRHN+njITQ27eLotUjSTdNrSPPhZO4FiyDaaV/t6nqUl0mRDzknoHVS4+y3MCV0TP8TTTamNhBHdBHpMBuuLObEgRNfLq7Kkc5hFlj74OTjCfRm3Vz9c2DteynLfGnDdWbh7mMtdBcVnVycMH1AQwSc4A+9wOdi0C66zVj15YgAw4LDtO49dVJkwDAFYSLqpz6uPcS/6unekHl39PTAUTcyV6GVYUstML2kQQKb+5+42OAyTo2dBgmc84ucL/YHId42J1Sf+ItlSDWmQhEvIzNpW92Wj5bqzDUHUwgnzkapR5V2VkKwrZtV4nf48KQMVrHg4iKCNO6RIk26Ivm7dLCQSiKiPEA4hGvKE4zCQkoiENSZpELV734aS8bhXDGeLPZoaoJmPyeepEcxe6jTn+XaqfD5f3Ni4Cm3mVgZGgG1PKxlVzt6Ccgv8pbQAkWwmV8qq6j/yyTcPQWEZCDxahHRCf8QaqebjE01OqiS6IGHL8RrqLQZiVqP4Uvur8azWHpF82IHCO+QDvQeHrza3Y2RzYa/ohqqZa+/mfT+z5PQYNy8jKBSGozo9Tf39FcIzY9MOnPu818dVMvPnZpKhRyJOuX/B3VaQnMVoxuxNUkmtjIqvplFZvlCWYU6UzjmCozx/TeZh9Twi+jxWf0gYFP23XUuA7mBMZr8evnOvRbLbi9PXKYpdBwyhBO/4mhrmJTvDp4FDNa+O7VVjX5DefiBEbmecd7gg//qX5u1wNSozdgvkuP/ZSali1qiBHSHX78HraQOOTmV5RT4dsDOxApGrGBjlACE5nmdlhlnax3xi9Sb8/aFS5kIk6p2fwYUxocCpxstV4AbITThIIOEUwHLgzt6f29FxxYdw0jLG5muVtGnhpApemU10RJWxBoGqfS9L7KUF1XKcZzIeDbiaRYo+KTa9hfQjfQ5Nea4098v/aMGXctCMTmt5F4pjtzB2v+S8E/uHdEn9c2lpw3PVF4W9jDab1ffwhgxEHFlK0mG8e/pdY68rM+mp4KpmFfHfJO1KvNMlKWYkexdcBq2k5Jj2mxt+8yhOFLWV5iBXaRGM4wSd5pzaytxHS6XQi5/8C44Ck5TwTDPQOwZH0c1ZD3KPS3uYAGArM7pN7Fh4Y5/4CpuPBBN32bf5OMJy/tBAHeHe3sp2p6zOWrcfDvZ71DfDrrpvxFdU3JllnSJ0ZctJbZ9m8uCPn86HMjjbc1N12cPoTqzns9Q1XEAQpLB87KXT4zoXmKf7IiG3tfVrO3OV/4o7r69unylh1ETjUsyXpX2FRpEC/P+CPQOp8G9YD0UCJWXsdGUM3n7poQZoNN/QBE0uTPmk6LcTgP+BLtlza248lXpLJxi+sIB5bCT3HtVKKTO0ysxlWzQ/lsU36qeCShFs7G4vkvyDS4ohrmGLTZWwGTbz1PTSG7OvQZFdsBwPk0QF8xVc+moMOqqupJNUxOyUa4NaxXMN2qsDyh33ZMT0Vp0AzI2dGPz0hIqxgOACB+Cjbga77HTMk2pLqEuFYt5EZ0A01anhkHIl91gVyZ9pGylouTvNB41t9/SgxlE8JoCROJzGQgd1IAJhWbwkZRbq4hgXeV6vZwEBSXna/SZpCU0+cz3KIF24b2rDSH8mtEZqv3li3rxN4lY8jH0xexQS8QBKe2xubnZgpZEcMQ0eKljDPdgx+OrEmZyJjoFOtoYbd688DotnA75nJclxA4HrmMhToNzmTWj/uGku9miIPr+rmJzoBhfxsw1v/XN77tW0722eZRqTdgtkm9MKrDyn9/VRcxDUcSw+18mK65qMYxToYIqRzk2CirudqW8Lv+BF8F8KpSdWwit30wz3YNakc2FerridUP4IXRrauFlRYlJQ6fhEgt7hgDpP5nScXrxelUg+qw788FUApTN64KVRxS7+U64cuP11gQwvgsasnRSXdOklFDtfDI99wpuXU4OkykXey2HGDzMNhHKQoQUtZtuWf8HbUZdRF9RRWyxSxFtHYWzaR5rj6ADTmzrdVRvty0uS/UROjg1frVuT8aTES8gXGErTavJSw85kz1GvRlnWB+2nR8ENrswy6Pj3wE/RKYPgI9m4b87oIiq7T0zi8e/J4Nx3Vq5vFPno7EupOObCGVRQGJV/BLuxi+SJaGnXdjfYvANqVQkaKhpZCNhlYupXNVbdOUyfFmpEWIPyYYUjcKkdbRpAv2cizZX2Kaj5Xx8T0E8plAVDxwbSq0gzbwAAOZsVIJoEJaqRP3ZxjCWnxdI7oQm87WrEX7lMgNfylwGdvrh1BXOj00iq1kXjDnBcyWRdjAkb4V4il829vHWTKMS/P9hDDWC1mN6mKHAB1itu/MvOEZ2MhNdQd3rcCsy0C5n/UpY9VGVaHt6lZfIi8oelDYsr9pP70JpVU7O9FPJE0bxbWZcnBwqhiZvVXsbOPCuRfky3Qb+PKEdavADP3SIA29C8fcmOcmB5QVRBpK1aaOpNE7gd6FWKJ83DjvrEOBahqkQB/s963A3OU5qg/ReUS1crFq/bIXamv44nchbG874+FHBYg+O2vVJqzjlur4alKuTCCj/IQwVOGKWiVK7OXS1FfHEmCpbciKgG5+r13I+RNMDPjtLzxS/ZuFwlX8cYTrTacuGabsAX+KAfIrAuvoxr0sjK8B+lqYpcud/E10BE63cnr6Vf3ZRi3AIK0xsYjuq4M209SpKoXfnHOTLSL4f9ae+pY7nTxR3id6S1jTDpjZRC5neDYtblWND2/62cSSDIkLMrcPzRC/RnBhV/9IsB9MT3hr6pjtuHi/rmbuR4JoUiabFFmCUZgnzJ1N2g3GZVuw/MueuddG58uAuBrl8qHZCuyNPQnoQP0REpjIfvNt2+slRp1f5RgLokovF3SSKMsm4/5UGyIhLAhUxH0vPgleJUGX5CV/a8C2tmdE3tYs+563M7fbePmFvR06IY/Q1+dXr+CrLBfmbHG8VJuKwz1TW6gQzNziE+XvDptcTapmz6fEQi1Z9qgQjcdkex4CckDJEv6e3wwgxY9hatNqhw1ud1w16fixz/vi1fLGlDGKkWHa2BkUR/Oon9smcJVIfccynYxtAOiUz6z9zrkvRNAvRI/PUT8Om0K23la4dc9xHO1dX10kmYDMcfI36qCRK+Mbq/yY7yUA93j7bITtWZsr5xsSymsbE2OKyy0TlVp0KdTr+uTqPdr6s8rBGEdb22EkU+gdzxt7c15cdMLTFE+rl7ncxpYF9pC2ixhBZ/8kARsS/ZiGDx+hvhrQXc8Y1QPGjbaDQPZ6PVT8z0Rr0vfdfmiMl9WR5nmWQQ5hfnz0NgVqQH84sM8RqihxDLnHixOxAteCRKpLw8lKJOPsuO6Sd4bidmD9A5ZaHvMnl3OdJ1I78nNdQS9CS9NMbudOnNxSjii1B+a+jmzsgvJSix5IlC1n0qp2bTdkvxtG+NC+Rgdy0Mb2U4avKlFyogVkgX3PZOglIHFsBnX2/aFnTX11kRACXLzrmMIT9r8hzaKiD7pyJ3CQHc26bgn2dwQF5e46FPrmnZF+QCmu7dN31eLShXgmh0YJmPCCOHjDOCQ8pXIkQAjjYVfhkHaZqenxjdtMCyYHc+xGGxHQAnGw1O/e+t9oFdGJmAreC8HHMoJ0kTNDFez+SIDR4HKCuObE/SsE9NCUSpz+SQTCb1aRGhvP+yTtZ1oJavkYpX0D/IzNwKLKiUel3S4tpiQd7p1sjKpbduK6qg0M/6eScVM02zfO9/SU1Twxm4I2GuJB/ia49A50DQGzfZPytIC2fIfKScVfUMjoOEH76Hy8sZOIwd1MmrC6mEVofaJyDyGrqUTDHX0h8MsHSbsHsfOEjCtK02Zg54z+eBSiFXMQkjk8T4nPvIDrjMNqOJGaxu8WNUeo4z8j6oD4OibTUM6rWVTm1bfc20HoAbblFAQ0y75jTj/OE22jV5Dpk4Bh++w+0hCS2ZSOJdVwuJGe+qBScrkxfG9Lyz1goRJoDZRCEiWMTxsa3O6RTLvH+fOR3Y/vUAS1hE4EVP/70htihyLbKllDyiz4QwiRwhvLOj2CAXhPqwLef49FnvKBhACcrBOgY3GHoB586VjGGZULQmb2+BQ==,iv:a4w918nGwn8BkeOTtTAolSbDPAOosBWXngZ17Vh75AE=,tag:reELBZt/+X0i/BWkTy6V0g==,type:str]
+    #ENC[AES256_GCM,data:LK2V/KYeg9OZltBSC54bGpEG/65GGeYzGSRg0IMwxscBZQPryjUUkjRbHg==,iv:A62Lv9GkLE6n3CE6woWHz1yCz0/FR+xJQ8dQ1ckh0h0=,tag:fapivXxWLxX/6MZNh5QSVg==,type:comment]
     apiServer:
-        image: registry.k8s.io/kube-apiserver:v1.36.0 # The container image used in the API server manifest.
-        # Configure the API server admission plugins.
+        #ENC[AES256_GCM,data:qnULZzBzKBDXZpVInlR9jkfk1F3VD0qqrS3ypbgbfaZanX3PFu8XKMQbNZ9IsCYeMNTWXgE=,iv:MXmxHF2g7SpTc2pazJDhg+n4Q06+s3Zjv8ezURJzMfk=,tag:jNRw43HlPcITkHKY6+c2KA==,type:comment]
+        image: ENC[AES256_GCM,data:fmc8F5wpZJ2TSnu8iysiFnExMyy5nNr70Xz3syiNaMopWjkAfIY=,iv:zHU86V5C2uOxtyH8r46eZUzF1dd4I1wd5O3XXuFyYwQ=,tag:iMZVlFKdbh+MZEjC+1+mtg==,type:str]
+        #ENC[AES256_GCM,data:huJVSpBHDfwvl+WYp6YZAgBzZT0zH+NpqLOtVMV/d9foEPnWchI6PQpRjjQ=,iv:175bCD2uxnq3l0D2+hnwbCls+mBje6n2HVWYVsC0LxQ=,tag:zCPnM9ytrUzbwHf6MdwxTA==,type:comment]
         admissionControl:
-            - name: PodSecurity # Name is the name of the admission controller.
-              # Configuration is an embedded configuration object to be used as the plugin's
+            #ENC[AES256_GCM,data:DoaPFB5s5Ou2SiiNFfE108bI/WiBPGuVYfTRRfiAHwiCG45ZWufZzaHGR2hVew==,iv:i9KwteL4Yz0+Ea7u/RyqPWRdoQCuUlB1N5Nja55cE1U=,tag:EX8oQBeCGZablmcSbURXFg==,type:comment]
+            - name: ENC[AES256_GCM,data:aMsTQOkjLuHCFio=,iv:2uySq9xdeKxI6TBVCrIyadL3d4oOTzeu2kEEVj2vaNM=,tag:KLl8+mzkD3K/hxeMp6REVg==,type:str]
+              #ENC[AES256_GCM,data:9VQYJBN8GAIA4+u7R/UgGtUoHrZLCcCfsrxDMQzKpseQKS6M0JVR0GGDwLlp+45kZ8CkuJQR6z6v6lW7EzPjPJyN7TU+hCzc9G+UlkU=,iv:aKXBFDemRubm/ms9qewwU8FPk0plu4YE6orJe0rFQjQ=,tag:pjBSOQg+DNpdinvxGSDa7w==,type:comment]
               configuration:
-                apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+                apiVersion: ENC[AES256_GCM,data:3z+kwROZXHw1mDiReaMY63uKr6Hgfhn5KSKodX1EzDfezKp31sookTltszkN,iv:84g4quQZIwmaGiSZsnXwAVH9wVsSjF0teSfrQckxOvU=,tag:78bFRTC1JAfPjxQ0YAIPRw==,type:str]
                 defaults:
-                    audit: restricted
-                    audit-version: latest
-                    enforce: baseline
-                    enforce-version: latest
-                    warn: restricted
-                    warn-version: latest
+                    audit: ENC[AES256_GCM,data:n/7QK4dlllMm6Q==,iv:AcmaBGMv/T4Hi/yPT2nctQySjP3mosK7PHt7b592KPw=,tag:1GtVXQJrKDk/7LJ/3WgRCg==,type:str]
+                    audit-version: ENC[AES256_GCM,data:+SDZatPi,iv:cYJECKJW5uTJHVaSh/SrUfxmh51E9dirOaaJGSOhg/4=,tag:mZzlgGcUKkZvDacALYkMag==,type:str]
+                    enforce: ENC[AES256_GCM,data:fy4t70/+T9M=,iv:2G6f64Y2gX3u/BheihhOGRJmA0lCbpIMCjCbjN/RwiU=,tag:/rboClZdVrsyq+s2cSnVCg==,type:str]
+                    enforce-version: ENC[AES256_GCM,data:RMBQQP95,iv:WQn9lSr6vOzXWHQ0E4pCXg21vMCAcZ2B7Z8tlH2ZiGs=,tag:/S5ts5DVDWej5+1vmjCYOw==,type:str]
+                    warn: ENC[AES256_GCM,data:ti9EEZMes6ws+g==,iv:gPhVGABkh06954k6B/AweT9g7Hm1lyQAALECMQA7Ams=,tag:WV5KtwnciE2q3lPJBZeeTw==,type:str]
+                    warn-version: ENC[AES256_GCM,data:A1KgJu0/,iv:w9jIWvdAMD+vvWYUitnI4Z+DMFsKUhmcxNcMUrOoqg0=,tag:2Yigkeuzn/CIEDz4eXPmOQ==,type:str]
                 exemptions:
                     namespaces:
-                        - kube-system
+                        - ENC[AES256_GCM,data:spDJStJuU7p5rE8=,iv:5VhcJ3hcxcmmTa+fGzmyE9lWrmnl2RJvn+3bnLte8i8=,tag:OLRFyJdZzpo7KjVHndL82A==,type:str]
                     runtimeClasses: []
                     usernames: []
-                kind: PodSecurityConfiguration
-        # Configure the API server audit policy.
+                kind: ENC[AES256_GCM,data:vxOqzll4AtNX6qS+y+wsrvM+n+eT/rq7,iv:LoAQVbWz2jkviM9y93xpIi9UZcqepm8Ncn+1UGFLbkg=,tag:ai0HTH6RWgf61bwJx7z6Bg==,type:str]
+        #ENC[AES256_GCM,data:0prbIk+upa7npcwURSwFdq6zv2uBj0AmDZPanpLDcvg29D+v18y9,iv:I32D4lGtpxaImyS86O7RgVoGHPWYvw1vDZGnDxnC5pw=,tag:5P/8NG+XVb44xzkUravTSQ==,type:comment]
         auditPolicy:
-            apiVersion: audit.k8s.io/v1
-            kind: Policy
+            apiVersion: ENC[AES256_GCM,data:suHK+YaqfpaABTBPJUDf,iv:dsU3fUe253aYgYCEBar9/zj9qfzxZNUcaiE/Gn2Klbo=,tag:Sb+TFXmqujzNVo8BDuw1jQ==,type:str]
+            kind: ENC[AES256_GCM,data:F2oyFcBk,iv:najI6G4/mcYr4dTbcYbP5VTrBVm1Z7lH3EDG/Zm3h3o=,tag:A7nyz7l2QUHYXavG/FW35A==,type:str]
             rules:
-                - level: Metadata
-        
-        # # Configure the API server authorization config. Node and RBAC authorizers are always added irrespective of the configuration.
-        # authorizationConfig:
-        #     - type: Webhook # Type is the name of the authorizer. Allowed values are `Node`, `RBAC`, and `Webhook`.
-        #       name: webhook # Name is used to describe the authorizer.
-        #       # webhook is the configuration for the webhook authorizer.
-        #       webhook:
-        #         connectionInfo:
-        #             type: InClusterConfig
-        #         failurePolicy: Deny
-        #         matchConditionSubjectAccessReviewVersion: v1
-        #         matchConditions:
-        #             - expression: has(request.resourceAttributes)
-        #             - expression: '!(\''system:serviceaccounts:kube-system\'' in request.groups)'
-        #         subjectAccessReviewVersion: v1
-        #         timeout: 3s
-        #     - type: Webhook # Type is the name of the authorizer. Allowed values are `Node`, `RBAC`, and `Webhook`.
-        #       name: in-cluster-authorizer # Name is used to describe the authorizer.
-        #       # webhook is the configuration for the webhook authorizer.
-        #       webhook:
-        #         connectionInfo:
-        #             type: InClusterConfig
-        #         failurePolicy: NoOpinion
-        #         matchConditionSubjectAccessReviewVersion: v1
-        #         subjectAccessReviewVersion: v1
-        #         timeout: 3s
-    # Controller manager server specific configuration options.
+                - level: ENC[AES256_GCM,data:a6YuaXXAPV8=,iv:nXQ9i37f59DSvr2K3RcxXqFLKD5Pf4AEZbdeimJgx34=,tag:O02TfhPmHuveeh+MrT9bAw==,type:str]
+                  #ENC[AES256_GCM,data:GvJSDRIgwAuu8Mt02GunYadXPPzViRDzITAoYtrSCvWm/TU/KYzO3H+ugmWoP5VTxGidqYhQ+0fBJBx0DnGXTaLU/dyo82uQpbo016iiESkE17JrCypVo/MYviLG7Ap4hwkqUPJmRKdlwh/xvdTsV8LegC6caGYVdXAHoiGEiA==,iv:76AhUgwAzzSnR9AAIfjE2V8BZUApocajxBo4bwOCUNs=,tag:gPiO3RyDmhMiJMWRWOWWwQ==,type:comment]
+                  #ENC[AES256_GCM,data:jPAQoAUDkdiBE2Y8kL58C8SwIRe1,iv:qAPL37P6PTsvT/0yp8ehUfSHlrWyQoee22XJ0oSDUh0=,tag:5nirFvNvEeLVwJUyoWKs5Q==,type:comment]
+                  #ENC[AES256_GCM,data:Kfz3oBo+cqH0AYvYMO7jHImeaf6478ywEoD/QivP7iNp8goeHNXTUTSbBlNgLko/UXpSakl8BPJGaebxPWmew8nNcf7jg3CmkcIkryFOnyOSa2Y2UyZHV/7IXpoHcqSOPkJ8pBebXJ4PA968,iv:+dIHpvxYN5PtgDFn8WmIoozl2rYTS0Z/Iq8Ig5EtzOs=,tag:ITFt5L3+/P4ybOs4JBK4nA==,type:comment]
+                  #ENC[AES256_GCM,data:GVV/EaEMB6HmSycelEPmdGwpMekym9brPUz0tP4693O5/VxGqMLMRa+ZFlW/1ooCxpjPMJ2Z8f+YKYNLTCKt,iv:3sDu/5pvKz+gTVRs5FN4EYZYfgVOF8N3sBIY4cjLNf8=,tag:xk4syL6bAT7o9pnmlBDUzg==,type:comment]
+                  #ENC[AES256_GCM,data:tSwwc4UGmcKI2Ifns3LE2kcAyBsk+n+azGkJH4MyEA6/25lodkjRx9rpkT8sIB/QsE5iYs1q5QHZKtNxV1xZ4bo=,iv:LAFOf+qF9ymnRWXpBWz5UiP1p6pD/xBbk/FuMBQKSRw=,tag:JxF+Kt4HIn2Yu1hWT+XSOQ==,type:comment]
+                  #ENC[AES256_GCM,data:23u+nivXo2hLojzxSVgR,iv:F8S0x6QF6v72/58weeNjcru+xNxuObpnt8VqNIFQnp4=,tag:cSy/soXh2ONj5hmxj7c9Gg==,type:comment]
+                  #ENC[AES256_GCM,data:jNxjCAJitfXPEnL8AyzYli4MOPqKLR/a,iv:XGbkVNpblUc91odR0LpkC6XlekQysiiEb2Cp24jsyx4=,tag:4dgDYYjE2zm1twUZbgAbmQ==,type:comment]
+                  #ENC[AES256_GCM,data:QOrdmY32cnHFMl4IDTACOS/t7gMXk4tQnGMd2OsQ7dm30Q==,iv:8pfrCXCoJTenJ6CSPAYRJ0EOTNFsySMU+dNN90Gr3Y8=,tag:lGPwuQgQmwvg807qhKA5+A==,type:comment]
+                  #ENC[AES256_GCM,data:yEWncBhHvjsuMWYdeu5msZGf8JlfLvINYFaT5A==,iv:feXmow1Ha+PrjFqbZKuz7/K8IBD/sY6MyAXpAPAekEI=,tag:GGpbYtuVvOU+c27CmPwkAg==,type:comment]
+                  #ENC[AES256_GCM,data:WuZ0VPXGNWpsS3eAFdiAkMAj/7K3zcvc9q1pDNWx2iS3T49TUtVO6+YyrKM/7TchcJWeT2s=,iv:4xBB72Dd2Fpm9R+xlsYROVua3qBP5o4iG8t0AdCSsvQ=,tag:70w8nE+e+TvZSYZdaKtocw==,type:comment]
+                  #ENC[AES256_GCM,data:uHg/wjxl9jSFItix9RgeRAhXGSBGaPnNzg==,iv:bZ4zwCLsPhW0zIZcMcp92aYfoMVezJWzYQfhOGBRwR0=,tag:WtQmWYEa5slCUEjchhzWPA==,type:comment]
+                  #ENC[AES256_GCM,data:mZCIy2Sgx/vLBffgOtNGnWE7phi96pLnubVb3KfGV4PAiilsAkn9UaUVoFzsO1A65hHDLdH4smmx+A==,iv:29BQtbCITf3exKbATWyk+2q8Y79QJtqB0H1z3vShWrY=,tag:Nvm3nc4j3WS4OEpGvt+ZOA==,type:comment]
+                  #ENC[AES256_GCM,data:uvb+8zbeB64Sal2U/xP4iOL5ciLK+mdwcCXs5dk23jzUQ/3QSatcIs0WWXYM+BmCT3AAkub9iHGNOp/TUpBhxHm9UFoBf3cEjfxm6scEzQq+T0koq5bT7SlV,iv:lQBhf00Or7e2tJZETTIk6tku9swhUbzMFrO1Dl0IGa8=,tag:6JYhi6C7oNHaQIPCwn3MCg==,type:comment]
+                  #ENC[AES256_GCM,data:sqULFpFCPOYZLH05pW8KZe2EEY6X7S3TBB/c9VLFkR0YyMNOYlt0,iv:mrgNLq7EhxLKS0U7v9/gn73zl/9QA5bERYKDzR44PgU=,tag:XOCzKWXD5+i4kcRxfZxl9A==,type:comment]
+                  #ENC[AES256_GCM,data:1wpp87suU+12GryPJonUyJZTKvM=,iv:Fp/InI38vv/U+Yso+Q3nD+mHy1k0B3DQ3/Y2ppd5OHg=,tag:h6xaAEKDZ+dGJi1YzzU6CQ==,type:comment]
+                  #ENC[AES256_GCM,data:2rRekZEQRQrZLqgEnK+cMjjPlcN0zIcdoWfACu6gtN9wMHjR68dKZYUed5Ab5vG65uQFWlAdnwns8vd9RutKBrBSAtoWho+fPMOWKML4N77Ho5rdQPl9DoEYCagMNsCHWmSoWp40/xcU+Nnz,iv:ReS5fPv2D+LeFOFLcs+6GpZE+IiZmpl7OvvTji8YIa8=,tag:PLAKMSUwuWOsDD/s0u4BNg==,type:comment]
+                  #ENC[AES256_GCM,data:5fjYC+OR6i2NViwRsh+wYgyD2Lp4ms+gHT6n78esY9yOIiDSSZyhwqk2ZtliWH1XSVJWWdtPDqnhWryuiOJ3rB71Jb+E0JNnanfPApo=,iv:tovdG6DTU4RSqe36w6GwLr/JeurFiGYRGXPpvqAUwkc=,tag:6zrmn0LH9a3GJYqJyBuFZw==,type:comment]
+                  #ENC[AES256_GCM,data:mraqhnH+UeeMEtIG9MNmHpO3jS2oQlFsRhcemNDI1YFh1hYUvHkzBZJYr3Ho95LeH1gVRc4cEj3d6KKoZSGGUY0=,iv:pfn+E7bCqDexWsMAXD+ItmbgsbKaluKFN3sIeedOMoo=,tag:lIvxoP/bO/RdicfFn43ngQ==,type:comment]
+                  #ENC[AES256_GCM,data:/EDF6iLOHqjNufvAHmjv,iv:tnCyh/YnhrxUWEoRaFg6GVVL8iHdj6sk187qPV+Tovg=,tag:W425VKrx9FHlidqbr36rig==,type:comment]
+                  #ENC[AES256_GCM,data:wKj5CUArbd7Kra1dN1Q3rE/EQrR7168g,iv:4X2HzZEsodlY0gGzMaRJ/gH7CAUStOWmZ0TG6Vb916k=,tag:7e4kGYopmcF4EQHCGYQqiQ==,type:comment]
+                  #ENC[AES256_GCM,data:U3obL/Om7Z/E8I/MLjFVdLW3eHSC904EHabefQzqfXtVcQ==,iv:sQ3hgYvb9tArPf+TPOZCkxchbR6hS9KfoIAkBwf8oRs=,tag:2PZ6ct6gccXHNwSc1sf2gw==,type:comment]
+                  #ENC[AES256_GCM,data:XhIZbpP1Wm6AP5FwvCDoV21voheEPJBRS1vML2HDKHxd,iv:F/Xf87foJtCk0XZdXzpPYwd5HYA1JBSTo6pc1mawEA8=,tag:s0gShnlCRRVSvxMTDBusdw==,type:comment]
+                  #ENC[AES256_GCM,data:M8azm3kxF3Ojc/4Ep1Sb/LRbgMlmAMZFj2wE/8NOx5n4r5dI5XbrdwGQGEaFLH9uSpXt6VQ=,iv:08pq0eTHSRRMyFJt8aBgdJeqsJ0GNw8IJzvM03BQnEc=,tag:VBKnnp6ytHFB2SdX2qYXhg==,type:comment]
+                  #ENC[AES256_GCM,data:TrWGeyTyyus80/EdTQetL/2d282iuwjA/VRwkc7UTC2g3xR2efFI,iv:fVNiXMWlZNDDAEd4p6N5ZrvEsvCKBxjuF6wNBdVwq5w=,tag:psS+IDzpzDPlWilAOvldgg==,type:comment]
+                  #ENC[AES256_GCM,data:mpSIfUDCv6srXJppW6W9fHjJ1Ok=,iv:0lPCdriCc8Fda3XArn0e3FsY+RoUPhwTh6GiLXAThRM=,tag:YYwItBj5WwQOOvCVe0RsnA==,type:comment]
+    #ENC[AES256_GCM,data:gx0xkWi5XW7tVMiw8Zrj6fWvnzi/qqrTwn5wvmrKicfXH97tggG8FQWuY9DXhKiDgnzZ2MAz3vSD7A==,iv:tbm6vA50eJEC4VdxSoPQ4NxqcQpLA6A9zOCjjGZkejE=,tag:U1Twt2otrW1jwX53ltxXjg==,type:comment]
     controllerManager:
-        image: registry.k8s.io/kube-controller-manager:v1.36.0 # The container image used in the controller manager manifest.
-    # Kube-proxy server-specific configuration options
+        #ENC[AES256_GCM,data:UCYifxBR3cnZDbOSjyM51sc5Q1iD3G8tEVSj4iLKB8j5TwcB2tnKx2EkdO6+i3YyDoPI08YAa6VDF+c9kQ==,iv:fQ8W7/Nl+gh1+i+oAgJwtbI4A0Vg9BVZ6Ww5nMjjfRQ=,tag:qR3TKAs7x9+qAyUbRVEzTQ==,type:comment]
+        image: ENC[AES256_GCM,data:yg8Ewx+d4pruTbK/5b5/8CmK7qN/tRVxd3cJYQGQwIXNRzJAclIS1H29j82n+uE=,iv:MBvcQcw2HjpZ1VwIWW2SCSd7o6YGIH0CSBEYiXDFG2M=,tag:BcdVetRVDFJ9hZslASw+Eg==,type:str]
+    #ENC[AES256_GCM,data:ulN4ovTz4HRrRDXVA0G7maB1W6Bdz/fnAd5LzlsJ5JJ7E2UplkNUDezh6qLEr/bRlA==,iv:zgTmGhxrDGHQHHXkPNMfEMrbtFJ7gWTAD6FdSe+82lQ=,tag:/8UYdQ/9Aph4TpuXQ6SusQ==,type:comment]
     proxy:
-        image: registry.k8s.io/kube-proxy:v1.36.0 # The container image used in the kube-proxy manifest.
-        
-        # # Disable kube-proxy deployment on cluster bootstrap.
-        # disabled: false
-    # Scheduler server specific configuration options.
+        #ENC[AES256_GCM,data:F7p3YdItE9p3B5/7uCfeQBg23jG5FQV5hika599T0OYqRbiTgi9vCeHAlXoaZITkoBvpS9A=,iv:BvHUHjf5BbJv4gl4sLtFgEIxHDf5DY+sX0aruwxbvl0=,tag:RyUePPH6O2bMyscs0o7DYg==,type:comment]
+        image: ENC[AES256_GCM,data:byFvb4qwBcFuH1h19VFgzmZUnDyLryco6uwq19/s0PXgCQ==,iv:HnEN9bct4cU1jASL36Gxl5GH/6WoFOt/rJmRnCJd2NU=,tag:kbVwJk0rk5si+jrZoBt0pQ==,type:str]
+        #ENC[AES256_GCM,data:bqTJnilPcRf+L8Gr8svk9xWP3JtwdlZni4rUikwgFnnt7yDqjUjkMfBe3EzKiCDKsTxzo4Ww,iv:8SCFTZ2wpyPNqbby+qM7sNdQwO00NXIl5WoEPvmJdac=,tag:yGrProl8uS0DzzQoMFEoqA==,type:comment]
+        #ENC[AES256_GCM,data:IbtiyVINNVMOg7t6n4JoJg==,iv:RR1yFzzr7Dz54508ceqzABaj382Rz4a/0UnVibK11rs=,tag:1eouPoiHbHY1mI1tXHp0EA==,type:comment]
+    #ENC[AES256_GCM,data:u7kIBIzSaZzM2LnAbYjglgOjwkdXNEvP8+Ekfs7jHg1NTjtiCwphfphyWyTSPkLI1g==,iv:aWHMNjQbq1ov17wCoSS6Ma+41NO93wfaHdmcFhKESUM=,tag:p1rGj3M4TaMw5gL41ots9g==,type:comment]
     scheduler:
-        image: registry.k8s.io/kube-scheduler:v1.36.0 # The container image used in the scheduler manifest.
-    # Configures cluster member discovery.
+        #ENC[AES256_GCM,data:Xp2Gx3U1zdeoC1tAUhVX5TjOcrecPYosJ2aoDFwmvv8XL9Pk0ORLZFYUGci7dxEzqz88ng==,iv:a7CB+JZQt5D0wkK69aYQATuLSNjwKcDw0x98c2/usmI=,tag:sR9WE5oPJrDIhiactR6XGQ==,type:comment]
+        image: ENC[AES256_GCM,data:tQO4aXETktdw5+GMmQFPpHPOWvuhTVSmMoWXA5WCPmtUYJjfW8I=,iv:Giu95AQqZ5Za12lE2P+QC2KSq6u54DNlT9ICHo7W658=,tag:tQw3P6uIUZDS1EZQXePqYw==,type:str]
+    #ENC[AES256_GCM,data:5vGZcnrs3NB+4uvhqqXjU4yO2zPGHgTnp9OWb47EW03GtRYQig==,iv:DQbXCpKhzoJeT5Tx4nUnu+OGQvEfJ1Kw4qCoKu2PEno=,tag:HRJ/D8Vkg2FzRidJMh8AIw==,type:comment]
     discovery:
-        enabled: true # Enable the cluster membership discovery feature.
-        # Configure registries used for cluster member discovery.
+        #ENC[AES256_GCM,data:Drol+HrOESIjeM2TW5xSGYOnNRwcXZ1NlRl0zMmVrKOn4V7Is9p/A3kxsVgh4RM/cQ==,iv:NFc5yd6bamDUUFIOjDeBcjQU6JT6dimyDya25sKAKkw=,tag:j2pzpmuZEd3dJmcjXI9ZgA==,type:comment]
+        enabled: ENC[AES256_GCM,data:mb8nhg==,iv:n/3GaYVh44iAIyG434e22nbCZqSQVZ2grpZyApqhlkQ=,tag:GBBZk21YyMxV5ClbcFBz4A==,type:bool]
+        #ENC[AES256_GCM,data:brapIawPZ26LxsF+T+dCjOcfSPPCjy3SgcmSIDvFwOqUHcfopCDun7/tccUo/XJdwjbRk1KDFUg=,iv:uu/OLMzChlAoYI7+JD6cdwA95JtXDYd2UnTLLcMA5f4=,tag:JiFpyyGVBn/17OrN7Q8Ytw==,type:comment]
         registries:
-            # Kubernetes registry uses Kubernetes API server to discover cluster members and stores additional information
+            #ENC[AES256_GCM,data:oaGttmbwQS4nUC1faJ5bVw4jt+Fje8OgpvW3znNTXhsG14rsJAuR8c5YexZRQ8hpyQfX5b/ITiWJQgamf5Bu70vb1xpxmhCp6O94M9zq2uGaWaeIcYUiPs7/K8xCUy/WreS2Hsq7ezrdPOy2zQ==,iv:6dPQg1PcC/OoCMhmXXLvqVCqByFOkhK3a1bEme8eSOE=,tag:MU1Nx2Df4q+iQmVe/85C3g==,type:comment]
             kubernetes:
-                disabled: true # Disable Kubernetes discovery registry.
-            # Service registry is using an external service to push and pull information about cluster members.
+                #ENC[AES256_GCM,data:MzUMvLbuUY+m0Lmsy558ziSFs2/VJzVl1teZqLbQ7Qd2aiTSpfEi,iv:krAIhFJlKx6/0FyCkh8YLyAxuutQYgIt1SxLz4Kv0pM=,tag:LOuY7GpbNgC+B0f59xQ8cQ==,type:comment]
+                disabled: ENC[AES256_GCM,data:XqE14g==,iv:F7tA6BuO55BW7tLAhw5YoUr/Iv8ZdU3E+B4C0S6I57Q=,tag:KRcMgK5tCxpJ/XXqaw3wmQ==,type:bool]
+            #ENC[AES256_GCM,data:LtKCB2cbBZk9JoS2Eh8s+aZ2ccAhS2HAOh4wnbEIJZ6eoJT+tFdkHgnbMpJ7izZh1h9ss9mUcBkWHeHgMJ+5Rji0btl16u6VnIQOlWPKnkaVrauu5sX2vhrMqtxKA9gQlgY=,iv:HwitOeDz7y3jiMOgN7LHn2c4b4YvqRYfzvFcgdgQusM=,tag:CJkTKI6Obkl1Ggad4t/pgw==,type:comment]
             service: {}
-            # # External service endpoint.
-            # endpoint: https://discovery.talos.dev/
-    # Etcd specific configuration options.
+            #ENC[AES256_GCM,data:DlYkyWUQ/uk/QWS185SL3SqRrbTkOB3Gu5FveNQ=,iv:A2vpmzX1wYWIZ0v5icFBJq1xRoNsgFFAqUlBGzuF3ow=,tag:sUcdDk7Kp5eD0K80PR99Xg==,type:comment]
+            #ENC[AES256_GCM,data:XnhHdEBEfU/qMbj1mkuaitlEMALwFQki58UeqDBb7bJ1bwSGMV/U,iv:hRF4itabdVpfZ+EF+jDTJXIx+5SP9IsvLQqE7C6chKo=,tag:8/da6J/JU+Gmm9x65oGxMg==,type:comment]
+    #ENC[AES256_GCM,data:baYDyMGqcJn1R9J/OtJX5ewagV4H+fHdVhkxVupfj8G5WxE7/w==,iv:TRA94BdxxpDFlaeirITHQIocs04uzybHlbY+Oo/Ss0A=,tag:XFUzfO+qmOGqMLiXXRFeMw==,type:comment]
     etcd:
-        # The `ca` is the root certificate authority of the PKI.
+        #ENC[AES256_GCM,data:Y7mACuxVpI05cSk2Voc8diVxRBmIO5Cz3fMkRA75pCTm9LEYtMZWo9KjP834NWeRR8xaFLb7AA==,iv:Gmz8dQiU6+Ag+fnK1emmo6WRwRjtJSJ/THDHO9PeHAM=,tag:NJ80z9hqGecFvPX392GSuA==,type:comment]
         ca:
-            crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJmVENDQVNPZ0F3SUJBZ0lRVEVGTnJVR0QrRkdITlhMYUdQbXdzREFLQmdncWhrak9QUVFEQWpBUE1RMHcKQ3dZRFZRUUtFd1JsZEdOa01CNFhEVEkyTURVeE1qQXdNVEV6TTFvWERUTTJNRFV3T1RBd01URXpNMW93RHpFTgpNQXNHQTFVRUNoTUVaWFJqWkRCWk1CTUdCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQklrbFFlNWVBZ2NkCmQ0cDBhZ3VWUjRxYmZIc0ZCeHNvY3IrVXlHWjlBV1R5OUh3RVVhRlZnQkVjUW5WQzZHQUR6ZTFTSG1mdzh1VHcKUWZaZHZYbjFuWkdqWVRCZk1BNEdBMVVkRHdFQi93UUVBd0lDaERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjRApBUVlJS3dZQkJRVUhBd0l3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVT3Q5MS9sQVZOWU9YCjVrSHhVNmxUYU4yVm1rTXdDZ1lJS29aSXpqMEVBd0lEU0FBd1JRSWhBS09WU2NGRTBuQmxCYks4VnNxRGE5OFoKVVFHczVMRXhJdVE0RnlvNzV2VW1BaUFGbDIzdWprb1ViVHk2Yjc0QTRzWGZDK1VuV0ZBcHVTWTh5OUQ4dkg3Mgp1UT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
-            key: LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUVocTNaNDlxOVNXZkZLaWpTTytZd1RZUmlOQWE1cVBYVElINXM3elliU0NvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFaVNWQjdsNENCeDEzaW5ScUM1VkhpcHQ4ZXdVSEd5aHl2NVRJWm4wQlpQTDBmQVJSb1ZXQQpFUnhDZFVMb1lBUE43VkllWi9EeTVQQkI5bDI5ZWZXZGtRPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
-        
-        # # The container image used to create the etcd service.
-        # image: registry.k8s.io/etcd:v3.6.9
-
-        # # The `advertisedSubnets` field configures the networks to pick etcd advertised IP from.
-        # advertisedSubnets:
-        #     - 10.0.0.0/8
-    # A list of urls that point to additional manifests.
+            crt: ENC[AES256_GCM,data:wmoKFoKMS9XZdDm5D3q56D7WRxAYH4j5AdD54WF5KHg4ouVGTvOprkKt5gK4NyFssq2CpHE1hQKVeIYPPIPKs1mBoFnPgvrdScaEejDotscBIvc4uwb++U/UQj6Rey6ZecLip7ovdxvBiFaDGXnBpHuUiH+nL9NpU4bZMRGlYfRWxfJMDVt0kyxtDjbwT6ypFP/cTb+JP9qGRqI1ht78IVyI36nmWWTH+Aw9FRJUqdH6HhRKrh+rqBx/1GbCS/iqvxnHVqH2tUE5bi/lagW40RRQTgvywY5VCY+PqKIJ9Khc+wB7XumrC6FTT17r3fp4afjHjeU9lHp8gJiiNxzgpnXOfkNBq/napn5h/TIJIDScJxwjfqatMMQjzbgW7qTzeK+rUNbI/fvB4b2jSThstNLfMBXCfOl2s1fpcXAzY2FQGbQJtro9YAh3lnek5mTMh5cDGgzbcJL/Mhfb6RbjSMrVb67UW2kU9kLAfR5LGQQqUceRZZy75i7IUqyLlXjuYreACeWsPbYaf3OD41iig94hXuKkX7JqinQUHkmbN+Qb/bNhMpjH9MEuerFpkqHnvlBf7Vi7Mol6xJQstky2mks95uQ9oef+rXjQRUX78s2PdlUc2iGbmbUrxCsGQL4NBt6JRxJ8EbWCdaJjDCYU0oidqrulRqFIrKlAABANVp2183dDziGKQiHSFBNo7Ddct135E2U6tmFsFw/we929mAjfGIpr040tLPbId87eH0ktcz0giAhUNicfJOQhkOWQ1cEf2tqMUqoc9xZI7U4mlrmtcfh/SWANEhgloOVAq255vHHe7/bwCy1lD/GMqZvpbj6ClYvDNqSsBmiPGZgZrdjL2cvwqXOqaanMOr8Bu0lWZsXlBKvIYaAOFi6kI7ibj+hwY+7S6k+wEPXWUJnHk+2JYiR5Wxr1zSOs98ilWVDM7nD0kJaBsZsFZcvHMGBkUwN9s4pxd2dhHIGC0HSopp8NhQ8H/hgtkbes5iey/KPbyvuJ6/EjSFMMv9meWsbD,iv:ELctGH6zwG9ybWEU7gAPV0CDvMLAByas7BC3hj+1Uss=,tag:d8MiLsauE6XPAw7n5SRdDw==,type:str]
+            key: ENC[AES256_GCM,data:yhcPgNx4OiGK2w8FQ3WuPPBCc8TP3MZLmnW3w0DtnVR/a2YQu1+RlZa9CpAFPnxTJGksNOpR7V3F+e1xm0hlf8UXQa/eSEdxBTzJqdyzFncORgAHzwq7eNb+pRK4EEr1viy21jQQMNoSFeBm9QNIK4aDRVo+huPn56EmQ12rSDN3fw1QHMvhaLwJSOTe1zLG2lGQ9gywbTCy3fENBXeTpMkzKJImiSEinBQWdFTJCY9Sxcwz9pBKtXwY7CfXSuHLnQhN0P9WoH4cejxnWLmXSJvh/NI2gg1p9ra2hT5BmD2NVYYD+AMUUF1yEL6fFNb2vDCsVRkIbxmfGjO05/LAdM9mIuoFuDMxTTWATR1tpEchaQmYLgzu1JEuUgyLr168Mp6DcfKqTsqfs2TzNhR60g==,iv:1WvqYPfT8XXWGhSsg0/LBBy4BNWMg8RQXolN2HbmODE=,tag:BZJIzXt9UPHcijwHxzotYg==,type:str]
+            #ENC[AES256_GCM,data:gZp/X0h0blMHTpUbaVwDbYFxy7ofNiPt0ruKP4gaj7oollWuaXVg4qmiiAr4/jtuXt6zB1LYVQ==,iv:dJKyacj1k6plw7NKmFqtwWqIahade5xmygq8udNTahM=,tag:eRMYnMd3aEVxJNWlwW24vw==,type:comment]
+            #ENC[AES256_GCM,data:9x3DHloSEg4QHR+LwB/WtAxRfH++gnFXA6HmYMK+dO2VwHA=,iv:PWEJ+6Hhs964r4cAFRbRUub45BDlhj6DFrfns37Np3o=,tag:FP0LFcaH+sPJ9h1Mbq02EQ==,type:comment]
+            #ENC[AES256_GCM,data:e/fVAP7NPd2nNEUsOzra/L2Gk4fHwiE2eG8aUcuA/yADGOAR8Hm3UvTC2+ae33S+xWRZk8dwMeYF0BYNV6EyzOzt4OhQAr2fcwswyYCBOR1P+GsTd/dQORw=,iv:3yiA3nhMMHO9yYRVO/S7LHOBen6IwQPLW22ZXloolfI=,tag:Ym3rN7KppevRGaOG2UEKhg==,type:comment]
+            #ENC[AES256_GCM,data:DN9+ip9Lk9tsbI4HKGSiCAPCNw==,iv:dI4gkzqIhIyweY1rKD1Om4+NvJRQ3HNVL/g23+rxelQ=,tag:DPII+7XBWyhbdisG5JWafw==,type:comment]
+            #ENC[AES256_GCM,data:hk08B8KHwCdnvW8niIElvxo=,iv:9UZj1krejzC8S5s6SRvO81kF7NiePWIUu9KEusMAdGc=,tag:MzH+fldReR1Cuo9Kl49EpQ==,type:comment]
+    #ENC[AES256_GCM,data:OIKZWfy+AScGfnvsNrtrvkmMdSNZfehlMZoA1HF2S4PJkZei5+8eBUC75BTyekWetbFd,iv:PFwDT+/nsuXeqptYcY+hr2l8unLt8iRpKJ311Q9mVME=,tag:TCfs6YiayABg6OZWicMdmA==,type:comment]
     extraManifests: []
-    #   - https://www.example.com/manifest1.yaml
-    #   - https://www.example.com/manifest2.yaml
-
-    # A list of inline Kubernetes manifests.
+    #ENC[AES256_GCM,data:nBLaXZYFxjRYMZ5oiVLOvBa+154Vv9wVgINmcg2a+CI/pgvscjOZKibB4A==,iv:H/Vi0zswt8cb6u91hxcT4sRtGg8g5CkFuKSj5GKkgNA=,tag:+u523zlWVK5py7F2dPE2Yg==,type:comment]
+    #ENC[AES256_GCM,data:atAc0/eOAm6KKDt9sxSooa4Y3rcwVaf9oYS8gASmkwzAikqsh+oqHzT3LA==,iv:epcSiTkdkgFfoBkjl9d8wIajABRbTeTZgFRoOkHjnIo=,tag:NsPMuRajBUW3claMX/n+Rg==,type:comment]
+    #ENC[AES256_GCM,data:JkgfRuDaT1qo9gDS89dXNC4tXCzJD/k+Arnq8n1FQ2Tz+h+KDuw7,iv:GLecvG5IovWCvQQnozCSR8b9WJmg25WyrFXqVp9rIwc=,tag:TM7k4gQTIl9I2SMFAZ9XEA==,type:comment]
     inlineManifests: []
-    #   - name: namespace-ci # Name of the manifest.
-    #     contents: |- # Manifest contents as a string.
-    #       apiVersion: v1
-    #       kind: Namespace
-    #       metadata:
-    #       	name: ci
-
-    
-    # # A key used for the [encryption of secret data at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
-
-    # # Decryption secret example (do not use in production!).
-    # aescbcEncryptionSecret: z01mye6j16bspJYtTB/5SFX8j7Ph4JXxM2Xuu4vsBPM=
-
-    # # Core DNS specific configuration options.
-    # coreDNS:
-    #     image: registry.k8s.io/coredns/coredns:v1.14.2 # The `image` field is an override to the default coredns image.
-
-    # # External cloud provider configuration.
-    # externalCloudProvider:
-    #     enabled: true # Enable external cloud provider.
-    #     # A list of urls that point to additional manifests for an external cloud provider.
-    #     manifests:
-    #         - https://raw.githubusercontent.com/kubernetes/cloud-provider-aws/v1.20.0-alpha.0/manifests/rbac.yaml
-    #         - https://raw.githubusercontent.com/kubernetes/cloud-provider-aws/v1.20.0-alpha.0/manifests/aws-cloud-controller-manager-daemonset.yaml
-
-    # # A map of key value pairs that will be added while fetching the extraManifests.
-    # extraManifestHeaders:
-    #     Token: "1234567"
-    #     X-ExtraInfo: info
-
-    # # Settings for admin kubeconfig generation.
-    # adminKubeconfig:
-    #     certLifetime: 1h0m0s # Admin kubeconfig certificate lifetime (default is 1 year).
-
-    # # Allows running workload on control-plane nodes.
-    # allowSchedulingOnControlPlanes: true
+    #ENC[AES256_GCM,data:0OxBYDGxeghDSIcNm96jXH8UNPCpgfrd9lUt8OzB0b2iW34HEUZdAcFm4E4/xys=,iv:Knjs2NW+ZQtH47vx3VA7JrQ065oG4m2D35jNqRWFfFI=,tag:bJk+O2Rsjg+MKlqFNPybqQ==,type:comment]
+    #ENC[AES256_GCM,data:tJy9KosqtdYganCkWcdys86RpTS7nxOUNgyzXHDE23JAXPDKq+CzSKBTvNRU9+E45HQ=,iv:a0VMoWNb7NmgIJRK3x+37OzfCNTg9oBUn4BXepz0qyg=,tag:nA5NhAjzlNAx8yRpBnC90A==,type:comment]
+    #ENC[AES256_GCM,data:6G8Ht+GoPW9lAi25xPXoqTQ0UcJT,iv:pIEcgxDDk8jWBHPPtG9qZ6TzSjtgGwHtvkLyBxprtG8=,tag:GxAAtExFEhqbpaSivADhCg==,type:comment]
+    #ENC[AES256_GCM,data:Bjw8x+qmpoJlbVigihQAOYmKDfqZbg==,iv:l5aA0IRnFXf9aVXGZv6qk2zEuJ2b64p/kEHEeKEL4vY=,tag:yM7ndEaZ2bgY5y2aiAU1Zg==,type:comment]
+    #ENC[AES256_GCM,data:qZd9hn7t+D50BmZF6Itcvw==,iv:9EICWu7Gc3f+ia7IeNBiaBW6OgWXS49/SWl1/WBvzzk=,tag:znqgMyRSKhuoYGiWQV1G+g==,type:comment]
+    #ENC[AES256_GCM,data:OjxjuiJjfS2FzSfyIn/U5Q==,iv:Kjcix38sqf5ZH89dw2aoHIyXM1UYMppwbjyf+jjwHYQ=,tag:PntqqW/2ctKPN4/4cyCXXQ==,type:comment]
+#ENC[AES256_GCM,data:p2MsbAMSvt/uuSMfUZYmryzk/sIXJ3n1MWDltJyxgTCNDNsxkMP8mV9CoUMv3iB6WpwNBFHsnGmeu2i+R8ll6CZQFD+pABZwgnz4z/t4PvLuQ5zNV3+9CORFDbMTzM7nln8edUoItEVqRgSLDGiknrlDZlywbx51jXDp9ro=,iv:nW7YMmbojCUiOSof8QeBaW+FCdiCvUFDCzKy4iLxOTc=,tag:envfNMzPC5RyWuKhzsS9nA==,type:comment]
+#ENC[AES256_GCM,data:XjMVs8WVEzECrN+NXxIpnHjK65xTNqV3h5rvexeYBSSjvf0WLD5aq/6LA34gh4pD/879Ix77BTao,iv:eTP+BtvX5Ro/XtT0B6e3nsPwMw7XlyYyaw/fo330qmY=,tag:+cbdf2xB6SQMK26lgI/pMw==,type:comment]
+#ENC[AES256_GCM,data:1pJ4y1peHmNtXMbEbQIlFrRUOO33QxXhkuyVLTPQqTw0IP9YSkTV46rYers3Zn7lVbNop5JTmyhFahNUdZkYPX2yN+zm,iv:XKB//3/bH3jUO5jDQcQoeqZTC/AHMhw1hhDTKpAAR0E=,tag:iGd2jyJ27Lt/xtqcUFwvvQ==,type:comment]
+#ENC[AES256_GCM,data:RP/BjEwiKPbG04e8imAkalyQw3aF/zS3KQZ3m336V92kNBcxK5rSpD29Tw==,iv:wiiM53l9sMY4rLiA5RHXXy+Y3GlpeJA3IQF/jdK4AhM=,tag:QITw1LP7ev7Swv22xEc4kA==,type:comment]
+#ENC[AES256_GCM,data:DI+Vgsyx4W3S,iv:4fNkRSXFKnCIqBsZVHOvlIiR7mwic5j0LwJTYzqd6hE=,tag:JddKt810Rj/h+kZ4/LC0HA==,type:comment]
+#ENC[AES256_GCM,data:gPF9xcCaCBC1XrtXLYnMzOzMMy6Zfsohgm+Q5S5ls4+9Mdo47Vh8xd/GkXPbKEg/H/Ap3ry3DQOmGTGQ6thc8jvO71DlU25RP3wqj8w//wIDoTz+bU6UQmjmjCwTbHOdWOijScfojfLcqXSoGY0AV3+KMlQ=,iv:BBPsjPD06wFQYGoKbpmjViWCdJOI0vBC11Z9ICC2Rpo=,tag:0FYiWohW33b+Mvq9N1wdjA==,type:comment]
+#ENC[AES256_GCM,data:hbt+BdQ6t+xk2syO6g85NKEDpQ0Fu4iobbXT4LOysVZixvmvTlvLAiQ=,iv:NUACzf4fTW5hTXEOzt529d8CfkuVyqppn+z+u6zfhyE=,tag:lcb/XkhbrRW6/JwJwIPeMg==,type:comment]
+#ENC[AES256_GCM,data:NNXuQgIwUlXYjXv+gY3/39GI7g/Eos0=,iv:b4L59XSRQ6qaIOw+UEjtzV+0BCzscG3W9BP9r7iJbmo=,tag:GCh/P9IHtdeiaXIwKWpcDw==,type:comment]
+#ENC[AES256_GCM,data:Aeg0SZaDqOdtjTa2XsX6ur37zcfBW7PqLNJUTu0fbmBp0g3WF3eLNFVxgHocXlpFEJhX6w==,iv:ZWfUTvDlqkd7L+WHqXEmh+EEKIhuSHvKV/SysZGovfs=,tag:61E+rvMHQNc9wetuWMEL/g==,type:comment]
+#ENC[AES256_GCM,data:0xoapTSHbkc7+ui5D39VAE+g3Q3PDwJzYi6R3Dj/Gfyo8Ij5Ljy6j3+ktx1jhvAUF8E1mcgofpwpzyEVGFkYpGgqpo53jFBlNmNkWWuwLKz+YJGTQ9cPNw==,iv:kVPLz3iOtgFyBTWmoLko5KRnC+qxb3AT/B7xmUnZZ6s=,tag:a+6iuyWWR/mG2vaYWHQVvA==,type:comment]
+#ENC[AES256_GCM,data:XukvbOufwrWokmaTfxXV,iv:nyJzfh5x5Pd+1aL6UyfqGCvn78MdsdujXGfH66qGXIo=,tag:iLkHVEgaCi0OFlcUzCENhA==,type:comment]
+#ENC[AES256_GCM,data:Mnn/G9hhlKIc891olzhDNZa7KSKZxt3a276FIVPJNxFTh3u65iqAqn6W5CKD0AWK3ybyo8emrTn5srDFVRd8bPdIcE3WqXL6ha/koIIUeurzAO1DEq+/K15RB1HpvxBKm0qZxF9kV3LTpTn/DlI=,iv:rQHDpRvhG/5yfppsU5o1dkYc5+V8rzOXEJ4bWNnmM94=,tag:V7E9Cdj/PZP4CF+v/5zfNA==,type:comment]
+#ENC[AES256_GCM,data:J5rqPvnLoSBqRHyEl8PR4jPcN46PgK84Dff+eqi7o08MQv+Ba5fp8Of0EkpTvz7EjhWnCXplS4pCMG89zMM5mvpiV0srZ9RQs/qladCO5kjWi+cjMKEfFgK8UutvGSYsZATwwVuPxPkH0XCHfOIdV3NuoCCIt9t3nRjkZgbPIcwPi/Eut5qgXQEKl32UbISL,iv:PwZIYd98AczwlFC2HYkhAtm7oJ7a/Fnp9sI88+fbv2I=,tag:8vOQzabXkcCgb+WDQzX6Nw==,type:comment]
+#ENC[AES256_GCM,data:DILCWGNpZ2DZ/LoxJhFR+YDVTi1sQ4zLnm/PLk5fQ38ax539uRt7hzbNBfEVJ76LCrhbYtCSvXhSGknNE8y6wDHzUm9q4zeusAmA1eU7JVC5,iv:fTYeR5Rdsi8qEw+9RWugjvfZlchrhqpJxvW73ta1hus=,tag:mgQrjwhVtXzJ1V4xh8BBaQ==,type:comment]
+#ENC[AES256_GCM,data:5nruu/H9GT7nLqEZFsBinGDT2EHX5g==,iv:rp2o9b0NWCLa2YA09liDMmwk1Q+fgDvPlbig2F6bf4w=,tag:qeViKdViVtpQxA5MPe4hkw==,type:comment]
+#ENC[AES256_GCM,data:HsaSLwECJkUrgCQdRylvrXbVOWcJ,iv:iuWYFG08QliiFCN6lQjwhkpqJcdeKTWqW1n7hDCK8e8=,tag:7lpK20DDOgRxaMNm+DqTVw==,type:comment]
+#ENC[AES256_GCM,data:Y3wNZ2SVMM2xMd7V55x/Tp7ORi9fAA==,iv:myXbzN+SPdwNhJodhSgz2mKOOo3ltDkMUiPUu6vuBQQ=,tag:eOWM8dmI8qEuL2PDUgzR3A==,type:comment]
+#ENC[AES256_GCM,data:XaJ4Kye3X9B009Pn0647BEZURxL6eYNwQFm69v+9SNRkP0bilhFGN0YFcEM=,iv:3OS6QBrG5IqFzp1YIswo4LtCeocoLT+gGDzuY3NK5gc=,tag:lPoHCIZp9ppnSG32ov3RBQ==,type:comment]
+#ENC[AES256_GCM,data:3dY5gNTs6lPFCnP+vUKcRIY=,iv:dgIzlb0uHZoyUOoPpD9xzsXBA0D6faKHMQvt6IBaPYk=,tag:15IYz85bScroL44cM6/eHw==,type:comment]
+#ENC[AES256_GCM,data:NftfBcYZ1JnMRvZKZVZgY2iRpztaWQriUOTf4At2cszJvkaZHNqTEWpPSb83SuEPVfcLb3mjkwmbbPczsHPB0OcyIy6PquydvWJ0Mu4yIIE0keuaiTs=,iv:yTYEcgU98QeG+kvZCATfY8keALXEDAoyGa5STJwPljE=,tag:68HXRJGAaj/YkD1oD6223g==,type:comment]
+#ENC[AES256_GCM,data:RO/KVEOJV7FR7qeUOLfQajUEeRKBOf69omLjnx2gGTkaf7sZgaa1sOXyMPYyXIxk/9I=,iv:DU95VmN1e1XQIIiqeZqMQQgxPpNDjHRT52iQqGZOiFY=,tag:Z9GhN8ChBOn2Vc3+ovbDgA==,type:comment]
+#ENC[AES256_GCM,data:xAHijVZqema5rfFOHxMY6grwDMQA+OmUOYzAZDwiEzKOJeiq1w==,iv:CtFrh43UEtzGM5wzTg0ahxhjJQ6Vkb4YiJqBl5WUb2E=,tag:mQv9ysqNDXYRAalnQcc48g==,type:comment]
+sops:
+    age:
+        - recipient: age1v9l673n53dy5dl4ucecuk6val9lqulq2nkvsmj5gjxumf8sjh5hsgjj09h
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVWlR2ekM3V0xzVGM1Wng5
+            a0JhM0lmUnV0OU0weC8yRVhQVXdWLzlGa1dJCkE2N2JiUHlnVENTR0FQU1B3bFhZ
+            SzNKWXBzQWRId2xOc1MydzdrbUkydlUKLS0tIHlOQkxvQjFZUGpJZHpuL0Z4bWZM
+            Qm8xNVFRUnczVUFZT2ZMRFl6aEVFOVUKNg/JtCmXLCgzgACAC5/XyGPR+z0qahC8
+            sjLl54OKoH2FaZ9/H7eIooOaRqlT22aBkwHbDVZibtu+D07V2pGDUQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-12T01:27:25Z"
+    mac: ENC[AES256_GCM,data:y76YTfHGBubsmruJo0au3QeDnZIUSW0p8iEoUVGj6XhfKVSJ9nt0ERvFKPwsD79ooUJ5IrO2NeNiwBTBHWs8zai3EDd8JI1MkNvGy3c01isEm1ATi1Kh+zJFx7qrPfVFaaK5mfWX0ZN1fLmwLy2AUeCqmQPjk16qgIqrOZASIgA=,iv:VOyUBcvVMMXOUeE+efWLCG6AkQka6R4GZwQjgQTnLVo=,tag:Qgxpwvz3N7ez8mG2o80M2w==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.12.2
 ---
-apiVersion: v1alpha1
-kind: HostnameConfig
-auto: stable # A method to automatically generate a hostname for the machine.
-
-# # A static hostname to set for the machine.
-# hostname: controlplane1
-# hostname: controlplane1.example.org
+apiVersion: ENC[AES256_GCM,data:v6Y5UisWaAI=,iv:+N0sRuFn2LzGSck2UsGQ0dNuXivA2gQ32ZLkheRaxC4=,tag:89mtB6CdvS6FcTbCOqhDww==,type:str]
+kind: ENC[AES256_GCM,data:uUWKoMMkzDlFltekNsw=,iv:D6TW8D3cGHpPWkaS56objgwzmkrAwu/uJH56ZU/soNk=,tag:edW2+B/Vs+pA5a1JO6LqAA==,type:str]
+#ENC[AES256_GCM,data:p+UDzR9pwAZ2qvFJRRTptj8gpULEULegPyaWbia8UQ42LP1WPcuxnbOfuOl7Cd4qGGvJNCJTsxbkY1Wc4XHB,iv:DBq/8tppGy8lRgA77l5Fd60Q9X5IjdXrpRgRqldcwlw=,tag:C4hlL0rgeE5YSLoWhbd2PA==,type:comment]
+auto: ENC[AES256_GCM,data:yvkNzs1a,iv:F3Bq4o9q8cAAJ16Dzsd6wUnU5RMYWe2noRp9NpgJgAI=,tag:ISdbo/j6vtPLb6MuQ+RHYA==,type:str]
+#ENC[AES256_GCM,data:mMxGlrDUtjzAOvPTnKoDx2qTsqRKC+iEiQb+YjcPFhgVxYpMYgZTZavcmYg=,iv:AcBOuFomNDIRMJoMv5ttvLprfaHMth+UTNKi7AGP/kY=,tag:Uit2EguI0/FbUBGdrCPgcw==,type:comment]
+#ENC[AES256_GCM,data:TCYhxDYVkeB5hbGsGQL01as3jqArV/iz,iv:pJQThnlL6OcAj6Gu0u5cBuMYx5sEDaI4kNaOAqcuByc=,tag:SChnfCHvTkpK38beOlnJcQ==,type:comment]
+#ENC[AES256_GCM,data:OYxN3SeUq7UDdIl6YU/Yf7Y6Tr7RTHn1l3SwgrlCDmPjRuvl,iv:1EOAzaGUu9GQXv7DUlBb4CuKP21oDVv0jKlyFUAb9j8=,tag:Xxi7Xhaye7aRwAVMUdOkYQ==,type:comment]
+sops:
+    age:
+        - recipient: age1v9l673n53dy5dl4ucecuk6val9lqulq2nkvsmj5gjxumf8sjh5hsgjj09h
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVWlR2ekM3V0xzVGM1Wng5
+            a0JhM0lmUnV0OU0weC8yRVhQVXdWLzlGa1dJCkE2N2JiUHlnVENTR0FQU1B3bFhZ
+            SzNKWXBzQWRId2xOc1MydzdrbUkydlUKLS0tIHlOQkxvQjFZUGpJZHpuL0Z4bWZM
+            Qm8xNVFRUnczVUFZT2ZMRFl6aEVFOVUKNg/JtCmXLCgzgACAC5/XyGPR+z0qahC8
+            sjLl54OKoH2FaZ9/H7eIooOaRqlT22aBkwHbDVZibtu+D07V2pGDUQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-12T01:27:25Z"
+    mac: ENC[AES256_GCM,data:y76YTfHGBubsmruJo0au3QeDnZIUSW0p8iEoUVGj6XhfKVSJ9nt0ERvFKPwsD79ooUJ5IrO2NeNiwBTBHWs8zai3EDd8JI1MkNvGy3c01isEm1ATi1Kh+zJFx7qrPfVFaaK5mfWX0ZN1fLmwLy2AUeCqmQPjk16qgIqrOZASIgA=,iv:VOyUBcvVMMXOUeE+efWLCG6AkQka6R4GZwQjgQTnLVo=,tag:Qgxpwvz3N7ez8mG2o80M2w==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.12.2
