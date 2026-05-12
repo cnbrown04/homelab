@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: omni
+  namespace: omni-system
+spec:
+  selector:
+    app: omni
+  ports:
+    - name: web
+      port: 80
+      targetPort: 8080
+    - name: api
+      port: 443
+      targetPort: 8081

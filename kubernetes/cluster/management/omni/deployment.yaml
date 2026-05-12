@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omni
+  namespace: omni-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: omni
+  template:
+    metadata:
+      labels:
+        app: omni
+    spec:
+      containers:
+        - name: omni
+          image: ghcr.io/siderolabs/omni:latest
+          args:
+            - "--account-id=homelab"
+            - "--name=omni"
+          ports:
+            - containerPort: 8080
+              name: web
+            - containerPort: 8081
+              name: api
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: omni-data
