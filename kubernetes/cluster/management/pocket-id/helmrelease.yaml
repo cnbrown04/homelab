@@ -32,7 +32,7 @@ spec:
     config:
       core:
         # In-cluster consumers (e.g. Omni) reach Pocket ID without looping through NPM.
-        internalAppUrl: http://pocket-id.pocket-id-system.svc.cluster.local
+        internalAppUrl: http://pocket-id-system-pocket-id.pocket-id-system.svc.cluster.local
     ingress:
       enabled: true
       className: traefik
@@ -42,5 +42,9 @@ spec:
         traefik.ingress.kubernetes.io/router.tls: "true"
     persistence:
       data:
-        enabled: true
-        size: 5Gi
+        # Cluster has no default StorageClass; use hostPath like Omni PV pattern.
+        enabled: false
+        hostPath:
+          enabled: true
+          path: /var/mnt/pocket-id-data
+          type: DirectoryOrCreate
