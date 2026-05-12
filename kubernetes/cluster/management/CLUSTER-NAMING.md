@@ -8,17 +8,15 @@
 
 That shape matches **Cloudflare Universal SSL** for `*.calebbrown.dev` when proxied, and keeps NPM / cert management simple.
 
-**Examples (Omni):**
+**Example:**
 
 | Role | Hostname |
 |------|----------|
-| Omni UI / API | `omni.calebbrown.dev` |
-| Kubernetes API proxy | `omni-k8s.calebbrown.dev` |
-| Machine API (SideroLink) | `omni-siderolink.calebbrown.dev` |
+| Pocket ID (IdP UI + OIDC issuer) | `auth.calebbrown.dev` |
 
 Point DNS (or `*.calebbrown.dev` → NPM) and NPM proxy hosts at these names, then forward to the Traefik LoadBalancer IP for this cluster (`EXTERNAL-IP` on `Service/traefik` in `flux-system`).
 
-## Pocket ID (OIDC / `auth.calebbrown.dev`)
+## Pocket ID (`auth.calebbrown.dev`)
 
 | Role | Hostname |
 |------|----------|
@@ -29,14 +27,6 @@ Ingress uses the Traefik **`websecure`** entrypoint (HTTPS to the cluster on **:
 **One-time after Pocket ID is running:**
 
 1. Open **`https://auth.calebbrown.dev/setup`** and finish admin / passkey setup.
-2. In Pocket ID, create an **OIDC client** for Omni:
-   - **Client ID:** `omni` (must match `omni-auth.sops.yaml`).
-   - **Client secret:** decrypt the repo secret and use the same value:  
-     `sops -d kubernetes/cluster/management/omni/omni-auth.sops.yaml` → copy `clientSecret` from `omni-auth.yaml`.  
-     (If Pocket ID only issues random secrets, run `sops edit kubernetes/cluster/management/omni/omni-auth.sops.yaml` and set `clientSecret` to match what Pocket ID shows.)
-   - **Redirect URI:** `https://omni.calebbrown.dev/oidc/consume`
-3. NPM: add **`auth.calebbrown.dev`** (and any other app hostnames) on the **same** proxy host as Omni if you want—forward **`https://<traefik-vip>:443`** for all of them; Traefik routes by `Host`.
+2. NPM: add **`auth.calebbrown.dev`** and forward **`https://<traefik-vip>:443`**; Traefik routes by `Host`.
 
-Omni loads OIDC settings from a **second** config file (`omni-auth.sops.yaml` → `Secret/omni-auth`), merged with `omni-config`.
-
-**Note:** `auth.calebbrown.dev` is a **single** label under the apex (like `omni.calebbrown.dev`), so the same **`*.calebbrown.dev`** / Universal SSL patterns you use elsewhere often apply—confirm in Cloudflare / NPM that this hostname is covered by your cert.
+**Note:** `auth.calebbrown.dev` is a **single** label under the apex, so the same **`*.calebbrown.dev`** / Universal SSL patterns you use elsewhere often apply—confirm in Cloudflare / NPM that this hostname is covered by your cert.

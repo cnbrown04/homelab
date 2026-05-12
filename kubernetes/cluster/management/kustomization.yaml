@@ -5,4 +5,3 @@ resources:
   - metallb/
   - traefik/
   - pocket-id/
-  - omni/ # after traefik / pocket-id for DNS + OIDC

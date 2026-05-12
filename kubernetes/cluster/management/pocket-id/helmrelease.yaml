@@ -32,7 +32,7 @@ spec:
     analyticsDisabled: true
     config:
       core:
-        # In-cluster consumers (e.g. Omni) reach Pocket ID without looping through NPM.
+        # In-cluster OIDC clients reach Pocket ID without looping through NPM.
         internalAppUrl: http://pocket-id-system-pocket-id.pocket-id-system.svc.cluster.local
     ingress:
       enabled: true
@@ -44,7 +44,7 @@ spec:
     persistence:
       data:
         # Talos: ad-hoc hostPath under /var/mnt often hits read-only root; emptyDir boots without a StorageClass.
-        # For durable data, add a PV/PVC like omni (manual StorageClass + hostPath in machine config) later.
+        # For durable data, add a PV/PVC (StorageClass or hostPath in machine config) later.
         enabled: false
         hostPath:
           enabled: false
