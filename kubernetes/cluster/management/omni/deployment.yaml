@@ -21,6 +21,9 @@ spec:
           args:
             - "--account-id=homelab"
             - "--name=omni"
+            - "--sqlite-storage-path=/data/omni.db" # Point to our PVC mount
+            - "--auth-private-key-source=none"      # We will let it generate its own for now
+            - "--cert-auth-private-key-source=none" # Required for initialization
           ports:
             - containerPort: 8080
               name: web
