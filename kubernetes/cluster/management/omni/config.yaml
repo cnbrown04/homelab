@@ -27,8 +27,8 @@ data:
         enabled: false
     services:
       api:
-        advertisedURL: "https://omni.scylla.calebbrown.dev"
+        advertisedURL: "https://omni.calebbrown.dev"
       machineAPI:
-        advertisedURL: "https://omni-siderolink.scylla.calebbrown.dev"
+        advertisedURL: "https://omni-siderolink.calebbrown.dev"
       kubernetesProxy:
-        advertisedURL: "https://omni-k8s.scylla.calebbrown.dev"
+        advertisedURL: "https://omni-k8s.calebbrown.dev"

@@ -7,7 +7,7 @@ Welcome to the documentation for my home infrastructure. This lab is a mix of pr
 All external traffic enters through a central gateway and is routed via Reverse Proxy to internal services.
 
 - **Domain:** `*.calebbrown.dev` `*.cronarch.com`
-- **Kubernetes (cluster `scylla`):** Public names use `<service>.scylla.calebbrown.dev` (cluster name as DNS segment). See `kubernetes/cluster/management/CLUSTER-NAMING.md`.
+- **Kubernetes (cluster `scylla`):** Public names use `<service>.calebbrown.dev` (single label under the apex; cluster name is not in DNS). See `kubernetes/cluster/management/CLUSTER-NAMING.md`.
 - **Gateway:** Nginx Proxy Manager -> Wireguard (RackNerd VPS)
 - **Internal Network:** 10.0.1.0/24
 
