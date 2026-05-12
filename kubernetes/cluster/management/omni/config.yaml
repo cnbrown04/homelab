@@ -17,13 +17,18 @@ data:
           privateKeySource: "file:///etc/omni/keys/omni.asc"
       sqlite:
         path: "/data/omni-secondary.db"
+    # Omni requires an enabled identity provider (Auth0, OIDC, or SAML).
+    # initialUsers only seeds admin users after IdP login works; it is not enough alone.
+    # See: https://docs.siderolabs.com/omni/self-hosted/omni-configuration-example
     auth:
       initialUsers:
         - "caleb@cronarch.com"
+      auth0:
+        enabled: false
     services:
       api:
         advertisedURL: "https://omni.calebbrown.dev"
       machineAPI:
         advertisedURL: "https://omni-siderolink.calebbrown.dev"
       kubernetesProxy:
-        advertisedURL: "https://omni-k8s.calebbrown.dev" 
+        advertisedURL: "https://omni-k8s.calebbrown.dev"
