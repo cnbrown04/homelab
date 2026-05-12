@@ -21,9 +21,11 @@ spec:
           args:
             - "--account-id=homelab"
             - "--name=omni"
-            - "--sqlite-storage-path=/data/omni.db" # Point to our PVC mount
-            - "--auth-private-key-source=none"      # We will let it generate its own for now
-            - "--cert-auth-private-key-source=none" # Required for initialization
+            - "--storage-default-kind=etcd"
+            - "--storage-default-etcd-embedded=true"
+            - "--storage-default-etcd-embedded-db-path=/data/etcd"
+            - "--storage-default-etcd-private-key-source=file:///etc/omni/keys/omni.asc"
+            - "--auth-initial-admins=caleb@cronarch.com"
           ports:
             - containerPort: 8080
               name: web
@@ -32,7 +34,13 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: keys
+              mountPath: /etc/omni/keys
+              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: omni-data
+        - name: keys
+          secret:
+            secretName: omni-keys
