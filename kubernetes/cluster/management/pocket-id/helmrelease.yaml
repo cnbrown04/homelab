@@ -25,7 +25,7 @@ spec:
       name: pocket-id-helm-values
       valuesKey: values.yaml
   values:
-    host: https://pocketid.calebbrown.dev
+    host: https://pocketid.auth.calebbrown.dev
     trustProxy: true
     trustedPlatform: CF-Connecting-IP
     analyticsDisabled: true
@@ -36,7 +36,7 @@ spec:
     ingress:
       enabled: true
       className: traefik
-      host: pocketid.calebbrown.dev
+      host: pocketid.auth.calebbrown.dev
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: web
     persistence:
