@@ -22,7 +22,6 @@ spec:
   interval: 10m0s
   path: ./kubernetes/cluster/management
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -37,10 +36,10 @@ metadata:
   name: metallb-pools
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 5m0s
+  retryInterval: 30s
   path: ./kubernetes/cluster/management/metallb-pools
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
