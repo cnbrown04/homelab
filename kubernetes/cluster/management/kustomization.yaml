@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - flux-system/ # This ensures flux-system remains managed
   - omni/        # This "activates" the omni folder
+  - traefik/

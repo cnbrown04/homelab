@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omni-config
+  namespace: omni-system
+data:
+  omni.yaml: |
+    account:
+      id: "homelab"
+      name: "Caleb's Homelab"
+    storage:
+      default:
+        kind: "etcd"
+        etcd:
+          embedded: true
+          embeddedDBPath: "/data/etcd"
+          privateKeySource: "file:///etc/omni/keys/omni.asc"
+    auth:
+      initialUsers:
+        - "caleb@cronarch.com"
+    services:
+      api:
+        advertisedURL: "https://omni.calebbrown.dev"
+      machineAPI:
+        advertisedURL: "https://omni-siderolink.calebbrown.dev"
+      kubernetesProxy:
+        advertisedURL: "https://omni-k8s.calebbrown.dev" 

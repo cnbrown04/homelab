@@ -15,17 +15,13 @@ spec:
       labels:
         app: omni
     spec:
+      securityContext:
+        runAsUser: 0
       containers:
         - name: omni
-          image: ghcr.io/siderolabs/omni:latest
+          image: ghcr.io/siderolabs/omni:latest # Updated to latest
           args:
-            - "--account-id=homelab"
-            - "--name=omni"
-            - "--storage-default-kind=etcd"
-            - "--storage-default-etcd-embedded=true"
-            - "--storage-default-etcd-embedded-db-path=/data/etcd"
-            - "--storage-default-etcd-private-key-source=file:///etc/omni/keys/omni.asc"
-            - "--auth-initial-admins=caleb@cronarch.com"
+            - "--config-path=/etc/omni/config/omni.yaml"
           ports:
             - containerPort: 8080
               name: web
@@ -37,6 +33,9 @@ spec:
             - name: keys
               mountPath: /etc/omni/keys
               readOnly: true
+            - name: config
+              mountPath: /etc/omni/config
+              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -44,3 +43,6 @@ spec:
         - name: keys
           secret:
             secretName: omni-keys
+        - name: config
+          configMap:
+            name: omni-config
