@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: omni-auth
+    namespace: omni-system
+stringData:
+    omni-auth.yaml: ENC[AES256_GCM,data:Agk22GjkmGoXTHDdQpNehcTHxYtBu4mLV6Kli6vowFrbCLAdOWzuC2jo6IJQjZ+sdRG9gzAT3S2uAEG6as298kaCPl/Rwi30U1EOKC8dzGi5fqSOSfOXriLFfaBya4kq/QOyWLq/3vyEtrd+cDvUDcAiIm/Ng8awIwFfo8d7dZhRswn4YH8iU08C548JLGwxdRtBS7jh/RzFJ3EynMJuT9N70uIWq8cBpnQC4F5LYEYId/2oK0C4+7iCooqI+t6H2b5DtpnpFYVs1CVyu63SaZCXDUIGDb1JTWYdeURLVGNonelenApvMWijDWxo13sC48oSRXYxTfa32nBaq0PZdlWH6T8mRYB2mr+u7pZ0TveubKFKbonN1X0bhZw6Dh4iYQlQKAjisC8eKISqNw==,iv:4AaBapa7LXCf9mtxHvkn3xrWHEnNyhaCt6jqzUDHugE=,tag:tHBdEPL1ySbAcdrvRSqy/w==,type:str]
+sops:
+    age:
+        - recipient: age1v9l673n53dy5dl4ucecuk6val9lqulq2nkvsmj5gjxumf8sjh5hsgjj09h
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLYWVVelpyUDdoV3dZaUw0
+            UkxOcm1DYnNZVU5NTUk0UkJFN1dpcEMvU2k0ClUzQUEySjhIallrWWx6dU15QUE1
+            bm04S0t1Ri91Umh6ZVYxMlFrYnkxdWsKLS0tIDhua09uOXVWd1NPT2xRaFpOZmFI
+            eFlWUkxMOHJQUUdnb08ySW8vLzFUNFEKLRsOviHHILDgEQbF87NHDa7ZkTkdiWu0
+            MvkmTYLbCGq7oLeMIcYqbEre4n84c6fIdCvoL8Wp44yeGB/Y9E0JpA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-12T04:10:07Z"
+    mac: ENC[AES256_GCM,data:praJ7tp8C8YVAcdbk9YnYdVdg0oJp8Wkl4s+piDZE2iWAP8I2QQPy44E9BKM1ARM4YXhBzwN31w7+7RNv2Xe+K64fDIgUqL4pNA4vj6wno+jeqBowAzWZDCd4eXDyVP+r/XRlW5evy7YjPyTg0IetFaHGJz+U7+JfOSC/ro9ksI=,iv:saDv3Irs16C5PFKy56GdFqH0SAopNjQXCfTCkfi0ihc=,tag:RIhcNMpY7wgpcq4ijiBIww==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.2

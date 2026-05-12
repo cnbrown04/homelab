@@ -4,9 +4,8 @@ metadata:
   name: omni-ingress
   namespace: omni-system
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    # This is the "Magic Annotation" from your Helm chart:
+    # TLS terminates at NPM; Traefik receives HTTP on the web entrypoint.
+    traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/service.serversscheme: h2c
 spec:
   ingressClassName: traefik

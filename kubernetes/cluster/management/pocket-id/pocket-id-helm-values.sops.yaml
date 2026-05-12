@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: pocket-id-helm-values
+    namespace: flux-system
+stringData:
+    values.yaml: ENC[AES256_GCM,data:5kbAVQCLdEeU0qp5KbB6sy6lyxtKw5RddlDb/MvEfr+qXSU/+T78O63bxfkAxSNb38CEiMFsXdbp7R9ArO8=,iv:XnYINlWtweGXytlfg4rYMlBojM4hnrHfuav7OPBP+H0=,tag:KzYnCm4qTSuPHWkIgzcJLQ==,type:str]
+sops:
+    age:
+        - recipient: age1v9l673n53dy5dl4ucecuk6val9lqulq2nkvsmj5gjxumf8sjh5hsgjj09h
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4cDhwUE9OQlJmeUZRME5R
+            b1lmL2Z3NStmZ0Z3eTBsV2hsakZMeksrK1I4ClJBUDNDVVRjb2dTd21kOXhxUlpy
+            aWFNVU5Naklab1VwT3R3S2pCYkUwQ0UKLS0tIENMZm1heFpBSkVzd25MOUFodVdX
+            QXVoeGJhRXBtL25Xd25ublhldnVQMncK5ZT8JA5AJnsxliNPLRP0M7JKTj5eczew
+            jlu+D4RKgW5vnZRGkf+IE4mywfPVIqY3dYu+Bx9hsqQ9gMilsfjNUg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-12T04:09:32Z"
+    mac: ENC[AES256_GCM,data:IS20BFl510bIIHmxZHOEs8P4ThOLCL9R6MzDxkubWDbtxsWpmsmbo/oggXDTo/6L5YJ3M7LAxz8cbU7ccxABadVhd62jPS+nTLdyxA1z0iOIqA5uA4LUcQ5+HqZZIctgMcRXMIX2Ls6Xs4futaE0nrviYu7QXyBIGdNDNKBbj9E=,iv:sBLsrHCj/98ETd3mm3HEa4YjpPBEB0KL0QQazVZXGOE=,tag:IQCnKtpVO1H56Mi2snZeGw==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.2

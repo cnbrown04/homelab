@@ -1,0 +1,45 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pocket-id
+  namespace: flux-system
+spec:
+  interval: 1h
+  timeout: 10m
+  dependsOn:
+    - name: traefik
+      namespace: flux-system
+  chart:
+    spec:
+      chart: pocket-id
+      version: "2.1.1"
+      sourceRef:
+        kind: HelmRepository
+        name: anza-labs
+        namespace: flux-system
+  targetNamespace: pocket-id-system
+  install:
+    createNamespace: false
+  valuesFrom:
+    - kind: Secret
+      name: pocket-id-helm-values
+      valuesKey: values.yaml
+  values:
+    host: https://pocketid.calebbrown.dev
+    trustProxy: true
+    trustedPlatform: CF-Connecting-IP
+    analyticsDisabled: true
+    config:
+      core:
+        # In-cluster consumers (e.g. Omni) reach Pocket ID without looping through NPM.
+        internalAppUrl: http://pocket-id.pocket-id-system.svc.cluster.local
+    ingress:
+      enabled: true
+      className: traefik
+      host: pocketid.calebbrown.dev
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+    persistence:
+      data:
+        enabled: true
+        size: 5Gi
