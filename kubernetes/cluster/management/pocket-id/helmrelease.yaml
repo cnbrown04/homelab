@@ -38,7 +38,8 @@ spec:
       className: traefik
       host: auth.calebbrown.dev
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: web
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
     persistence:
       data:
         enabled: true

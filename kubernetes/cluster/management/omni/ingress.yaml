@@ -4,8 +4,9 @@ metadata:
   name: omni-ingress
   namespace: omni-system
   annotations:
-    # TLS terminates at NPM; Traefik receives HTTP on the web entrypoint.
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    # NPM can forward HTTPS to Traefik :443 (websecure); use SSL "Full" if Traefik uses its default cert.
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/service.serversscheme: h2c
 spec:
   ingressClassName: traefik

@@ -24,9 +24,9 @@ Point DNS (or `*.calebbrown.dev` → NPM) and NPM proxy hosts at these names, th
 |------|----------|
 | Pocket ID (IdP UI + OIDC issuer) | **`auth.calebbrown.dev`** |
 
-Ingress uses the Traefik **`web`** entrypoint (plain HTTP to the cluster) so NPM can forward **HTTP** to Traefik after terminating TLS.
+Ingress uses the Traefik **`websecure`** entrypoint (HTTPS to the cluster on **:443**) so NPM can use one pattern for every app: **SSL → `https://<traefik-vip>:443`**, with multiple domain names on the same proxy host if you like. Use Cloudflare/NPM **Full** (not strict) unless Traefik serves a publicly trusted cert for those hostnames.
 
-**One-time after Pocket ID is running**
+**One-time after Pocket ID is running:**
 
 1. Open **`https://auth.calebbrown.dev/setup`** and finish admin / passkey setup.
 2. In Pocket ID, create an **OIDC client** for Omni:
@@ -35,7 +35,7 @@ Ingress uses the Traefik **`web`** entrypoint (plain HTTP to the cluster) so NPM
      `sops -d kubernetes/cluster/management/omni/omni-auth.sops.yaml` → copy `clientSecret` from `omni-auth.yaml`.  
      (If Pocket ID only issues random secrets, run `sops edit kubernetes/cluster/management/omni/omni-auth.sops.yaml` and set `clientSecret` to match what Pocket ID shows.)
    - **Redirect URI:** `https://omni.calebbrown.dev/oidc/consume`
-3. NPM: proxy **`auth.calebbrown.dev`** and `omni.calebbrown.dev` (and the other Omni hosts) to Traefik as you already do for Omni.
+3. NPM: add **`auth.calebbrown.dev`** (and any other app hostnames) on the **same** proxy host as Omni if you want—forward **`https://<traefik-vip>:443`** for all of them; Traefik routes by `Host`.
 
 Omni loads OIDC settings from a **second** config file (`omni-auth.sops.yaml` → `Secret/omni-auth`), merged with `omni-config`.
 
