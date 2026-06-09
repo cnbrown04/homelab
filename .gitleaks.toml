@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore Talos example placeholder values in comments"
+regexes = [
+  "LS0tIEVYQU1QTEUgS0VZIC0tLQ==",  # decodes to "--- EXAMPLE KEY ---"
+  "LS0tIEVYQU1QTEUgQ0VSVElGSUNBVEUgLS0t",  # decodes to "--- EXAMPLE CERTIFICATE ---"
+]
