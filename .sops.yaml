@@ -1,9 +1,0 @@
-creation_rules:
-  - path_regex: (controlplane|worker)\.yaml$
-    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
-    encrypted_regex: ^(token|key|crt|secret|id|ca|trustdomain)$
-
-  - path_regex: talosconfig$
-    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
-    encrypted_regex: ^(ca|crt|key)$
-    unencrypted_regex: ^(context|contexts|endpoints)$
