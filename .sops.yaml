@@ -1,0 +1,12 @@
+creation_rules:
+  # Encrypt entire file — these are pure secret bundles
+  - path_regex: sisyphus/secrets\.yaml
+    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
+
+  - path_regex: sisyphus/talosconfig
+    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
+
+  # Encrypt only sensitive fields — public certs (crt) are left readable
+  - path_regex: sisyphus/(controlplane|worker)\.yaml
+    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
+    encrypted_regex: '^(key|secret|token|secretboxEncryptionSecret)$'
