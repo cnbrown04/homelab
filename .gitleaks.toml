@@ -1,0 +1,8 @@
+title = "homelab gitleaks config"
+
+[allowlist]
+  description = "Known false positives"
+  # base64("--- EXAMPLE KEY ---") — Talos-generated template placeholder in commented examples
+  regexes = ['''LS0tIEVYQU1QTEUgS0VZIC0tLQ==''']
+  # Claude Code local settings are gitignored globally but show up in --no-git scans
+  paths = ['''\.claude/''']
