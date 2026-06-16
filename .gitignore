@@ -1,0 +1,18 @@
+# Decrypted SOPS files — never commit plaintext secrets
+*.dec.yaml
+*.dec
+*.plain
+*.plaintext
+
+# Local kubeconfig exports
+kubeconfig
+kubeconfig.yaml
+*.kubeconfig
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Editor / OS
+.DS_Store
+*.swp
+*~
