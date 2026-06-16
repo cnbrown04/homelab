@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbittorrent-downloads-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nfsvers=4
+    - hard
+    - noatime
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: qbittorrent-downloads
+    volumeAttributes:
+      server: 10.0.1.111
+      share: /mnt/styx/data/media/downloads
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-config-pvc
+  namespace: qbittorrent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-downloads-pvc
+  namespace: qbittorrent
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: qbittorrent-downloads-pv
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+  labels:
+    app: qbittorrent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+        - name: gluetun
+          image: qmcgaw/gluetun:latest
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - "(ip rule del table 51820; ip -6 rule del table 51820) || true"
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              value: "protonvpn"
+            - name: VPN_TYPE
+              value: "wireguard"
+            - name: WIREGUARD_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gluetun-secret
+                  key: WIREGUARD_PRIVATE_KEY
+            - name: PORT_FORWARD_ONLY
+              value: "on"
+            - name: VPN_PORT_FORWARDING
+              value: "on"
+            - name: VPN_PORT_FORWARDING_UP_COMMAND
+              value: "/bin/sh /gluetun/scripts/port-up.sh {{PORT}} {{VPN_INTERFACE}}"
+            - name: VPN_PORT_FORWARDING_DOWN_COMMAND
+              value: "/bin/sh /gluetun/scripts/port-down.sh"
+          volumeMounts:
+            - name: tun
+              mountPath: /dev/net/tun
+            - name: gluetun-scripts
+              mountPath: /gluetun/scripts
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            - name: WEBUI_PORT
+              value: "8080"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      volumes:
+        - name: tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice
+        - name: gluetun-scripts
+          configMap:
+            name: gluetun-scripts
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbittorrent-downloads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+spec:
+  selector:
+    app: qbittorrent
+  ports:
+    - port: 8080
+      targetPort: 8080
