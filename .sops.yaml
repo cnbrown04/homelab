@@ -10,3 +10,8 @@ creation_rules:
   - path_regex: sisyphus/(controlplane|worker)\.yaml
     age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
     encrypted_regex: '^(key|secret|token|secretboxEncryptionSecret)$'
+
+  # Encrypt secret data fields only for workload secrets
+  - path_regex: sisyphus/workloads/.*\.enc\.yaml$
+    age: age1ygm9sy4ww2l95wwpta72g9se7lev3mqp9d898zxzs9a36yx9gsmqsvl3t3
+    encrypted_regex: '^(data|stringData)$'
