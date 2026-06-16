@@ -6,6 +6,7 @@ resources:
   - workloads/sonarr.yaml
   - workloads/radarr.yaml
   - workloads/seerr.yaml
+  - workloads/prowlarr.yaml
   - workloads/qbittorrent-secrets.yaml
   - workloads/qbittorrent.yaml
   - workloads/newt-infra.yaml
