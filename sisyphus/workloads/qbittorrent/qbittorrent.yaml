@@ -96,6 +96,8 @@ spec:
                 secretKeyRef:
                   name: gluetun-secret
                   key: WIREGUARD_PRIVATE_KEY
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.244.0.0/16,10.96.0.0/12"
             - name: PORT_FORWARD_ONLY
               value: "on"
             - name: VPN_PORT_FORWARDING
