@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seerr
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/seerr-team/seerr.git
+      targetRevision: main
+      path: charts/seerr-chart
+      helm:
+        values: |
+          config:
+            persistence:
+              storageClass: local-path
+              size: 5Gi
+          volumes:
+            - name: media
+              persistentVolumeClaim:
+                claimName: seerr-media-pvc
+          volumeMounts:
+            - name: media
+              mountPath: /media
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/seerr
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seerr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
