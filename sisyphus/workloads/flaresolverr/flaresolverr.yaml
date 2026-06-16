@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: flaresolverr
-          image: ghcr.io/flaresolverr/flaresolverr:latest
+          image: 21hsmw/flaresolverr:nodriver
           ports:
             - containerPort: 8191
           env:
@@ -31,6 +31,8 @@ spec:
               value: "none"
             - name: TZ
               value: "America/Chicago"
+            - name: DRIVER
+              value: "nodriver"
           resources:
             requests:
               cpu: 250m
