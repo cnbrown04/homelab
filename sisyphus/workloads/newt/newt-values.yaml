@@ -1,0 +1,14 @@
+newtInstances:
+- acceptClients: true
+  auth:
+    existingSecretName: newt-main-tunnel-auth
+  enabled: true
+  name: main-tunnel
+  nativeMode:
+    enabled: true
+  configPersistence:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: newt-config-pvc
+    mountPath: "/.config/newt-client"
+  generateAndSaveKeyTo: "/.config/newt-client/private.key"
