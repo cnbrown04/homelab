@@ -9,6 +9,7 @@ spec:
     repoURL: https://github.com/cnbrown04/homelab.git
     path: sisyphus/workloads/qbittorrent
     targetRevision: HEAD
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: qbittorrent
