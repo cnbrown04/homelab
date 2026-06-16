@@ -3,6 +3,9 @@ kind: Kustomization
 resources:
   - infrastructure/csi-driver-nfs.yaml
   - workloads/jellyfin.yaml
+  - workloads/sonarr.yaml
+  - workloads/radarr.yaml
+  - workloads/seerr.yaml
   - workloads/newt-infra.yaml
   - workloads/newt-secrets.yaml
   - workloads/newt.yaml
