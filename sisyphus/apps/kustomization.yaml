@@ -13,3 +13,4 @@ resources:
   - workloads/newt-infra.yaml
   - workloads/newt-secrets.yaml
   - workloads/newt.yaml
+  - workloads/website.yaml
