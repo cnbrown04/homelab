@@ -5,11 +5,11 @@ Talos Linux Kubernetes cluster (sisyphus) managed via ArgoCD GitOps.
 ## Cluster access
 
 ArgoCD UI: https://argocd.calebbrown.dev
-- Pangolin → `10.98.16.158:80` (ClusterIP, HTTP — TLS terminated by Pangolin)
+- Pangolin → `argocd-server.argocd.svc.cluster.local:80` (HTTP — TLS terminated by Pangolin)
 - Initial admin password: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
 Jellyfin: https://jellyfin.calebbrown.dev
-- Pangolin → `10.97.193.235:8096` (ClusterIP)
+- Pangolin → `jellyfin.jellyfin.svc.cluster.local:8096`
 
 ## Adding a new workload
 
@@ -39,6 +39,6 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 
 | App | URL | ClusterIP:Port |
 |-----|-----|----------------|
-| Jellyfin | jellyfin.calebbrown.dev | 10.97.193.235:8096 |
-| ArgoCD | argocd.calebbrown.dev | 10.98.16.158:80 |
+| Jellyfin | jellyfin.calebbrown.dev | jellyfin.jellyfin.svc.cluster.local:8096 |
+| ArgoCD | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 |
 | Newt | — | tunnel only |
