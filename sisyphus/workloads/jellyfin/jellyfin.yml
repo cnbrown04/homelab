@@ -83,6 +83,103 @@ spec:
       labels:
         app: jellyfin
     spec:
+      initContainers:
+        - name: prepare-jellyfin-web
+          image: jellyfin/jellyfin:latest
+          command:
+            - /bin/sh
+            - -c
+            - cp -a /jellyfin/jellyfin-web/. /abyss-web/
+          volumeMounts:
+            - name: jellyfin-web
+              mountPath: /abyss-web
+        - name: install-abyss-theme
+          image: python:3.12-alpine
+          command:
+            - python3
+            - -c
+          args:
+            - |
+              import glob
+              import os
+              import shutil
+              import urllib.request
+              import xml.etree.ElementTree as ET
+
+              repo = "https://raw.githubusercontent.com/AumGupta/abyss-jellyfin/main"
+              web_dir = "/jellyfin-web"
+              ui_dir = os.path.join(web_dir, "ui")
+              css_import = "@import url('https://cdn.jsdelivr.net/gh/AumGupta/abyss-jellyfin@main/abyss.css');"
+
+              def download(path):
+                  with urllib.request.urlopen(f"{repo}/{path}", timeout=30) as response:
+                      return response.read()
+
+              os.makedirs(ui_dir, exist_ok=True)
+              for source, target in (
+                  ("scripts/spotlight/spotlight.html", "spotlight.html"),
+                  ("scripts/spotlight/spotlight.css", "spotlight.css"),
+              ):
+                  content = download(source)
+                  destination = os.path.join(ui_dir, target)
+                  if not os.path.exists(destination) or open(destination, "rb").read() != content:
+                      with open(destination, "wb") as handle:
+                          handle.write(content)
+                      print(f"Updated {destination}")
+
+              replacement_chunk = download("scripts/spotlight/home-html.chunk.js")
+              chunk_files = glob.glob(os.path.join(web_dir, "home-html.*.chunk.js"))
+              if chunk_files:
+                  chunk_file = chunk_files[0]
+                  with open(chunk_file, "rb") as handle:
+                      current_chunk = handle.read()
+                  if b"abyss-spotlight-frame" not in current_chunk and b"featurediframe" not in current_chunk:
+                      backup = f"{chunk_file}.bak"
+                      if not os.path.exists(backup):
+                          shutil.copy2(chunk_file, backup)
+                      with open(chunk_file, "wb") as handle:
+                          handle.write(replacement_chunk)
+                      print(f"Patched {chunk_file}")
+                  else:
+                      print(f"{chunk_file} already contains Abyss Spotlight")
+              else:
+                  print("WARNING: no home-html.*.chunk.js file found; skipped Spotlight patch")
+
+              branding_candidates = ("/config/config/branding.xml", "/config/branding.xml")
+              branding_file = next((path for path in branding_candidates if os.path.exists(path)), branding_candidates[0])
+              os.makedirs(os.path.dirname(branding_file), exist_ok=True)
+
+              if os.path.exists(branding_file):
+                  tree = ET.parse(branding_file)
+                  root = tree.getroot()
+              else:
+                  root = ET.Element("BrandingOptions")
+                  tree = ET.ElementTree(root)
+
+              def ensure_child(name, default=""):
+                  child = root.find(name)
+                  if child is None:
+                      child = ET.SubElement(root, name)
+                      child.text = default
+                  return child
+
+              ensure_child("LoginDisclaimer")
+              custom_css = ensure_child("CustomCss")
+              existing_css = custom_css.text or ""
+              if "AumGupta/abyss-jellyfin" not in existing_css:
+                  custom_css.text = css_import if not existing_css.strip() else f"{css_import}\n\n{existing_css}"
+                  print(f"Added Abyss CSS import to {branding_file}")
+              else:
+                  print(f"{branding_file} already contains Abyss CSS import")
+              ensure_child("SplashscreenEnabled", "false")
+
+              ET.indent(tree, space="  ")
+              tree.write(branding_file, encoding="utf-8", xml_declaration=True)
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: jellyfin-web
+              mountPath: /jellyfin-web
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:latest
@@ -96,6 +193,8 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /media
+            - name: jellyfin-web
+              mountPath: /jellyfin/jellyfin-web
           resources:
             requests:
               cpu: 500m
@@ -110,6 +209,8 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: jellyfin-media-pvc
+        - name: jellyfin-web
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
