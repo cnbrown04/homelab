@@ -126,8 +126,6 @@ spec:
               name: webui
             - containerPort: 8266
               name: server
-            - containerPort: 8267
-              name: node
           env:
             - name: TZ
               value: "America/Chicago"
@@ -145,13 +143,46 @@ spec:
               value: "8265"
             - name: inContainer
               value: "true"
+          volumeMounts:
+            - name: server
+              mountPath: /app/server
+            - name: config
+              mountPath: /app/configs
+            - name: logs
+              mountPath: /app/logs
+            - name: media
+              mountPath: /media
+            - name: transcode-cache
+              mountPath: /temp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+        - name: tdarr-node
+          image: ghcr.io/haveagitgat/tdarr_node:latest
+          env:
+            - name: TZ
+              value: "America/Chicago"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK_SET
+              value: "002"
+            - name: serverIP
+              value: "localhost"
+            - name: serverPort
+              value: "8266"
+            - name: inContainer
+              value: "true"
             - name: ffmpegVersion
               value: "6"
             - name: nodeName
               value: "tdarr-node"
           volumeMounts:
-            - name: server
-              mountPath: /app/server
             - name: config
               mountPath: /app/configs
             - name: logs
