@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stalwart-etc-pvc
+  namespace: stalwart
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stalwart-data-pvc
+  namespace: stalwart
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stalwart
+  namespace: stalwart
+  labels:
+    app: stalwart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stalwart
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: stalwart
+    spec:
+      containers:
+        - name: stalwart
+          image: stalwartlabs/stalwart:latest
+          ports:
+            - containerPort: 25
+              name: smtp
+            - containerPort: 587
+              name: submission
+            - containerPort: 465
+              name: smtps
+            - containerPort: 143
+              name: imap
+            - containerPort: 993
+              name: imaps
+            - containerPort: 8080
+              name: admin
+          volumeMounts:
+            - name: etc
+              mountPath: /etc/stalwart
+            - name: data
+              mountPath: /var/lib/stalwart
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      volumes:
+        - name: etc
+          persistentVolumeClaim:
+            claimName: stalwart-etc-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: stalwart-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stalwart
+  namespace: stalwart
+spec:
+  selector:
+    app: stalwart
+  ports:
+    - port: 25
+      targetPort: 25
+      name: smtp
+    - port: 587
+      targetPort: 587
+      name: submission
+    - port: 465
+      targetPort: 465
+      name: smtps
+    - port: 143
+      targetPort: 143
+      name: imap
+    - port: 993
+      targetPort: 993
+      name: imaps
+    - port: 8080
+      targetPort: 8080
+      name: admin
