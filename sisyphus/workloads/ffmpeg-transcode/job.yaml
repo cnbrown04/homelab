@@ -11,13 +11,16 @@ metadata:
 spec:
   template:
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - name: ffmpeg
           image: linuxserver/ffmpeg
           command:
             - ffmpeg
             - -i
-            - /media/PLUR1BUS - S01E01 - We Is Us WEBDL-2160p Proper.mkv
+            - /media/tv/PLUR1BUS/Season 1/PLUR1BUS - S01E01 - We Is Us WEBDL-2160p Proper.mkv
             - -vf
             - scale=1920:-2
             - -c:v
@@ -30,12 +33,7 @@ spec:
             - aac
             - -b:a
             - 192k
-            - /media/PLUR1BUS - S01E01 - We Is Us 1080p.mkv
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
+            - /media/tv/PLUR1BUS/Season 1/PLUR1BUS - S01E01 - We Is Us 1080p.mkv
           volumeMounts:
             - name: media
               mountPath: /media
@@ -43,5 +41,5 @@ spec:
         - name: media
           nfs:
             server: 10.0.1.111
-            path: /mnt/styx/data/media/tv/PLUR1BUS/Season 1
+            path: /mnt/styx/data/media
       restartPolicy: Never
