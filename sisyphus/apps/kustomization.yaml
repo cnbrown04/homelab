@@ -15,4 +15,3 @@ resources:
   - workloads/newt.yaml
   - workloads/website.yaml
   - workloads/stalwart.yaml
-  - workloads/tdarr.yaml
