@@ -31,6 +31,11 @@ spec:
             - -b:a
             - 192k
             - /media/PLUR1BUS - S01E01 - We Is Us 1080p.mkv
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           volumeMounts:
             - name: media
               mountPath: /media
