@@ -12,6 +12,27 @@ spec:
       storage: 1Gi
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: stalwart-data-pv
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nfsvers=4
+    - hard
+    - noatime
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: stalwart-data
+    volumeAttributes:
+      server: 10.0.1.111
+      share: /mnt/styx/data/stalwart
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: stalwart-data-pvc
@@ -19,10 +40,11 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: ""
+  volumeName: stalwart-data-pv
   resources:
     requests:
-      storage: 20Gi
+      storage: 30Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
