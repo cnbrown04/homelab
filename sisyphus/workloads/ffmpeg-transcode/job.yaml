@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ffmpeg-transcode
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ffmpeg-transcode
+  namespace: ffmpeg-transcode
+spec:
+  template:
+    spec:
+      containers:
+        - name: ffmpeg
+          image: linuxserver/ffmpeg
+          command:
+            - ffmpeg
+            - -i
+            - /media/PLUR1BUS - S01E01 - We Is Us WEBDL-2160p Proper.mkv
+            - -vf
+            - scale=1920:-2
+            - -c:v
+            - libx264
+            - -b:v
+            - 4M
+            - -preset
+            - fast
+            - -c:a
+            - aac
+            - -b:a
+            - 192k
+            - /media/PLUR1BUS - S01E01 - We Is Us 1080p.mkv
+          volumeMounts:
+            - name: media
+              mountPath: /media
+      volumes:
+        - name: media
+          nfs:
+            server: 10.0.1.111
+            path: /mnt/styx/data/media/tv/PLUR1BUS/Season 1
+      restartPolicy: Never
