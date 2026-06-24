@@ -128,3 +128,18 @@ spec:
     - port: 8080
       targetPort: 8080
       name: admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stalwart-admin
+  namespace: stalwart
+spec:
+  type: NodePort
+  selector:
+    app: stalwart
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30880
+      name: admin
