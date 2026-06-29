@@ -5,14 +5,40 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://github.com/cnbrown04/homelab.git
-    path: sisyphus/apps/workloads/media
-    targetRevision: HEAD
+  sources:
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/media
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/qbittorrent-secrets
+      plugin:
+        name: sops-decrypt
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/seerr
+    - repoURL: https://github.com/seerr-team/seerr.git
+      targetRevision: main
+      path: charts/seerr-chart
+      helm:
+        values: |
+          config:
+            persistence:
+              storageClass: local-path
+              size: 5Gi
+          volumes:
+            - name: media
+              persistentVolumeClaim:
+                claimName: seerr-media-pvc
+          volumeMounts:
+            - name: media
+              mountPath: /media
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: seerr
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
