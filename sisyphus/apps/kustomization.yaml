@@ -16,3 +16,5 @@ resources:
   - workloads/website.yaml
   - workloads/stalwart.yaml
   - workloads/ffmpeg-transcode.yaml
+  - workloads/pangolin-routes-secrets.yaml
+  - workloads/pangolin-routes.yaml
