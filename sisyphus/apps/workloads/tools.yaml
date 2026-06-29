@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tools
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/tools
+    - repoURL: https://charts.netbox.community
+      chart: netbox
+      targetRevision: "*"
+      helm:
+        releaseName: netbox
+        valuesObject:
+          postgresql:
+            primary:
+              persistence:
+                storageClass: local-path
+                size: 10Gi
+          redis:
+            master:
+              persistence:
+                storageClass: local-path
+                size: 2Gi
+          persistence:
+            enabled: true
+            storageClass: local-path
+            size: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: netbox
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
