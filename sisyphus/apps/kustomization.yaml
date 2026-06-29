@@ -14,5 +14,5 @@ resources:
   - workloads/newt-secrets.yaml
   - workloads/newt.yaml
   - workloads/website.yaml
-  - workloads/stalwart.yaml
+
   - workloads/ffmpeg-transcode.yaml
