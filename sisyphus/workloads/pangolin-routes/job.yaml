@@ -30,11 +30,16 @@ spec:
                 secretKeyRef:
                   name: pangolin-routes-secret
                   key: PANGOLIN_ORG_ID
-            - name: PANGOLIN_API_KEY
+            - name: PANGOLIN_EMAIL
               valueFrom:
                 secretKeyRef:
                   name: pangolin-routes-secret
-                  key: PANGOLIN_API_KEY
+                  key: PANGOLIN_EMAIL
+            - name: PANGOLIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pangolin-routes-secret
+                  key: PANGOLIN_PASSWORD
           volumeMounts:
             - name: blueprint
               mountPath: /blueprint
