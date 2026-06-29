@@ -28,6 +28,7 @@ spec:
               existingClaim: newt-config-pvc
               mountPath: /.config/newt-client
             generateAndSaveKeyTo: /.config/newt-client/private.key
+            blueprintFile: /etc/newt/blueprint.yaml
             blueprintData: |
               public-resources:
                 jellyfin:
