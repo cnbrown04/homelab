@@ -16,10 +16,13 @@ spec:
         name: sops-decrypt
     - repoURL: https://charts.fossorial.io
       chart: newt
-      targetRevision: 1.13.0
+      targetRevision: 1.5.0
       helm:
         releaseName: newt
         valuesObject:
+          global:
+            image:
+              tag: "1.13.0"
           newtInstances:
             - name: main-tunnel
               enabled: true
