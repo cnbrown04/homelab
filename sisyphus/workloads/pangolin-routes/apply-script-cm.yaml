@@ -5,27 +5,49 @@ metadata:
   namespace: pangolin
 data:
   apply.py: |
-    import os, json, yaml, base64, urllib.request, urllib.error, sys
+    import os, json, yaml, urllib.request, urllib.error, urllib.parse, sys, http.cookiejar
 
     endpoint = os.environ["PANGOLIN_ENDPOINT"].rstrip("/")
     org_id = os.environ["PANGOLIN_ORG_ID"]
-    api_key = os.environ["PANGOLIN_API_KEY"]
+    email = os.environ["PANGOLIN_EMAIL"]
+    password = os.environ["PANGOLIN_PASSWORD"]
+
+    # Pangolin's CSRF check is a fixed sentinel header value, not a real token
+    CSRF = "x-csrf-protection"
+
+    cj = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+
+    def call(path, method="GET", body=None):
+        data = json.dumps(body).encode() if body is not None else None
+        req = urllib.request.Request(f"{endpoint}{path}", data=data, method=method)
+        req.add_header("Content-Type", "application/json")
+        req.add_header("X-CSRF-Token", CSRF)
+        try:
+            with opener.open(req) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            print(f"HTTP {e.code} on {method} {path}: {e.read().decode()}", file=sys.stderr)
+            raise
+
+    print("Logging in...")
+    call("/api/v1/auth/login", "POST", {"email": email, "password": password})
 
     with open("/blueprint/blueprint.yaml") as f:
-        data = yaml.safe_load(f)
+        blueprint_yaml = f.read()
+    yaml.safe_load(blueprint_yaml)  # validate before sending
 
-    b64 = base64.b64encode(json.dumps(data).encode()).decode()
-    body = json.dumps({"blueprint": b64}).encode()
-    url = f"{endpoint}/api/v1/org/{org_id}/blueprint"
-
-    req = urllib.request.Request(url, data=body, method="PUT")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("Authorization", f"Bearer {api_key}")
+    print("Applying blueprint...")
+    result = call(f"/api/v1/org/{org_id}/blueprint", "PUT", {
+        "name": "homelab-gitops",
+        "blueprint": blueprint_yaml,
+        "source": "CLI",
+    })
+    print(result)
 
     try:
-        with urllib.request.urlopen(req) as resp:
-            print(f"Blueprint applied: HTTP {resp.status}")
-            print(resp.read().decode())
-    except urllib.error.HTTPError as e:
-        print(f"Error {e.code}: {e.read().decode()}", file=sys.stderr)
-        sys.exit(1)
+        call("/api/v1/auth/logout", "POST", {})
+    except Exception:
+        pass
+
+    print("Done.")
