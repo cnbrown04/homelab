@@ -20,7 +20,7 @@ data:
 
     req = urllib.request.Request(url, data=body, method="PUT")
     req.add_header("Content-Type", "application/json")
-    req.add_header("x-api-key", api_key)
+    req.add_header("Authorization", f"Bearer {api_key}")
 
     try:
         with urllib.request.urlopen(req) as resp:
