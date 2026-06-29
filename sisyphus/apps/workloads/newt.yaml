@@ -100,6 +100,15 @@ spec:
                         port: 8080
                         method: http
                         enabled: true
+                  netbox:
+                    name: "NetBox"
+                    mode: http
+                    full-domain: netbox.calebbrown.dev
+                    targets:
+                      - hostname: netbox.netbox.svc.cluster.local
+                        port: 8080
+                        method: http
+                        enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: newt

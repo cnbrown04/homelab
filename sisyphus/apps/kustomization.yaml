@@ -4,4 +4,5 @@ resources:
   - infrastructure/csi-driver-nfs.yaml
   - workloads/media.yaml
   - workloads/newt.yaml
+  - workloads/tools.yaml
   - workloads/website.yaml
