@@ -7,11 +7,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/cnbrown04/homelab.git
-    path: sisyphus/workloads/media
+    path: sisyphus/apps/workloads/media
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
