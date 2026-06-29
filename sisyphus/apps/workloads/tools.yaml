@@ -9,9 +9,9 @@ spec:
     - repoURL: https://github.com/cnbrown04/homelab.git
       targetRevision: HEAD
       path: sisyphus/workloads/tools
-    - repoURL: https://bootc.github.io/netbox-chart/
+    - repoURL: https://charts.boo.tc
       chart: netbox
-      targetRevision: "*"
+      targetRevision: "4.1.1"
       helm:
         releaseName: netbox
         valuesObject:
