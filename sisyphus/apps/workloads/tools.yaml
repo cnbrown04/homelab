@@ -17,6 +17,8 @@ spec:
         valuesObject:
           global:
             storageClass: local-path
+          postgresql:
+            existingSecretKey: password
   destination:
     server: https://kubernetes.default.svc
     namespace: netbox
