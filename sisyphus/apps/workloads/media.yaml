@@ -25,7 +25,7 @@ spec:
         values: |
           config:
             persistence:
-              storageClass: local-path
+              storageClass: nfs-config
               size: 5Gi
           volumes:
             - name: media
