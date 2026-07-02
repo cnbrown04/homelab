@@ -6,4 +6,5 @@ resources:
   - workloads/media.yaml
   - workloads/newt.yaml
   - workloads/tools.yaml
+  - workloads/termix.yaml
   - workloads/website.yaml
