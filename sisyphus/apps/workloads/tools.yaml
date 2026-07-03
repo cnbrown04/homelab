@@ -19,6 +19,8 @@ spec:
             storageClass: local-path
           replicaCount: 2
           revisionHistoryLimit: 2
+          valkey:
+            architecture: standalone
           externalDatabase:
             existingSecretKey: password
   destination:
