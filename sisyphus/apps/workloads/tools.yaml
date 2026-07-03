@@ -17,6 +17,8 @@ spec:
         valuesObject:
           global:
             storageClass: local-path
+          replicaCount: 2
+          revisionHistoryLimit: 2
           externalDatabase:
             existingSecretKey: password
   destination:
