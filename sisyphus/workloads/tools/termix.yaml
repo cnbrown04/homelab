@@ -38,9 +38,24 @@ spec:
           env:
             - name: PORT
               value: "8080"
+            - name: GUACD_HOST
+              value: "localhost"
+            - name: GUACD_PORT
+              value: "4822"
           volumeMounts:
             - name: data
               mountPath: /app/data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+        - name: guacd
+          image: guacamole/guacd:1.6.0
+          ports:
+            - containerPort: 4822
           resources:
             requests:
               cpu: 100m
