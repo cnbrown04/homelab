@@ -21,6 +21,8 @@ spec:
           revisionHistoryLimit: 2
           valkey:
             architecture: standalone
+          postgresql:
+            enabled: false
           externalDatabase:
             existingSecretKey: password
   destination:
