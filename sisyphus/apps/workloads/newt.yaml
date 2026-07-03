@@ -187,19 +187,19 @@ spec:
                           timeout: 5000
                           healthy-threshold: 2
                           unhealthy-threshold: 3
-                  netbox:
-                    name: "NetBox"
+                  termix:
+                    name: "Termix"
                     mode: http
-                    full-domain: netbox.calebbrown.dev
+                    full-domain: termix.calebbrown.dev
                     targets:
-                      - hostname: netbox.netbox.svc.cluster.local
+                      - hostname: termix.tools.svc.cluster.local
                         port: 8080
                         method: http
                         enabled: true
                         healthcheck:
                           enabled: true
                           scheme: http
-                          hostname: netbox.netbox.svc.cluster.local
+                          hostname: termix.tools.svc.cluster.local
                           port: 8080
                           path: /
                           method: GET
