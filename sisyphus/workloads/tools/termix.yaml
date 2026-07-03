@@ -39,7 +39,7 @@ spec:
             - name: PORT
               value: "8080"
             - name: GUACD_HOST
-              value: "localhost"
+              value: "termix.tools.svc.cluster.local"
             - name: GUACD_PORT
               value: "4822"
           volumeMounts:
@@ -77,5 +77,9 @@ spec:
   selector:
     app: termix
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080
+    - name: guacd
+      port: 4822
+      targetPort: 4822
