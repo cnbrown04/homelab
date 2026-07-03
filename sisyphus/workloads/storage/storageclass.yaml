@@ -7,7 +7,7 @@ parameters:
   server: 10.0.1.111
   share: /mnt/styx/data/config
   subDir: ${pvc.metadata.namespace}
-  onDeletePolicy: retain
+  onDelete: retain
 mountOptions:
   - nfsvers=4
   - hard
