@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: website
-          image: ghcr.io/cronarch/website:7179c67
+          image: ghcr.io/cronarch/website:d719bb4
           ports:
             - containerPort: 3000
           env:
