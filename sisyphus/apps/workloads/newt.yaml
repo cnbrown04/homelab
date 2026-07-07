@@ -208,6 +208,48 @@ spec:
                           timeout: 5000
                           healthy-threshold: 2
                           unhealthy-threshold: 3
+                  cronarch:
+                    name: "Cronarch Website"
+                    mode: http
+                    full-domain: cronarch.com
+                    targets:
+                      - hostname: website.website.svc.cluster.local
+                        port: 3000
+                        method: http
+                        enabled: true
+                        healthcheck:
+                          enabled: true
+                          scheme: http
+                          hostname: website.website.svc.cluster.local
+                          port: 3000
+                          path: /
+                          method: GET
+                          status: 200
+                          interval: 30000
+                          timeout: 5000
+                          healthy-threshold: 2
+                          unhealthy-threshold: 3
+                  cronarch-www:
+                    name: "Cronarch Website (www)"
+                    mode: http
+                    full-domain: www.cronarch.com
+                    targets:
+                      - hostname: website.website.svc.cluster.local
+                        port: 3000
+                        method: http
+                        enabled: true
+                        healthcheck:
+                          enabled: true
+                          scheme: http
+                          hostname: website.website.svc.cluster.local
+                          port: 3000
+                          path: /
+                          method: GET
+                          status: 200
+                          interval: 30000
+                          timeout: 5000
+                          healthy-threshold: 2
+                          unhealthy-threshold: 3
   destination:
     server: https://kubernetes.default.svc
     namespace: newt
