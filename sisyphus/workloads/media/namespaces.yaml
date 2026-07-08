@@ -17,3 +17,13 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: flaresolverr
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: calibre
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: audiobookshelf

@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: calibre-books-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nfsvers=4
+    - hard
+    - noatime
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: calibre-books
+    volumeAttributes:
+      server: 10.0.1.111
+      share: /mnt/styx/data/media/books
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-config-pvc
+  namespace: calibre
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-config
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-books-pvc
+  namespace: calibre
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: calibre-books-pv
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calibre
+  namespace: calibre
+  labels:
+    app: calibre
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calibre
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: calibre
+    spec:
+      securityContext:
+        seccompProfile:
+          type: Unconfined
+      containers:
+        - name: calibre
+          image: lscr.io/linuxserver/calibre:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+            - name: dshm
+              mountPath: /dev/shm
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: calibre-config-pvc
+        - name: books
+          persistentVolumeClaim:
+            claimName: calibre-books-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibre
+  namespace: calibre
+spec:
+  selector:
+    app: calibre
+  ports:
+    - name: gui
+      port: 8080
+      targetPort: 8080
+    - name: gui-https
+      port: 8081
+      targetPort: 8081

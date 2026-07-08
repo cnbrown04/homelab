@@ -40,6 +40,8 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 | App | URL | ClusterIP:Port |
 |-----|-----|----------------|
 | Jellyfin | jellyfin.calebbrown.dev | jellyfin.jellyfin.svc.cluster.local:8096 |
+| Calibre | books.calebbrown.dev | calibre.calibre.svc.cluster.local:8080 |
+| Audiobookshelf | audiobooks.calebbrown.dev | audiobookshelf.audiobookshelf.svc.cluster.local:80 |
 | ArgoCD | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 |
 | Cronarch website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 |
 | Newt | — | tunnel only |

@@ -22,7 +22,7 @@ spec:
         valuesObject:
           global:
             image:
-              tag: "1.13.0"
+              tag: "1.14.0"
           newtInstances:
             - name: main-tunnel
               enabled: true
@@ -223,6 +223,48 @@ spec:
                           hostname: website.website.svc.cluster.local
                           port: 3000
                           path: /
+                          method: GET
+                          status: 200
+                          interval: 30000
+                          timeout: 5000
+                          healthy-threshold: 2
+                          unhealthy-threshold: 3
+                  calibre:
+                    name: "Calibre"
+                    mode: http
+                    full-domain: books.calebbrown.dev
+                    targets:
+                      - hostname: calibre.calibre.svc.cluster.local
+                        port: 8080
+                        method: http
+                        enabled: true
+                        healthcheck:
+                          enabled: true
+                          scheme: http
+                          hostname: calibre.calibre.svc.cluster.local
+                          port: 8080
+                          path: /
+                          method: GET
+                          status: 200
+                          interval: 30000
+                          timeout: 5000
+                          healthy-threshold: 2
+                          unhealthy-threshold: 3
+                  audiobookshelf:
+                    name: "Audiobookshelf"
+                    mode: http
+                    full-domain: audiobooks.calebbrown.dev
+                    targets:
+                      - hostname: audiobookshelf.audiobookshelf.svc.cluster.local
+                        port: 80
+                        method: http
+                        enabled: true
+                        healthcheck:
+                          enabled: true
+                          scheme: http
+                          hostname: audiobookshelf.audiobookshelf.svc.cluster.local
+                          port: 80
+                          path: /healthcheck
                           method: GET
                           status: 200
                           interval: 30000
