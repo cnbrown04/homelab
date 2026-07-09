@@ -5,34 +5,10 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  sources:
-    - repoURL: https://github.com/cnbrown04/homelab.git
-      targetRevision: HEAD
-      path: sisyphus/workloads/tools
-    - repoURL: https://github.com/cnbrown04/homelab.git
-      targetRevision: HEAD
-      path: sisyphus/workloads/tools/secrets
-      plugin:
-        name: sops-decrypt
-    - repoURL: http://charts.netbox.oss.netboxlabs.com
-      chart: netbox
-      targetRevision: "8.3.22"
-      helm:
-        releaseName: netbox
-        valuesObject:
-          global:
-            storageClass: local-path
-          postgresql:
-            enabled: false
-          externalDatabase:
-            host: us-east-2.pg.psdb.cloud
-            port: 5432
-            database: postgres
-            username: postgres.741wa8z3hq2k
-            existingSecretName: netbox-db-secret
-            existingSecretKey: password
-            options:
-              sslmode: "verify-full"
+  source:
+    repoURL: https://github.com/cnbrown04/homelab.git
+    targetRevision: HEAD
+    path: sisyphus/workloads/tools
   destination:
     server: https://kubernetes.default.svc
     namespace: tools

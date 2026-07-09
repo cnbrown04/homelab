@@ -65,9 +65,6 @@ spec:
       labels:
         app: calibre
     spec:
-      securityContext:
-        seccompProfile:
-          type: Unconfined
       containers:
         - name: calibre
           image: lscr.io/linuxserver/calibre:latest

@@ -40,8 +40,7 @@ sisyphus/
                                        Helm chart from charts.fossorial.io. THE PANGOLIN BLUEPRINT
                                        LIVES HERE inline as `blueprintData` — every public
                                        hostname/route/healthcheck is defined in this one file.
-      tools.yaml                    -> sisyphus/workloads/tools (termix) + netbox Helm chart
-                                       (external Postgres on PlanetScale)
+      tools.yaml                    -> sisyphus/workloads/tools (termix)
       termix.yaml                   -> sisyphus/workloads/termix (standalone, duplicate of the
                                        termix bundled under tools/ — see note below)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
@@ -73,7 +72,6 @@ sisyphus/
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
 | Termix | termix or tools (see duplication note) | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | own PVC |
-| Netbox | tools | — (not yet in Pangolin blueprint) | n/a | external PlanetScale Postgres |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
