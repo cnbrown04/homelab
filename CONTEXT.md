@@ -41,8 +41,6 @@ sisyphus/
                                        LIVES HERE inline as `blueprintData` — every public
                                        hostname/route/healthcheck is defined in this one file.
       tools.yaml                    -> sisyphus/workloads/tools (termix)
-      termix.yaml                   -> sisyphus/workloads/termix (standalone, duplicate of the
-                                       termix bundled under tools/ — see note below)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
 
   workloads/                        Raw manifests, one dir per app, each with its own kustomization.yaml
@@ -54,7 +52,7 @@ sisyphus/
     seerr/, calibre/, audiobookshelf/    Individual app manifests, referenced by media/kustomization.yaml
     newt/                           Namespace, PVC, kustomization for the Newt tunnel client
                                      (Helm values/blueprint itself live in apps/workloads/newt.yaml)
-    tools/, termix/                 See "known duplication" note below
+    tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
     website/                        Cronarch marketing site manifests
 ```
 
@@ -71,7 +69,7 @@ sisyphus/
 | Flaresolverr | flaresolverr | — (internal only, used by prowlarr) | flaresolverr.flaresolverr.svc.cluster.local | none |
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
-| Termix | termix or tools (see duplication note) | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | own PVC |
+| Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
@@ -80,14 +78,6 @@ NFS server for everything above: `10.0.1.111`. Shares used: `/mnt/styx/data/conf
 (subdivided per-namespace by the `nfs-config` StorageClass) and `/mnt/styx/data/media`
 (and subdirectories `downloads`, `books`, `audiobooks`, mounted as dedicated PVs).
 
-**Known duplication to watch:** there are genuinely two separate live Termix
-deployments, both wired into `sisyphus/apps/kustomization.yaml`: the standalone
-one (`sisyphus/apps/workloads/termix.yaml` -> `sisyphus/workloads/termix/`,
-namespace `termix`, `local-path` storage, no guacd sidecar, exposed at
-`termix.calebbrown.dev`) and one bundled inside `tools` (`sisyphus/workloads/tools/termix.yaml`,
-namespace `tools`, `nfs-config` storage, includes a `guacd` sidecar container,
-not currently in the Pangolin blueprint). This is not a leftover to clean up
-without asking — confirm with the user which is canonical before removing either.
 
 ## Pangolin / Newt (public routing)
 
