@@ -119,15 +119,35 @@ tunnel — it has **no route to the pod/service CIDRs** — so Newt is reachable
 is a proxy for declared resources, not a subnet router. To get a shell on the
 tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
 
-**Newt's CPU limit gates total tunnel throughput.** Newt proxies every byte of
-every hosted service through a userspace TCP proxy, and the chart's default limit
-is `200m` (`global.resources`) — a fifth of a core for all traffic. That throttles
-the tunnel hard, and the symptom is not obvious: CFS throttling shows up as
-throughput stalling to zero for whole seconds with *no* packet loss and a growing
-congestion window, which reads like a network fault rather than a CPU one. Measured
-on the default limit: 16 Mbit/s up / 30 Mbit/s down, against a gigabit home line and
-a VPS benchmarked at 185 Mbit/s direct to the internet. `newtInstances[].resources`
-is now set explicitly; don't let it fall back to the chart default.
+**Two Newt settings gate tunnel throughput. Both defaulted badly.**
+
+1. **Native (kernel) WireGuard** — `global.nativeMode.enabled` plus
+   `newtInstances[].useNativeInterface`. **`newtInstances[].nativeMode.enabled` is
+   not a real key**; it was set here for months, Helm silently ignored it, and Newt
+   ran on its default securityContext (uid 65534, `capabilities.drop: [ALL]`),
+   falling back to wireguard-go's *userspace netstack* — every byte of every hosted
+   service through a Go TCP/IP stack. Native mode requires a privileged container
+   (root, `NET_ADMIN`, `SYS_MODULE`), which is why the `newt` namespace carries
+   `pod-security.kubernetes.io/enforce: privileged`; the cluster otherwise enforces
+   baseline, which forbids added capabilities. The tell in the logs is
+   `auth-daemon must be run as root` — if you see it, native mode is NOT engaged.
+2. **CPU limit** — the chart defaults to `200m` (`global.resources`). Newt proxies
+   all traffic in userspace, so that quota throttles the whole tunnel. CFS
+   throttling is easy to misread as a network fault: throughput stalls to zero for
+   whole seconds with *no* packet loss and a healthy congestion window.
+   `newtInstances[].resources` is now set explicitly.
+
+Measured on this link (Auburn ↔ RackNerd LA, 53ms RTT, symmetric gigabit at home):
+**445–513 Mbit/s direct, pod→VPS, bypassing the tunnel entirely** — versus 16 up /
+30 down through the tunnel on the bad config. The direct number is the benchmark to
+compare against; don't trust a public speedtest server to establish the VPS ceiling
+(serverius reported 185 Mbit/s and badly understated it). To re-measure the raw
+path: `iperf3 -s -1` on the VPS, `iperf3 -c <vps-ip> -t 15` from a pod.
+
+**Load-testing the tunnel takes services down.** Parallel unthrottled streams drive
+packet loss until WireGuard's own keepalives fail and the tunnel drops — Pangolin's
+UI stays up (it's local to the VPS) while everything proxied 502s. Cap with
+`-b`/`-P 1` and prefer testing the direct path, which can't affect the tunnel.
 
 The Newt Helm chart itself comes from `https://charts.fossorial.io` (chart `newt`);
 the client image tag is pinned separately via `global.image.tag` in the same file.
