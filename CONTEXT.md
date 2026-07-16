@@ -93,6 +93,23 @@ is the actual source of truth, not a separate Pangolin UI config (there isn't on
 tracked in-repo; the UI is only used for one-off things not yet migrated to the
 blueprint, if any).
 
+Resources can also be raw TCP (`mode: tcp` + `proxy-port`, no `full-domain`, and
+no `method` on targets) — see the `iperf` entry. A raw resource is only reachable
+from the internet if its `proxy-port` is also published on the **gerbil** container
+in the VPS `docker-compose.yml`; gerbil currently publishes 25, 80, 443, 587, 993,
+21820/udp and 51820/udp. That compose edit is the missing piece for the k8s API
+TODO. The `iperf` resource deliberately does *not* publish its port: it is used
+only from inside gerbil's own network namespace.
+
+VPS tunnel topology (useful and non-obvious): WireGuard does not exist on the VPS
+host — there is no `wg` binary and no `wg0`. Pangolin runs as Docker containers
+(`pangolin`, `gerbil`, `traefik`), and `wg0` lives inside **gerbil's** network
+namespace, addressed `100.89.128.1/24` (MTU 1280); traefik shares that namespace
+via `network_mode: service:gerbil`. gerbil routes only `100.89.128.0/24` over the
+tunnel — it has **no route to the pod/service CIDRs** — so Newt is reachable but
+is a proxy for declared resources, not a subnet router. To get a shell on the
+tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
+
 The Newt Helm chart itself comes from `https://charts.fossorial.io` (chart `newt`);
 the client image tag is pinned separately via `global.image.tag` in the same file.
 Check both the chart's index (`charts.fossorial.io/index.yaml`) and the client's
