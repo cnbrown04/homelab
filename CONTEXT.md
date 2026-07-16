@@ -137,6 +137,39 @@ tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
    whole seconds with *no* packet loss and a healthy congestion window.
    `newtInstances[].resources` is now set explicitly.
 
+**Newt's main tunnel caps at ~32 Mbit/s per TCP connection. This is architectural —
+do not go hunting for a config fix.** Newt's site tunnel to gerbil uses the old
+userspace `netstack` with *sequential* packet processing; only downstream/client
+tunnels use the faster `netstack2`. `nativeMode` (above) gives a kernel device for
+the **client** tunnel (`100.90.128.0/20`) and does **not** touch the main tunnel to
+gerbil (`100.89.128.0/24`) — enabling it changed throughput 32.3 → 32.8 Mbit/s, i.e.
+not at all. Kernel WireGuard for the site tunnel is an open feature request, not a
+setting. Gerbil (VPS side) already uses a real kernel interface and is not the
+bottleneck. Raising CPU helps only up to a point: sequential processing is
+single-threaded, so extra cores remove throttle stalls but don't lift the ceiling.
+Practical consequence: a single 4K stream (40–80 Mbit/s on one connection) will
+buffer; parallel connections aggregate higher but collapse the tunnel (see below).
+For context, most Newt users on this path report 8–10 Mbit/s — the CPU fix is why
+this cluster gets ~32.
+
+- Discussion: https://github.com/orgs/fosrl/discussions/512
+- Feature request (kernel WG + site-to-site): https://github.com/fosrl/pangolin/issues/2349
+- https://github.com/fosrl/pangolin/issues/924 · https://github.com/fosrl/pangolin/issues/2905
+- Workaround writeup (basic WG + MSS clamp): https://forum.hhf.technology/t/fix-slow-or-bursty-speed-in-pangolin-when-using-newt-tunnels/4082
+- Blueprint update bug: https://github.com/fosrl/pangolin/issues/2125
+
+**The only real fix is a Basic WireGuard site** (kernel WG, MTU 1280, TCP MSS clamp
+`--clamp-mss-to-pmtu`, `net.ipv4.ip_forward=1`), which bypasses Newt's proxy
+entirely. Pangolin still owns domains/routing, so blueprints survive — but targets
+on such a site resolve as `IP:port` from the VPS, not `*.svc.cluster.local`, since
+nothing resolves cluster DNS on that side. Blueprint targets accept a `site:` field,
+so a second Basic-WG site can serve just the bandwidth-heavy resources while Newt
+keeps the rest. `sisyphus/wireguard-patch.yaml` (the Talos wireguard kernel module)
+is currently used by nothing — it would finally matter for this.
+
+**MTU stays 1280.** Gerbil's default is client-wide and must match on the Newt side;
+raising it invites fragmentation and failed handshakes. Clamp MSS instead.
+
 Measured on this link (Auburn ↔ RackNerd LA, 53ms RTT, symmetric gigabit at home):
 **445–513 Mbit/s direct, pod→VPS, bypassing the tunnel entirely** — versus 16 up /
 30 down through the tunnel on the bad config. The direct number is the benchmark to
