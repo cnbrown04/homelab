@@ -292,6 +292,18 @@ spec:
                           timeout: 5000
                           healthy-threshold: 2
                           unhealthy-threshold: 3
+                  # Raw TCP, no domain. 5201 is not published on the gerbil
+                  # container, so this is not reachable from the internet — only
+                  # from inside gerbil's netns, which is where the iperf3 client
+                  # runs. Delete once tunnel benchmarking is done.
+                  iperf:
+                    name: "iperf3"
+                    mode: tcp
+                    proxy-port: 5201
+                    targets:
+                      - hostname: iperf.tools.svc.cluster.local
+                        port: 5201
+                        enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: newt
