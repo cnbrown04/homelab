@@ -27,6 +27,17 @@ spec:
             - name: main-tunnel
               enabled: true
               acceptClients: true
+              # The chart defaults to a 200m CPU limit. Newt copies every byte of
+              # every hosted service through a userspace TCP proxy, so that quota
+              # throttles the whole tunnel: measured 16 Mbit/s up / 30 Mbit/s down
+              # between a gigabit home line and a VPS that does 185 Mbit/s direct.
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "2"
+                  memory: "512Mi"
               auth:
                 existingSecretName: newt-main-tunnel-auth
               nativeMode:
