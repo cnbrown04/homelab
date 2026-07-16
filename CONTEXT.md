@@ -94,12 +94,21 @@ tracked in-repo; the UI is only used for one-off things not yet migrated to the
 blueprint, if any).
 
 Resources can also be raw TCP (`mode: tcp` + `proxy-port`, no `full-domain`, and
-no `method` on targets) — see the `iperf` entry. A raw resource is only reachable
-from the internet if its `proxy-port` is also published on the **gerbil** container
-in the VPS `docker-compose.yml`; gerbil currently publishes 25, 80, 443, 587, 993,
-21820/udp and 51820/udp. That compose edit is the missing piece for the k8s API
-TODO. The `iperf` resource deliberately does *not* publish its port: it is used
-only from inside gerbil's own network namespace.
+no `method` on targets) — see the `iperf` entry. **A blueprint entry alone is not
+enough**: the resource registers in Pangolin and shows up in the UI, but nothing
+ever listens unless the VPS also has
+
+1. a traefik entrypoint named `tcp-<proxy-port>` (address `:<port>/tcp`) in
+   `traefik_config.yml`, and
+2. a matching port published on the **gerbil** container in `docker-compose.yml`,
+   plus the VPS firewall opened — both needing a stack restart.
+
+Existing entrypoints are `tcp-25`, `tcp-587`, `tcp-993` (plus `web`/`websecure`);
+gerbil publishes 25, 80, 443, 587, 993, 21820/udp, 51820/udp. A raw resource whose
+`proxy-port` reuses one of those works with no VPS change — which is why `iperf`
+borrows 993. **Those two VPS edits are the missing piece for the k8s API TODO.**
+Note raw resources are served by traefik TCP routers, so proxy protocol settings
+in `dynamic_config.yml` apply; enabling it breaks backends that don't speak it.
 
 VPS tunnel topology (useful and non-obvious): WireGuard does not exist on the VPS
 host — there is no `wg` binary and no `wg0`. Pangolin runs as Docker containers
