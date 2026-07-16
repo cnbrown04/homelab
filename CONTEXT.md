@@ -40,7 +40,7 @@ sisyphus/
                                        Helm chart from charts.fossorial.io. THE PANGOLIN BLUEPRINT
                                        LIVES HERE inline as `blueprintData` — every public
                                        hostname/route/healthcheck is defined in this one file.
-      tools.yaml                    -> sisyphus/workloads/tools (termix)
+      tools.yaml                    -> sisyphus/workloads/tools (termix, iperf)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
 
   workloads/                        Raw manifests, one dir per app, each with its own kustomization.yaml
@@ -53,6 +53,8 @@ sisyphus/
     newt/                           Namespace, PVC, kustomization for the Newt tunnel client
                                      (Helm values/blueprint itself live in apps/workloads/newt.yaml)
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
+                                     plus `iperf` — an sshd+iperf3 pod for network testing,
+                                     ClusterIP-only, reached by SSH from Termix
     website/                        Cronarch marketing site manifests
 ```
 
@@ -70,6 +72,7 @@ sisyphus/
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
 | Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
+| iperf | tools | — (internal only, SSH in via Termix) | iperf.tools.svc.cluster.local:2222 | config: nfs-config (keeps SSH host keys stable across restarts) |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
