@@ -292,14 +292,16 @@ spec:
                           timeout: 5000
                           healthy-threshold: 2
                           unhealthy-threshold: 3
-                  # Raw TCP, no domain. 5201 is not published on the gerbil
-                  # container, so this is not reachable from the internet — only
-                  # from inside gerbil's netns, which is where the iperf3 client
-                  # runs. Delete once tunnel benchmarking is done.
+                  # Raw TCP, no domain. proxy-port must match an existing
+                  # `tcp-<port>` entrypoint in the VPS traefik_config.yml AND be
+                  # published on the gerbil container, or it never listens.
+                  # Borrows the unused tcp-993 (IMAPS) entrypoint to avoid a VPS
+                  # restart. TEMPORARY: 993 is internet-facing, so delete this
+                  # once tunnel benchmarking is done.
                   iperf:
                     name: "iperf3"
                     mode: tcp
-                    proxy-port: 5201
+                    proxy-port: 993
                     targets:
                       - hostname: iperf.tools.svc.cluster.local
                         port: 5201
