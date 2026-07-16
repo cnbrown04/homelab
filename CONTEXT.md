@@ -119,6 +119,16 @@ tunnel — it has **no route to the pod/service CIDRs** — so Newt is reachable
 is a proxy for declared resources, not a subnet router. To get a shell on the
 tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
 
+**Newt's CPU limit gates total tunnel throughput.** Newt proxies every byte of
+every hosted service through a userspace TCP proxy, and the chart's default limit
+is `200m` (`global.resources`) — a fifth of a core for all traffic. That throttles
+the tunnel hard, and the symptom is not obvious: CFS throttling shows up as
+throughput stalling to zero for whole seconds with *no* packet loss and a growing
+congestion window, which reads like a network fault rather than a CPU one. Measured
+on the default limit: 16 Mbit/s up / 30 Mbit/s down, against a gigabit home line and
+a VPS benchmarked at 185 Mbit/s direct to the internet. `newtInstances[].resources`
+is now set explicitly; don't let it fall back to the chart default.
+
 The Newt Helm chart itself comes from `https://charts.fossorial.io` (chart `newt`);
 the client image tag is pinned separately via `global.image.tag` in the same file.
 Check both the chart's index (`charts.fossorial.io/index.yaml`) and the client's
