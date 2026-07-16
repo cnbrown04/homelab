@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: iperf-config-pvc
+  namespace: tools
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-config
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf
+  namespace: tools
+  labels:
+    app: iperf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iperf
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: iperf
+    spec:
+      containers:
+        - name: openssh-server
+          image: lscr.io/linuxserver/openssh-server:latest
+          ports:
+            - containerPort: 2222
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: America/New_York
+            - name: USER_NAME
+              value: caleb
+            - name: PASSWORD_ACCESS
+              value: "false"
+            - name: SUDO_ACCESS
+              value: "true"
+            - name: PUBLIC_KEY
+              value: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP88BOfNMfJoF99u1UYpf3CDUGl5nv+Ovbh0B8fyaqTH caleb@auburn.edu"
+            - name: DOCKER_MODS
+              value: linuxserver/mods:universal-package-install
+            - name: INSTALL_PACKAGES
+              value: iperf3|iproute2|bind-tools|mtr|curl|tcpdump
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          # iperf3 is CPU-bound: a low limit throttles the test itself and
+          # understates tunnel throughput. Keep headroom above line rate.
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "4"
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: iperf-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iperf
+  namespace: tools
+spec:
+  selector:
+    app: iperf
+  ports:
+    - name: ssh
+      port: 2222
+      targetPort: 2222
