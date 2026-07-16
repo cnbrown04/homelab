@@ -1,16 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: iperf-config-pvc
-  namespace: tools
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: nfs-config
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,6 +44,14 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+          # Without this the pod reports Ready as soon as the container starts,
+          # while the package-install mod still runs and sshd isn't listening —
+          # the Service then routes to a closed port and ArgoCD calls it healthy.
+          readinessProbe:
+            tcpSocket:
+              port: 2222
+            initialDelaySeconds: 10
+            periodSeconds: 5
           # iperf3 is CPU-bound: a low limit throttles the test itself and
           # understates tunnel throughput. Keep headroom above line rate.
           resources:
@@ -67,9 +62,11 @@ spec:
               cpu: "4"
               memory: 512Mi
       volumes:
+        # Not an NFS PVC: sshd refuses to start if it can't own its host keys,
+        # and the nfs-config share won't allow the chown. Host keys regenerate
+        # on restart, so Termix will flag a changed key after a redeploy.
         - name: config
-          persistentVolumeClaim:
-            claimName: iperf-config-pvc
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
