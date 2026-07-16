@@ -72,7 +72,7 @@ sisyphus/
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
 | Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
-| iperf | tools | — (internal only, SSH in via Termix) | iperf.tools.svc.cluster.local:2222 | config: nfs-config (keeps SSH host keys stable across restarts) |
+| iperf | tools | — (internal only, SSH in via Termix) | iperf.tools.svc.cluster.local:2222 | none — `/config` is an emptyDir on purpose (sshd won't start if it can't chown its host keys, which nfs-config disallows) |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
