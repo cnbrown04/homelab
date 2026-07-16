@@ -23,13 +23,11 @@ spec:
           global:
             image:
               tag: "1.14.0"
-            # Use the kernel WireGuard interface instead of wireguard-go's
-            # userspace netstack. Without this Newt runs as uid 65534 with all
-            # capabilities dropped, silently falls back to userspace, and proxies
-            # every byte of every service through a Go TCP/IP stack — measured at
-            # ~32 Mbit/s per connection against a path that does 445-513 Mbit/s
-            # direct. Requires a privileged container; see the newt namespace's
-            # pod-security label.
+            # Elevates the pod to root + privileged + NET_ADMIN/SYS_MODULE, which
+            # kernel WireGuard requires. On its own it only emits
+            # USE_NATIVE_INTERFACE (client tunnels) — the main tunnel to gerbil is
+            # switched by extraEnv below. See the newt namespace's pod-security
+            # label; the cluster is otherwise baseline and would reject this pod.
             nativeMode:
               enabled: true
           newtInstances:
@@ -49,9 +47,19 @@ spec:
               auth:
                 existingSecretName: newt-main-tunnel-auth
               # NOT `nativeMode:` here — that key doesn't exist at instance level
-              # and Helm silently ignored it, which is why native mode never
-              # actually engaged. The instance-level key is useNativeInterface.
+              # and Helm silently ignored it. The instance-level key is
+              # useNativeInterface. This covers CLIENT tunnels only
+              # (USE_NATIVE_INTERFACE / --native).
               useNativeInterface: true
+              # The main tunnel to gerbil is a SEPARATE flag: --native-main /
+              # USE_NATIVE_MAIN_INTERFACE, added in newt 1.14.0. The chart exposes
+              # no value for it — templates/_helpers.tpl emits only
+              # USE_NATIVE_INTERFACE — so it has to go through extraEnv. Without
+              # this the main tunnel stays on wireguard-go's userspace netstack and
+              # every byte of every hosted service is copied through a Go TCP/IP
+              # stack: ~32 Mbit/s per connection on a path that measures 445-513.
+              extraEnv:
+                USE_NATIVE_MAIN_INTERFACE: "true"
               configPersistence:
                 enabled: true
                 type: persistentVolumeClaim

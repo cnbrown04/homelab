@@ -119,56 +119,82 @@ tunnel — it has **no route to the pod/service CIDRs** — so Newt is reachable
 is a proxy for declared resources, not a subnet router. To get a shell on the
 tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
 
-**Two Newt settings gate tunnel throughput. Both defaulted badly.**
+**Three Newt settings gate tunnel throughput. All defaulted badly.**
 
-1. **Native (kernel) WireGuard** — `global.nativeMode.enabled` plus
-   `newtInstances[].useNativeInterface`. **`newtInstances[].nativeMode.enabled` is
-   not a real key**; it was set here for months, Helm silently ignored it, and Newt
-   ran on its default securityContext (uid 65534, `capabilities.drop: [ALL]`),
-   falling back to wireguard-go's *userspace netstack* — every byte of every hosted
-   service through a Go TCP/IP stack. Native mode requires a privileged container
-   (root, `NET_ADMIN`, `SYS_MODULE`), which is why the `newt` namespace carries
+1. **Kernel WireGuard on the MAIN tunnel** — `--native-main` /
+   `USE_NATIVE_MAIN_INTERFACE`, added in newt **1.14.0**. This is the one that
+   matters: without it the main tunnel to gerbil terminates in wireguard-go's
+   *userspace netstack* and every byte of every hosted service is copied through a
+   Go TCP/IP stack. **The chart exposes no value for it** — `templates/_helpers.tpl`
+   emits only `USE_NATIVE_INTERFACE` — so it is set via
+   `newtInstances[].extraEnv: {USE_NATIVE_MAIN_INTERFACE: "true"}`.
+2. **Kernel WireGuard on CLIENT tunnels** — `--native` / `USE_NATIVE_INTERFACE`, via
+   `global.nativeMode.enabled` + `newtInstances[].useNativeInterface`. **These are a
+   different flag from (1) and do not affect the main tunnel.** Enabling them alone
+   moved throughput 32.3 → 32.8 Mbit/s, i.e. not at all: the kernel device appears
+   on the *client* subnet (`100.90.128.0/20`), not the gerbil tunnel
+   (`100.89.128.0/24`). Their real value here is the securityContext — they elevate
+   the pod to root + `privileged` + `NET_ADMIN`/`SYS_MODULE`, which (1) requires.
+   That is also why the `newt` namespace carries
    `pod-security.kubernetes.io/enforce: privileged`; the cluster otherwise enforces
-   baseline, which forbids added capabilities. The tell in the logs is
-   `auth-daemon must be run as root` — if you see it, native mode is NOT engaged.
+   baseline, which forbids added capabilities. Log tells: `auth-daemon must be run
+   as root` means the pod is NOT privileged; `WireGuard native device created and
+   configured` on a `100.90.x` address is the *client* device only.
+   Historical trap: **`newtInstances[].nativeMode.enabled` is not a real key**. It
+   was set here for months and Helm silently ignored it.
 2. **CPU limit** — the chart defaults to `200m` (`global.resources`). Newt proxies
    all traffic in userspace, so that quota throttles the whole tunnel. CFS
    throttling is easy to misread as a network fault: throughput stalls to zero for
    whole seconds with *no* packet loss and a healthy congestion window.
    `newtInstances[].resources` is now set explicitly.
 
-**Newt's main tunnel caps at ~32 Mbit/s per TCP connection. This is architectural —
-do not go hunting for a config fix.** Newt's site tunnel to gerbil uses the old
-userspace `netstack` with *sequential* packet processing; only downstream/client
-tunnels use the faster `netstack2`. `nativeMode` (above) gives a kernel device for
-the **client** tunnel (`100.90.128.0/20`) and does **not** touch the main tunnel to
-gerbil (`100.89.128.0/24`) — enabling it changed throughput 32.3 → 32.8 Mbit/s, i.e.
-not at all. Kernel WireGuard for the site tunnel is an open feature request, not a
-setting. Gerbil (VPS side) already uses a real kernel interface and is not the
+**On netstack, Newt's main tunnel caps at ~32 Mbit/s per TCP connection** — measured
+repeatedly (32.3 / 32.8 / 35.5 single-stream) against a path that does 445–513.
+Newt's site tunnel to gerbil defaults to the old userspace `netstack` with
+*sequential* packet processing; only downstream/client tunnels use the faster
+`netstack2`. Symptoms: zero retransmits, congestion window parked with headroom to
+spare, throughput app-limited — the network is never the constraint.
+**The fix is `--native-main` (setting 1 above), shipped in newt 1.14.0.** Older
+community threads and this file's earlier revisions claimed kernel WG for the site
+tunnel was an unshipped feature request — that was true before 1.14.0 and is now
+wrong. Gerbil (VPS side) already uses a real kernel interface and was never the
 bottleneck. Raising CPU helps only up to a point: sequential processing is
-single-threaded, so extra cores remove throttle stalls but don't lift the ceiling.
-Practical consequence: a single 4K stream (40–80 Mbit/s on one connection) will
-buffer; parallel connections aggregate higher but collapse the tunnel (see below).
-For context, most Newt users on this path report 8–10 Mbit/s — the CPU fix is why
-this cluster gets ~32.
+single-threaded, so extra cores remove throttle stalls but don't lift the netstack
+ceiling. Practical consequence of leaving it on netstack: a single 4K stream
+(40–80 Mbit/s on one connection) buffers; parallel connections aggregate higher but
+collapse the tunnel (see below).
 
-- Discussion: https://github.com/orgs/fosrl/discussions/512
-- Feature request (kernel WG + site-to-site): https://github.com/fosrl/pangolin/issues/2349
+**Do not migrate to a Basic WireGuard site to chase throughput — it cannot work
+here.** Enforced in Pangolin's source, not just undocumented: `createTarget.ts`
+requires `isIpInCidr(targetData.ip, site.subnet)` for `type == "wireguard"`, so
+targets must be **IPs** and hostnames are rejected; sites get an auto-assigned
+**`/30`** (`gerbil.site_block_size`), i.e. four addresses with NAT required;
+`getAllowedIps()` computes one `/32` **per target**, so there is no subnet routing
+and `10.96.0.0/12` can never be routed; and `applyBlueprint.ts` filters
+`eq(sites.type, "newt")` before `addPeer`, so a blueprint target on a WG site
+applies cleanly and **silently never routes**. Newt is what resolves
+`*.svc.cluster.local` (it runs *inside* the cluster) — no other site type can, which
+is why targets here are DNS names rather than pinned ClusterIPs. Maintainer on
+fosrl/pangolin#524: *"You can only enter in local hostnames as they exist in your
+remote network if you use Newt"* and *"Basic WireGuard kind of fell by the wayside."*
+
+- Newt flags (`--native-main`, `--native`, `--interface-main`): https://docs.pangolin.net/manage/sites/configure-site
+- `--native-main` added in 1.14.0: https://github.com/fosrl/newt/releases
+- Throughput discussion (netstack, sequential processing): https://github.com/orgs/fosrl/discussions/512
+- Basic WG targets must be IPs (maintainer): https://github.com/fosrl/pangolin/issues/524
+- Site types and their limits: https://docs.pangolin.net/manage/sites/understanding-sites
+- Kernel WG + site-to-site (converted to discussion, predates 1.14.0): https://github.com/fosrl/pangolin/issues/2349
 - https://github.com/fosrl/pangolin/issues/924 · https://github.com/fosrl/pangolin/issues/2905
-- Workaround writeup (basic WG + MSS clamp): https://forum.hhf.technology/t/fix-slow-or-bursty-speed-in-pangolin-when-using-newt-tunnels/4082
 - Blueprint update bug: https://github.com/fosrl/pangolin/issues/2125
-
-**The only real fix is a Basic WireGuard site** (kernel WG, MTU 1280, TCP MSS clamp
-`--clamp-mss-to-pmtu`, `net.ipv4.ip_forward=1`), which bypasses Newt's proxy
-entirely. Pangolin still owns domains/routing, so blueprints survive — but targets
-on such a site resolve as `IP:port` from the VPS, not `*.svc.cluster.local`, since
-nothing resolves cluster DNS on that side. Blueprint targets accept a `site:` field,
-so a second Basic-WG site can serve just the bandwidth-heavy resources while Newt
-keeps the rest. `sisyphus/wireguard-patch.yaml` (the Talos wireguard kernel module)
-is currently used by nothing — it would finally matter for this.
 
 **MTU stays 1280.** Gerbil's default is client-wide and must match on the Newt side;
 raising it invites fragmentation and failed handshakes. Clamp MSS instead.
+
+`sisyphus/wireguard-patch.yaml` (Talos `machine.kernel.modules: [wireguard]`) has
+**never been applied** — `machine.kernel.modules` is still commented out in both
+`controlplane.yaml` and `worker.yaml`, and nothing references the patch. Talos ships
+WireGuard in-kernel for KubeSpan, so `--native-main` is expected to work without it;
+if native main fails to create its device, this patch is the first thing to try.
 
 Measured on this link (Auburn ↔ RackNerd LA, 53ms RTT, symmetric gigabit at home):
 **445–513 Mbit/s direct, pod→VPS, bypassing the tunnel entirely** — versus 16 up /
