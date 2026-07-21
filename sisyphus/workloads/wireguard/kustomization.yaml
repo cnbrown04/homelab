@@ -3,3 +3,11 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - wireguard.yaml
+
+# HAProxy gateway config. The hash suffix means editing haproxy.cfg changes the
+# ConfigMap name, which rolls the wireguard Deployment automatically — so adding
+# a service (a frontend/backend block) redeploys the proxy with no manual restart.
+configMapGenerator:
+  - name: wg-haproxy
+    files:
+      - haproxy.cfg

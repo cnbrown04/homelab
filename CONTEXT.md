@@ -59,12 +59,18 @@ sisyphus/
                                      (Helm values/blueprint itself live in apps/workloads/newt.yaml)
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
     website/                        Cronarch marketing site manifests
-    wireguard/                      Standalone WireGuard client (namespace: wireguard, privileged
-                                     PSA). linuxserver/wireguard runs a Pangolin-issued wg0.conf
-                                     and dials out to the VPS endpoint — no inbound port, no
-                                     Service. Config is disposable (emptyDir /config) — everything
-                                     meaningful is in the secret. Mounts wg0.conf at
-                                     /config/wg_confs/wg0.conf.
+    wireguard/                      Pangolin Basic WireGuard *site* gateway (namespace: wireguard,
+                                     privileged PSA). Two containers: linuxserver/wireguard runs a
+                                     Pangolin-issued wg0.conf (kernel WG, dials out, no inbound) and
+                                     in postStart adds a `local` route for the site subnet ($SITE_CIDR);
+                                     an HAProxy sidecar (haproxy.cfg via configMapGenerator) binds each
+                                     service's WG-subnet IP with `transparent` and TCP-proxies it to the
+                                     service's cluster DNS name (resolved live via CoreDNS 10.96.0.10).
+                                     This is the high-throughput replacement for Newt: kernel WG does the
+                                     crypto, HAProxy does an L4 splice, NO iptables. Add a service = one
+                                     frontend/backend block in haproxy.cfg (next free WG IP) + a Pangolin
+                                     Resource targeting that IP:port. Needs gerbil.site_block_size: 26 on
+                                     the VPS for a /26 (~61 IPs); SITE_CIDR in wireguard.yaml must match.
     wireguard-secrets/              SOPS-encrypted wg0.conf (client key + Pangolin peer) for the
                                      WireGuard client. Deliberately a SIBLING of wireguard/, not
                                      nested inside it — see the sops-decrypt gotcha below.
