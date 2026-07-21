@@ -35,9 +35,7 @@ kubectl apply -f sisyphus/bootstrap/root-app.yaml
 
 | Wave | App | What it deploys |
 |------|-----|-----------------|
-| -2 | newt-infra | newt namespace + PVC |
-| -1 | newt-secrets | newt-main-tunnel-auth secret (SOPS decrypted) |
-| 0 | newt | Newt Helm chart (newt 1.5.0) |
+| 0 | wireguard | Kernel-WireGuard client + HAProxy gateway (public routing) |
 | 0 | jellyfin | Jellyfin deployment + storage |
 | 0 | csi-driver-nfs | NFS CSI driver Helm chart |
 

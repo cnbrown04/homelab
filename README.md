@@ -37,8 +37,9 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 
 ## Workloads
 
-> The Newt blueprint is currently trimmed to only `argocd`, so the other URLs
-> below are the intended Pangolin routes but are not served right now.
+> Public routing goes through a Pangolin Basic WireGuard site: each URL is a
+> Pangolin Resource whose target is a tunnel IP served by the in-cluster HAProxy
+> gateway (`sisyphus/workloads/wireguard/haproxy.cfg`). See `CONTEXT.md`.
 
 | App | URL | ClusterIP:Port |
 |-----|-----|----------------|
@@ -47,5 +48,4 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 | Audiobookshelf | audiobooks.calebbrown.dev | audiobookshelf.audiobookshelf.svc.cluster.local:80 |
 | ArgoCD | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 |
 | Cronarch website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 |
-| Newt | — | tunnel only |
-| WireGuard | — (client, dials out to Pangolin) | n/a |
+| WireGuard gateway | — (client, dials out to Pangolin) | n/a — binds tunnel IPs `100.89.128.65+` |

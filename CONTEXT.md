@@ -8,9 +8,13 @@ GitOps config for `sisyphus`, a Talos Linux Kubernetes cluster, managed by ArgoC
 Everything under `sisyphus/apps/` is an ArgoCD `Application`; pushing to `main` is
 the deploy mechanism. There is no CI — ArgoCD polls the repo and self-heals.
 
-External access goes through **Pangolin**, reached via a **Newt** tunnel client
-running in-cluster. There is no Kubernetes `Ingress` anywhere in this repo —
-routing/TLS termination happens in Pangolin, not in-cluster.
+External access goes through **Pangolin**, reached via an in-cluster **Basic
+WireGuard site**: a kernel-WireGuard client (`wireguard` namespace) dials the
+Pangolin VPS, and an HAProxy sidecar L4-proxies each service's tunnel IP to its
+cluster service. There is no Kubernetes `Ingress` anywhere in this repo —
+routing/TLS termination happens in Pangolin, not in-cluster. (This replaced the
+old Newt tunnel client in July 2026 for ~12× the throughput; see
+`docs/migrate-newt-to-kernel-wireguard.md`.)
 
 ## Directory map
 
@@ -36,10 +40,6 @@ sisyphus/
       media.yaml                    -> sisyphus/workloads/media (namespaces + jellyfin/sonarr/radarr/
                                        prowlarr/flaresolverr/qbittorrent/calibre/audiobookshelf) +
                                        qbittorrent-secrets (SOPS) + seerr (own dir) + seerr Helm chart
-      newt.yaml                     -> sisyphus/workloads/newt + newt/secrets (SOPS) + the `newt`
-                                       Helm chart from charts.fossorial.io. THE PANGOLIN BLUEPRINT
-                                       LIVES HERE inline as `blueprintData` — every public
-                                       hostname/route/healthcheck is defined in this one file.
       tools.yaml                    -> sisyphus/workloads/tools (termix)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
       wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard-secrets (SOPS,
@@ -55,8 +55,6 @@ sisyphus/
                                      the *arr-stack + media-server workload dirs (see table below)
     jellyfin/, sonarr/, radarr/, prowlarr/, flaresolverr/, qbittorrent/, qbittorrent-secrets/,
     seerr/, calibre/, audiobookshelf/    Individual app manifests, referenced by media/kustomization.yaml
-    newt/                           Namespace, PVC, kustomization for the Newt tunnel client
-                                     (Helm values/blueprint itself live in apps/workloads/newt.yaml)
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
     website/                        Cronarch marketing site manifests
     wireguard/                      Pangolin Basic WireGuard *site* gateway (namespace: wireguard,
@@ -79,9 +77,10 @@ sisyphus/
 
 ## Workloads (namespace, domain, cluster address, storage)
 
-> **Note:** the "Public domain" column below is the *intended* Pangolin mapping.
-> The blueprint is currently trimmed to only `argocd`, so every other domain here
-> is not actually routed right now (see the Pangolin / Newt section).
+> **Note:** the "Public domain" column below is the Pangolin mapping. Each domain
+> is a Pangolin Resource whose target is a tunnel IP served by the HAProxy gateway
+> (see the Pangolin / WireGuard section). The `haproxy.cfg` IP↔service map is the
+> in-repo source of truth; the Resources/domains themselves live in the Pangolin UI.
 
 | App | Namespace | Public domain (Pangolin) | ClusterIP:Port | Persistent storage |
 |-----|-----------|---------------------------|-----------------|---------------------|
@@ -97,152 +96,112 @@ sisyphus/
 | Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
-| Newt | newt | — (tunnel client itself) | n/a | own config PVC |
-| WireGuard | wireguard | — (client; dials out to Pangolin VPS) | n/a — no Service | none — `/config` is an emptyDir; wg0.conf comes from the `wireguard-config` SOPS secret |
+| WireGuard gateway | wireguard | — (client; dials out to Pangolin VPS) | n/a — no Service; binds tunnel IPs `100.89.128.65+` | none — `/config` is an emptyDir; wg0.conf comes from the `wireguard-config` SOPS secret |
 
 NFS server for everything above: `10.0.1.111`. Shares used: `/mnt/styx/data/config`
 (subdivided per-namespace by the `nfs-config` StorageClass) and `/mnt/styx/data/media`
 (and subdirectories `downloads`, `books`, `audiobooks`, mounted as dedicated PVs).
 
 
-## Pangolin / Newt (public routing)
+## Pangolin / WireGuard (public routing)
 
-There is no in-cluster Ingress. Public hostnames are declared as a Newt "blueprint"
-— a block of YAML embedded as `blueprintData` inside the Helm `valuesObject` in
-`sisyphus/apps/workloads/newt.yaml`. Each entry under `public-resources` maps a
-`full-domain` to a `targets[].hostname:port` (a ClusterIP service DNS name) plus an
-HTTP healthcheck. **To expose a new service publicly, add an entry there** — this
-is the actual source of truth, not a separate Pangolin UI config (there isn't one
-tracked in-repo; the UI is only used for one-off things not yet migrated to the
-blueprint, if any).
+There is no in-cluster Ingress. Public routing is a **Pangolin Basic WireGuard
+site** terminated in-cluster by the `wireguard` workload, with an HAProxy sidecar
+acting as the service map. The pieces:
 
-**Current state: the blueprint has been trimmed to only the `argocd` resource.**
-Every other public route (jellyfin, the media/*arr stack, qbittorrent, seerr,
-termix, calibre, audiobookshelf, cronarch + www) was removed, so those services
-are **not reachable through Pangolin** right now. Their `full-domain` values are
-still listed in the workloads table below as the intended mapping for when they're
-re-added — re-add them under `public-resources` to restore routing.
+- **Kernel-WireGuard client** (`linuxserver/wireguard`, privileged) runs a
+  Pangolin-issued `wg0.conf` from the `wireguard-config` SOPS secret and dials out
+  to gerbil. Talos ships the wireguard module in-kernel, so this is real kernel WG
+  (full throughput), not wireguard-go userspace. It has no inbound port.
+- **Site subnet** is `100.89.128.64/26` (64 addresses; the VPS sets
+  `gerbil.site_block_size: 26`). The pod itself is `.64`; services bind `.65+`.
+  `SITE_CIDR` in `wireguard.yaml` must equal the `Address` in `wg0.conf`.
+- **`ip route replace local $SITE_CIDR dev wg0`** (wg container postStart) makes
+  every address in the subnet locally deliverable, so packets for a service's
+  tunnel IP land on the HAProxy socket. **That one route is the whole gateway
+  plumbing — no iptables, no per-IP `ip addr`.**
+- **HAProxy sidecar** (`mode tcp`, config in `haproxy.cfg` via configMapGenerator)
+  `bind <tunnel-IP>:<port> transparent` (IP_TRANSPARENT, needs NET_ADMIN) for each
+  service and TCP-proxies to the service's `*.svc.cluster.local` name, re-resolved
+  live via CoreDNS (`10.96.0.10`). Because it shares the pod netns, it sees `wg0`
+  and the local route.
 
-Resources can also be raw TCP (`mode: tcp` + `proxy-port`, no `full-domain`, and
-no `method` on targets). **A blueprint entry alone is not
-enough**: the resource registers in Pangolin and shows up in the UI, but nothing
-ever listens unless the VPS also has
+**To expose a new service:** add a `frontend`/`backend` pair in `haproxy.cfg` on
+the next free tunnel IP, then create a **Pangolin Resource** (UI) on the WireGuard
+site whose target is `http://<tunnel-IP>:<port>`. Pangolin routes a tunnel IP only
+after a Resource exists for it — cryptokey routing adds a `/32` per registered
+target (`getAllowedIps()`), so an HAProxy block with no matching Resource never
+receives traffic. `haproxy.cfg` is the in-repo IP↔service source of truth; the
+Resources/domains live in the Pangolin UI (Basic WG has no in-repo blueprint).
 
-1. a traefik entrypoint named `tcp-<proxy-port>` (address `:<port>/tcp`) in
-   `traefik_config.yml`, and
-2. a matching port published on the **gerbil** container in `docker-compose.yml`,
-   plus the VPS firewall opened — both needing a stack restart.
+**Basic WG targets must be IPs, not hostnames** — enforced in Pangolin's
+`createTarget.ts` (`isIpInCidr(targetData.ip, site.subnet)`). That's *why* HAProxy
+exists: Pangolin holds the stable tunnel IP, HAProxy maps it to the DNS name. Only
+Newt could target `*.svc.cluster.local` directly (it ran inside the cluster); the
+WG site can't, hence the proxy.
 
-Existing entrypoints are `tcp-25`, `tcp-587`, `tcp-993` (plus `web`/`websecure`);
-gerbil publishes 25, 80, 443, 587, 993, 21820/udp, 51820/udp. A raw resource whose
-`proxy-port` reuses one of those works with no VPS change (e.g. borrowing 993).
-**Those two VPS edits are the missing piece for the k8s API TODO.**
-Note raw resources are served by traefik TCP routers, so proxy protocol settings
-in `dynamic_config.yml` apply; enabling it breaks backends that don't speak it.
+**Health checks are Newt-only and unavailable on this site.** Pangolin's target
+health checks are executed by the Newt data-plane, so a Basic WG site never appears
+in the health-check UI — confirmed by the maintainer on fosrl/pangolin#2105 (*"Health
+checks have always only worked for newt sites... The newt itself is what is making
+the health check request"*) and fosrl/pangolin#3105. Failover instead comes from
+HAProxy: each backend has `check`, and in `mode tcp` an all-servers-down backend
+refuses the socket, so a dead service stops accepting connections. Don't mix a WG
+target with a Newt target on one Resource — the WG target (no health data) drags the
+Resource into "degraded" (#3105).
 
-VPS tunnel topology (useful and non-obvious): WireGuard does not exist on the VPS
-host — there is no `wg` binary and no `wg0`. Pangolin runs as Docker containers
-(`pangolin`, `gerbil`, `traefik`), and `wg0` lives inside **gerbil's** network
-namespace, addressed `100.89.128.1/24` (MTU 1280); traefik shares that namespace
-via `network_mode: service:gerbil`. gerbil routes only `100.89.128.0/24` over the
-tunnel — it has **no route to the pod/service CIDRs** — so Newt is reachable but
-is a proxy for declared resources, not a subnet router. To get a shell on the
-tunnel: `docker run --rm --network container:gerbil nicolaka/netshoot ...`.
+**Why we left Newt (July 2026):** Newt proxies every byte through wireguard-go's
+userspace netstack with sequential packet processing, capping the site tunnel at
+~32 Mbit/s per TCP connection against a path that does 445–513. Even `--native-main`
+(kernel WG on the main tunnel, newt 1.14.0) plus a raised CPU limit didn't clear it
+to our satisfaction, so we moved to a Basic WG site + HAProxy: **~215 Mbit/s pod→VPS
+(media direction), ~385 VPS→pod** — ~12× better. Full procedure and measurements in
+`docs/migrate-newt-to-kernel-wireguard.md`.
 
-**Three Newt settings gate tunnel throughput. All defaulted badly.**
+### VPS tunnel topology (still current, non-obvious)
 
-1. **Kernel WireGuard on the MAIN tunnel** — `--native-main` /
-   `USE_NATIVE_MAIN_INTERFACE`, added in newt **1.14.0**. This is the one that
-   matters: without it the main tunnel to gerbil terminates in wireguard-go's
-   *userspace netstack* and every byte of every hosted service is copied through a
-   Go TCP/IP stack. **The chart exposes no value for it** — `templates/_helpers.tpl`
-   emits only `USE_NATIVE_INTERFACE` — so it is set via
-   `newtInstances[].extraEnv: {USE_NATIVE_MAIN_INTERFACE: "true"}`.
-2. **Kernel WireGuard on CLIENT tunnels** — `--native` / `USE_NATIVE_INTERFACE`, via
-   `global.nativeMode.enabled` + `newtInstances[].useNativeInterface`. **These are a
-   different flag from (1) and do not affect the main tunnel.** Enabling them alone
-   moved throughput 32.3 → 32.8 Mbit/s, i.e. not at all: the kernel device appears
-   on the *client* subnet (`100.90.128.0/20`), not the gerbil tunnel
-   (`100.89.128.0/24`). Their real value here is the securityContext — they elevate
-   the pod to root + `privileged` + `NET_ADMIN`/`SYS_MODULE`, which (1) requires.
-   That is also why the `newt` namespace carries
-   `pod-security.kubernetes.io/enforce: privileged`; the cluster otherwise enforces
-   baseline, which forbids added capabilities. Log tells: `auth-daemon must be run
-   as root` means the pod is NOT privileged; `WireGuard native device created and
-   configured` on a `100.90.x` address is the *client* device only.
-   Historical trap: **`newtInstances[].nativeMode.enabled` is not a real key**. It
-   was set here for months and Helm silently ignored it.
-2. **CPU limit** — the chart defaults to `200m` (`global.resources`). Newt proxies
-   all traffic in userspace, so that quota throttles the whole tunnel. CFS
-   throttling is easy to misread as a network fault: throughput stalls to zero for
-   whole seconds with *no* packet loss and a healthy congestion window.
-   `newtInstances[].resources` is now set explicitly.
+WireGuard does not exist on the VPS host — no `wg` binary, no `wg0`. Pangolin runs
+as Docker containers (`pangolin`, `gerbil`, `traefik`); `wg0` lives inside
+**gerbil's** network namespace at `100.89.128.1` (MTU 1280), and traefik shares that
+namespace via `network_mode: service:gerbil`. gerbil routes only the site subnet
+over the tunnel — it has **no route to the pod/service CIDRs** — so it is a proxy
+for declared resources, not a subnet router. Shell on the tunnel:
+`docker run --rm --network container:gerbil nicolaka/netshoot ...` (or
+`networkstatic/iperf3` for throughput).
 
-**On netstack, Newt's main tunnel caps at ~32 Mbit/s per TCP connection** — measured
-repeatedly (32.3 / 32.8 / 35.5 single-stream) against a path that does 445–513.
-Newt's site tunnel to gerbil defaults to the old userspace `netstack` with
-*sequential* packet processing; only downstream/client tunnels use the faster
-`netstack2`. Symptoms: zero retransmits, congestion window parked with headroom to
-spare, throughput app-limited — the network is never the constraint.
-**The fix is `--native-main` (setting 1 above), shipped in newt 1.14.0.** Older
-community threads and this file's earlier revisions claimed kernel WG for the site
-tunnel was an unshipped feature request — that was true before 1.14.0 and is now
-wrong. Gerbil (VPS side) already uses a real kernel interface and was never the
-bottleneck. Raising CPU helps only up to a point: sequential processing is
-single-threaded, so extra cores remove throttle stalls but don't lift the netstack
-ceiling. Practical consequence of leaving it on netstack: a single 4K stream
-(40–80 Mbit/s on one connection) buffers; parallel connections aggregate higher but
-collapse the tunnel (see below).
+**Raw TCP resources** (`mode: tcp` + `proxy-port`, no `full-domain`) need VPS-side
+plumbing beyond the Pangolin Resource: a traefik entrypoint `tcp-<proxy-port>`
+(`:<port>/tcp`) in `traefik_config.yml` **and** a published port on the gerbil
+container in `docker-compose.yml` (+ firewall), both needing a stack restart.
+Existing entrypoints: `tcp-25`, `tcp-587`, `tcp-993` (plus `web`/`websecure`);
+gerbil publishes 25, 80, 443, 587, 993, 21820/udp, 51820/udp. A `proxy-port` reusing
+one of those works with no VPS change (e.g. borrowing 993). **These two edits are the
+missing piece for the k8s API TODO.** Raw resources are served by traefik TCP
+routers, so proxy-protocol settings in `dynamic_config.yml` apply — enabling it
+breaks backends that don't speak it.
 
-**Do not migrate to a Basic WireGuard site to chase throughput — it cannot work
-here.** Enforced in Pangolin's source, not just undocumented: `createTarget.ts`
-requires `isIpInCidr(targetData.ip, site.subnet)` for `type == "wireguard"`, so
-targets must be **IPs** and hostnames are rejected; sites get an auto-assigned
-**`/30`** (`gerbil.site_block_size`), i.e. four addresses with NAT required;
-`getAllowedIps()` computes one `/32` **per target**, so there is no subnet routing
-and `10.96.0.0/12` can never be routed; and `applyBlueprint.ts` filters
-`eq(sites.type, "newt")` before `addPeer`, so a blueprint target on a WG site
-applies cleanly and **silently never routes**. Newt is what resolves
-`*.svc.cluster.local` (it runs *inside* the cluster) — no other site type can, which
-is why targets here are DNS names rather than pinned ClusterIPs. Maintainer on
-fosrl/pangolin#524: *"You can only enter in local hostnames as they exist in your
-remote network if you use Newt"* and *"Basic WireGuard kind of fell by the wayside."*
-
-- Newt flags (`--native-main`, `--native`, `--interface-main`): https://docs.pangolin.net/manage/sites/configure-site
-- `--native-main` added in 1.14.0: https://github.com/fosrl/newt/releases
-- Throughput discussion (netstack, sequential processing): https://github.com/orgs/fosrl/discussions/512
-- Basic WG targets must be IPs (maintainer): https://github.com/fosrl/pangolin/issues/524
-- Site types and their limits: https://docs.pangolin.net/manage/sites/understanding-sites
-- Kernel WG + site-to-site (converted to discussion, predates 1.14.0): https://github.com/fosrl/pangolin/issues/2349
-- https://github.com/fosrl/pangolin/issues/924 · https://github.com/fosrl/pangolin/issues/2905
-- Blueprint update bug: https://github.com/fosrl/pangolin/issues/2125
-
-**MTU stays 1280.** Gerbil's default is client-wide and must match on the Newt side;
-raising it invites fragmentation and failed handshakes. Clamp MSS instead.
+**MTU stays 1280.** Gerbil's default is client-wide; raising it invites
+fragmentation and failed handshakes. Clamp MSS instead.
 
 `sisyphus/wireguard-patch.yaml` (Talos `machine.kernel.modules: [wireguard]`) has
 **never been applied** — `machine.kernel.modules` is still commented out in both
 `controlplane.yaml` and `worker.yaml`, and nothing references the patch. Talos ships
-WireGuard in-kernel for KubeSpan, so `--native-main` is expected to work without it;
-if native main fails to create its device, this patch is the first thing to try.
+WireGuard in-kernel for KubeSpan, so kernel WG works without it; if the tunnel ever
+falls back to userspace `wireguard-go`, this patch is the first thing to try.
 
-Measured on this link (Auburn ↔ RackNerd LA, 53ms RTT, symmetric gigabit at home):
-**445–513 Mbit/s direct, pod→VPS, bypassing the tunnel entirely** — versus 16 up /
-30 down through the tunnel on the bad config. The direct number is the benchmark to
-compare against; don't trust a public speedtest server to establish the VPS ceiling
-(serverius reported 185 Mbit/s and badly understated it). To re-measure the raw
-path: `iperf3 -s -1` on the VPS, `iperf3 -c <vps-ip> -t 15` from a pod.
+**Benchmarks.** On this link (Auburn ↔ RackNerd LA, 53ms RTT, symmetric gigabit at
+home): **445–513 Mbit/s direct pod→VPS bypassing the tunnel** (the ceiling to compare
+against — don't trust a public speedtest server; serverius reported 185 and badly
+understated it); **~215 up / ~385 down through the kernel WG tunnel**. Re-measure raw:
+`iperf3 -s -1` on the VPS, `iperf3 -c <vps-ip> -t 15` from a pod. **Load-testing the
+tunnel takes services down** — parallel unthrottled streams drive loss until
+WireGuard keepalives fail and the tunnel drops (Pangolin's UI stays up, everything
+proxied 502s). Cap with `-b`/`-P 1` and prefer the direct path.
 
-**Load-testing the tunnel takes services down.** Parallel unthrottled streams drive
-packet loss until WireGuard's own keepalives fail and the tunnel drops — Pangolin's
-UI stays up (it's local to the VPS) while everything proxied 502s. Cap with
-`-b`/`-P 1` and prefer testing the direct path, which can't affect the tunnel.
-
-The Newt Helm chart itself comes from `https://charts.fossorial.io` (chart `newt`);
-the client image tag is pinned separately via `global.image.tag` in the same file.
-Check both the chart's index (`charts.fossorial.io/index.yaml`) and the client's
-GitHub releases (`fosrl/newt`) for the current versions before bumping either —
-they version independently.
+- Basic WG targets must be IPs (maintainer): https://github.com/fosrl/pangolin/issues/524
+- Health checks are Newt-only (maintainer): https://github.com/fosrl/pangolin/issues/2105 · https://github.com/fosrl/pangolin/issues/3105
+- Site types and their limits: https://docs.pangolin.net/manage/sites/understanding-sites
+- Health checks & failover: https://docs.pangolin.net/manage/healthchecks-failover
 
 ## Secrets (SOPS)
 
@@ -263,12 +222,10 @@ then generates nothing (no top-level `.enc.yaml` in the parent) and silently dro
 every plain manifest in that source. The `status.sourceTypes` of the app will read
 `Plugin` where you expected `Kustomize`, with no error condition. Therefore a
 workload's SOPS secret must live in a *sibling* directory (`wireguard-secrets`,
-`qbittorrent-secrets`), never in a `secrets/` subdir of the workload. **`newt/secrets`
-still violates this**: newt's first source (`sisyphus/workloads/newt`, holding
-`namespace.yaml` + `pvc.yaml`) is mis-detected as Plugin and renders empty, so ArgoCD
-does not actually manage the newt Namespace or its PVC — they survive only because
-they already exist and newt's real workload comes from its Helm source. The proper
-root-cause fix is to make the CMP `discover` glob non-recursive (`*.enc.yaml`) in the
+`qbittorrent-secrets`), never in a `secrets/` subdir of the workload. (The old
+`newt/secrets` violated this and rendered its Namespace/PVC source empty; it's gone
+now that Newt is decommissioned, but the trap remains for any new workload.) The
+proper root-cause fix is to make the CMP `discover` glob non-recursive (`*.enc.yaml`) in the
 argocd bootstrap values, but that config is applied by the `helm install` in
 `bootstrap/`, not via GitOps, so editing the file alone changes nothing live — it
 needs the repo-server's `argocd-cmp-cm` reloaded. Until then, the sibling-dir
@@ -286,8 +243,10 @@ convention is the workaround.
    + `media/namespaces.yaml` if it's media-related) or create a new
    `sisyphus/apps/workloads/<app>.yaml` Application and list it in
    `sisyphus/apps/kustomization.yaml`.
-3. If it needs to be reachable from the internet, add an entry to the Newt
-   `blueprintData` block in `sisyphus/apps/workloads/newt.yaml`.
+3. If it needs to be reachable from the internet, add a `frontend`/`backend` pair
+   in `sisyphus/workloads/wireguard/haproxy.cfg` on the next free tunnel IP, then
+   create a matching Pangolin Resource targeting `http://<tunnel-IP>:<port>` (see
+   the Pangolin / WireGuard section).
 4. Update the workloads table in `README.md` (and in this file).
 5. Push to `main` — ArgoCD syncs automatically (`automated: prune, selfHeal`).
 
@@ -297,4 +256,4 @@ convention is the workaround.
 - Kubernetes v1.36.1, Talos v1.13.3
 - Pod CIDR `10.244.0.0/16`, Service CIDR `10.96.0.0/12`
 - Outstanding TODO (see `TODO.md`): expose the Talos/k8s API (6443) externally
-  through Pangolin/Newt as a raw TCP resource, reusing the existing tunnel.
+  through Pangolin as a raw TCP resource, reusing the existing WireGuard tunnel.
