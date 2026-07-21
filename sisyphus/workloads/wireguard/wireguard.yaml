@@ -39,13 +39,14 @@ spec:
               value: "1000"
             - name: TZ
               value: America/New_York
-            # The WireGuard site subnet Pangolin assigned this site. A `local`
-            # route for it (added in postStart) makes every address in the range
-            # deliverable to the HAProxy sidecar's transparent binds — that's the
-            # whole gateway plumbing, no iptables. UPDATE THIS to the /26 after
-            # recreating the site with gerbil.site_block_size: 26 (currently /30).
+            # The WireGuard site subnet Pangolin assigned this site (/26 = 64
+            # addresses, .64-.127; the pod itself is .64, services bind .65+). A
+            # `local` route for it (added in postStart) makes every address in the
+            # range deliverable to the HAProxy sidecar's transparent binds — that's
+            # the whole gateway plumbing, no iptables. Must match the Address in the
+            # wg0.conf secret.
             - name: SITE_CIDR
-              value: "100.89.128.8/30"
+              value: "100.89.128.64/26"
             # No SERVERURL/PEERS on purpose: those put linuxserver into
             # config-generating "server mode". We supply Pangolin's own wg0.conf
             # from the SOPS secret, so the container just runs `wg-quick up` on it
