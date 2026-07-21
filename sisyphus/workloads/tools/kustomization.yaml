@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - namespaces.yaml
   - termix.yaml
-  - iperf.yaml

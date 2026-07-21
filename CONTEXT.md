@@ -40,7 +40,7 @@ sisyphus/
                                        Helm chart from charts.fossorial.io. THE PANGOLIN BLUEPRINT
                                        LIVES HERE inline as `blueprintData` — every public
                                        hostname/route/healthcheck is defined in this one file.
-      tools.yaml                    -> sisyphus/workloads/tools (termix, iperf)
+      tools.yaml                    -> sisyphus/workloads/tools (termix)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
       wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard-secrets (SOPS,
                                        sops-decrypt plugin). Standalone WireGuard client
@@ -58,8 +58,6 @@ sisyphus/
     newt/                           Namespace, PVC, kustomization for the Newt tunnel client
                                      (Helm values/blueprint itself live in apps/workloads/newt.yaml)
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
-                                     plus `iperf` — an sshd+iperf3 pod for network testing,
-                                     ClusterIP-only, reached by SSH from Termix
     website/                        Cronarch marketing site manifests
     wireguard/                      Standalone WireGuard client (namespace: wireguard, privileged
                                      PSA). linuxserver/wireguard runs a Pangolin-issued wg0.conf
@@ -86,7 +84,6 @@ sisyphus/
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
 | Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
-| iperf | tools | — (internal only, SSH in via Termix) | iperf.tools.svc.cluster.local:2222 | none — `/config` is an emptyDir on purpose (sshd won't start if it can't chown its host keys, which nfs-config disallows) |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
@@ -109,7 +106,7 @@ tracked in-repo; the UI is only used for one-off things not yet migrated to the
 blueprint, if any).
 
 Resources can also be raw TCP (`mode: tcp` + `proxy-port`, no `full-domain`, and
-no `method` on targets) — see the `iperf` entry. **A blueprint entry alone is not
+no `method` on targets). **A blueprint entry alone is not
 enough**: the resource registers in Pangolin and shows up in the UI, but nothing
 ever listens unless the VPS also has
 
@@ -120,8 +117,8 @@ ever listens unless the VPS also has
 
 Existing entrypoints are `tcp-25`, `tcp-587`, `tcp-993` (plus `web`/`websecure`);
 gerbil publishes 25, 80, 443, 587, 993, 21820/udp, 51820/udp. A raw resource whose
-`proxy-port` reuses one of those works with no VPS change — which is why `iperf`
-borrows 993. **Those two VPS edits are the missing piece for the k8s API TODO.**
+`proxy-port` reuses one of those works with no VPS change (e.g. borrowing 993).
+**Those two VPS edits are the missing piece for the k8s API TODO.**
 Note raw resources are served by traefik TCP routers, so proxy protocol settings
 in `dynamic_config.yml` apply; enabling it breaks backends that don't speak it.
 
