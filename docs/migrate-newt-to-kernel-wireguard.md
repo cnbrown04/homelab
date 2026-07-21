@@ -4,8 +4,6 @@ This guide tells you how to change the cluster from Newt to a Pangolin Basic
 WireGuard site. The Basic WireGuard site uses kernel WireGuard. Kernel WireGuard
 gives more throughput than Newt.
 
-This guide uses ASD-STE100 Simplified Technical English.
-
 ## About this change
 
 Newt sends all data through a userspace tunnel. This limits the throughput to
