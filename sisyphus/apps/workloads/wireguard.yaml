@@ -9,12 +9,15 @@ spec:
     - repoURL: https://github.com/cnbrown04/homelab.git
       targetRevision: HEAD
       path: sisyphus/workloads/wireguard
-    # The wg0.conf (server private key + peers) lives here as a SOPS-encrypted
-    # Secret, decrypted at sync time by the sops-decrypt plugin — same pattern as
-    # newt/secrets. The directory has no kustomization.yaml on purpose.
+    # The wg0.conf (client key + Pangolin peer) lives here as a SOPS-encrypted
+    # Secret, decrypted at sync time by the sops-decrypt plugin. This MUST be a
+    # sibling dir, not nested under the workload dir: the CMP's discover glob is
+    # recursive (**/*.enc.yaml), so an .enc.yaml anywhere beneath the workload
+    # path would make ArgoCD detect that whole source as the plugin instead of
+    # Kustomize and silently drop the Deployment. Same pattern as qbittorrent-secrets.
     - repoURL: https://github.com/cnbrown04/homelab.git
       targetRevision: HEAD
-      path: sisyphus/workloads/wireguard/secrets
+      path: sisyphus/workloads/wireguard-secrets
       plugin:
         name: sops-decrypt
   destination:

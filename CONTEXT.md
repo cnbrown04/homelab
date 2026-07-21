@@ -42,10 +42,11 @@ sisyphus/
                                        hostname/route/healthcheck is defined in this one file.
       tools.yaml                    -> sisyphus/workloads/tools (termix, iperf)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
-      wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard/secrets (SOPS,
+      wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard-secrets (SOPS,
                                        sops-decrypt plugin). Standalone WireGuard client
                                        (linuxserver/wireguard) dialing out with a Pangolin-issued
-                                       wg0.conf that comes from the secret.
+                                       wg0.conf that comes from the secret. Secret is a SIBLING
+                                       dir, not nested — see the sops-decrypt gotcha below.
 
   workloads/                        Raw manifests, one dir per app, each with its own kustomization.yaml
     storage/                        Cluster-wide `nfs-config` StorageClass (server 10.0.1.111,
@@ -63,10 +64,12 @@ sisyphus/
     wireguard/                      Standalone WireGuard client (namespace: wireguard, privileged
                                      PSA). linuxserver/wireguard runs a Pangolin-issued wg0.conf
                                      and dials out to the VPS endpoint — no inbound port, no
-                                     Service. The config (client key + Pangolin peer) lives
-                                     SOPS-encrypted in wireguard/secrets/ and mounts at
-                                     /config/wg_confs/wg0.conf. Config is disposable (emptyDir
-                                     /config) — everything meaningful is in the secret.
+                                     Service. Config is disposable (emptyDir /config) — everything
+                                     meaningful is in the secret. Mounts wg0.conf at
+                                     /config/wg_confs/wg0.conf.
+    wireguard-secrets/              SOPS-encrypted wg0.conf (client key + Pangolin peer) for the
+                                     WireGuard client. Deliberately a SIBLING of wireguard/, not
+                                     nested inside it — see the sops-decrypt gotcha below.
 ```
 
 ## Workloads (namespace, domain, cluster address, storage)
@@ -230,11 +233,31 @@ they version independently.
 
 Encryption rules live in `.sops.yaml`, keyed to a single age recipient. Convention:
 files named `*.enc.yaml` in a directory *without* a `kustomization.yaml` are decrypted
-via a separate ArgoCD Application using `plugin: name: sops-decrypt` pointed at that
-directory (see `qbittorrent-secrets`, `newt/secrets`, `tools/secrets`). Talos configs
+via a separate ArgoCD Application source using `plugin: name: sops-decrypt` pointed at
+that directory (see `qbittorrent-secrets`, `wireguard-secrets`). Talos configs
 (`controlplane.yaml`, `worker.yaml`) only encrypt sensitive fields (`key`, `secret`,
 `token`, `secretboxEncryptionSecret`); `secrets.yaml` and `talosconfig` are encrypted
 in full. See `sisyphus/README.md` for the decrypt/edit/apply workflow.
+
+**sops-decrypt CMP gotcha — keep secret dirs OUT of workload source trees.** The
+plugin (defined in `sisyphus/bootstrap/argocd-values.yaml`) has a mismatched config:
+its `discover` glob is recursive (`**/*.enc.yaml`) but its `generate` command is not
+(`for f in *.enc.yaml` — top level only). So ArgoCD detects *any* source directory
+that has an `.enc.yaml` **anywhere beneath it** as this Plugin instead of Kustomize,
+then generates nothing (no top-level `.enc.yaml` in the parent) and silently drops
+every plain manifest in that source. The `status.sourceTypes` of the app will read
+`Plugin` where you expected `Kustomize`, with no error condition. Therefore a
+workload's SOPS secret must live in a *sibling* directory (`wireguard-secrets`,
+`qbittorrent-secrets`), never in a `secrets/` subdir of the workload. **`newt/secrets`
+still violates this**: newt's first source (`sisyphus/workloads/newt`, holding
+`namespace.yaml` + `pvc.yaml`) is mis-detected as Plugin and renders empty, so ArgoCD
+does not actually manage the newt Namespace or its PVC — they survive only because
+they already exist and newt's real workload comes from its Helm source. The proper
+root-cause fix is to make the CMP `discover` glob non-recursive (`*.enc.yaml`) in the
+argocd bootstrap values, but that config is applied by the `helm install` in
+`bootstrap/`, not via GitOps, so editing the file alone changes nothing live — it
+needs the repo-server's `argocd-cmp-cm` reloaded. Until then, the sibling-dir
+convention is the workaround.
 
 `.gitleaks.toml` allowlists the Talos placeholder key blob and `.claude/` paths.
 
