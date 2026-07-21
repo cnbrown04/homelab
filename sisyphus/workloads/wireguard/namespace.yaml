@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wireguard
+  labels:
+    # WireGuard needs NET_ADMIN + SYS_MODULE and a privileged container to bring
+    # up the tunnel and run its PostUp iptables/forwarding rules. The cluster
+    # enforces baseline (no added caps beyond NET_BIND_SERVICE), so without this
+    # the pod is rejected outright. Same reasoning as the newt/qbittorrent namespaces.
+    pod-security.kubernetes.io/enforce: privileged

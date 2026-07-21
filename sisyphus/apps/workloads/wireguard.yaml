@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wireguard
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/wireguard
+    # The wg0.conf (server private key + peers) lives here as a SOPS-encrypted
+    # Secret, decrypted at sync time by the sops-decrypt plugin — same pattern as
+    # newt/secrets. The directory has no kustomization.yaml on purpose.
+    - repoURL: https://github.com/cnbrown04/homelab.git
+      targetRevision: HEAD
+      path: sisyphus/workloads/wireguard/secrets
+      plugin:
+        name: sops-decrypt
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wireguard
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -7,3 +7,4 @@ resources:
   - workloads/newt.yaml
   - workloads/tools.yaml
   - workloads/website.yaml
+  - workloads/wireguard.yaml

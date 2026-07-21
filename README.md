@@ -45,4 +45,5 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 | ArgoCD | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 |
 | Cronarch website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 |
 | Newt | — | tunnel only |
+| WireGuard | — (client, dials out to Pangolin) | n/a |
 | iperf3 (SSH via Termix) | — | iperf.tools.svc.cluster.local:2222 |
