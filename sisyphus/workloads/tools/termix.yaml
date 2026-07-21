@@ -30,6 +30,23 @@ spec:
       labels:
         app: termix
     spec:
+      # Termix 2.5.1 added a pre-migration step that mkdir's /app/data/backups.
+      # The data dir is on the nfs-config NFS share; the Termix process can update
+      # its existing sqlite files but can't create new dirs there (EACCES), so it
+      # crashes on startup. Make the tree writable first. Runs as root to cover
+      # whatever uid the NFS subdir is owned by.
+      initContainers:
+        - name: fix-perms
+          image: busybox:1.37
+          securityContext:
+            runAsUser: 0
+          command:
+            - sh
+            - -c
+            - mkdir -p /app/data/backups && chmod -R 0777 /app/data
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
       containers:
         - name: termix
           image: ghcr.io/lukegus/termix:latest
