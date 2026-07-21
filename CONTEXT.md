@@ -69,8 +69,9 @@ sisyphus/
                                      This is the high-throughput replacement for Newt: kernel WG does the
                                      crypto, HAProxy does an L4 splice, NO iptables. Add a service = one
                                      frontend/backend block in haproxy.cfg (next free WG IP) + a Pangolin
-                                     Resource targeting that IP:port. Needs gerbil.site_block_size: 26 on
-                                     the VPS for a /26 (~61 IPs); SITE_CIDR in wireguard.yaml must match.
+                                     Resource targeting that IP:port. Site subnet is 100.89.128.64/26 (VPS
+                                     gerbil.site_block_size: 26); pod is .64, services bind .65+. SITE_CIDR
+                                     in wireguard.yaml must match the wg0.conf Address.
     wireguard-secrets/              SOPS-encrypted wg0.conf (client key + Pangolin peer) for the
                                      WireGuard client. Deliberately a SIBLING of wireguard/, not
                                      nested inside it — see the sops-decrypt gotcha below.
