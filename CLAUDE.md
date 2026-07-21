@@ -11,10 +11,10 @@ this repo would make it inaccurate, update it in the same commit:
 
 - Adding, removing, or renaming a workload → update the workloads table and the
   directory map.
-- Adding, removing, or changing a public domain/route → update the Pangolin/Newt
-  section and the workloads table (the source of truth is the `blueprintData`
-  block in `sisyphus/apps/workloads/newt.yaml` — reflect it, don't duplicate
-  logic from memory).
+- Adding, removing, or changing a public domain/route → update the Pangolin/WireGuard
+  section and the workloads table (the in-repo source of truth is the tunnel-IP↔service
+  map in `sisyphus/workloads/wireguard/haproxy.cfg`; the domains themselves live in the
+  Pangolin UI — reflect them, don't duplicate logic from memory).
 - Bumping a Helm chart or image version referenced in `CONTEXT.md` → update the
   version mentioned there, or remove the specific version if it's likely to drift
   (prefer describing *where* to check current versions over hardcoding them).

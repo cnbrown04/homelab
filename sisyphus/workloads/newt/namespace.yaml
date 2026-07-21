@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: newt
-  labels:
-    # Kernel WireGuard needs NET_ADMIN + SYS_MODULE and a privileged container.
-    # The cluster enforces baseline, which allows no added capabilities beyond
-    # NET_BIND_SERVICE, so without this the native-mode pod is rejected outright.
-    pod-security.kubernetes.io/enforce: privileged
