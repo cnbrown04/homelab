@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard
+  namespace: wireguard
+  labels:
+    app: wireguard
+spec:
+  replicas: 1
+  # Two pods would both dial the same Pangolin peer with the same key and fight
+  # over the handshake; keep it to one and don't run old+new at once.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      containers:
+        - name: wireguard
+          image: lscr.io/linuxserver/wireguard:latest
+          securityContext:
+            # NET_ADMIN: bring up wg0 + PostUp iptables. SYS_MODULE: modprobe
+            # wireguard. Talos already ships the module in-kernel (KubeSpan uses
+            # it), so wg-quick uses the kernel device directly; if it's ever
+            # missing the container falls back to userspace wireguard-go.
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: America/New_York
+            # No SERVERURL/PEERS on purpose: those put linuxserver into
+            # config-generating "server mode". We supply Pangolin's own wg0.conf
+            # from the SOPS secret, so the container just runs `wg-quick up` on it
+            # and dials out to the VPS endpoint (no inbound port to expose).
+          volumeMounts:
+            # linuxserver wants a writable /config for its templates/state.
+            # emptyDir is intentional: the only real config (wg0.conf, which
+            # carries the client key + Pangolin peer) is fully declared by the
+            # SOPS secret below, so there is nothing worth persisting.
+            - name: config
+              mountPath: /config
+            # Mount just the wg0.conf file into wg_confs. wg-quick reads it; it
+            # may warn about 0600 perms but brings the tunnel up regardless.
+            - name: wg-config
+              mountPath: /config/wg_confs/wg0.conf
+              subPath: wg0.conf
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 256Mi
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: wg-config
+          secret:
+            # Decrypted by the sops-decrypt ArgoCD source (see
+            # sisyphus/apps/workloads/wireguard.yaml). Key `wg0.conf` holds the
+            # WireGuard config Pangolin generated for this client.
+            secretName: wireguard-config
+            defaultMode: 0600

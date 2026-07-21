@@ -42,6 +42,10 @@ sisyphus/
                                        hostname/route/healthcheck is defined in this one file.
       tools.yaml                    -> sisyphus/workloads/tools (termix, iperf)
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
+      wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard/secrets (SOPS,
+                                       sops-decrypt plugin). Standalone WireGuard client
+                                       (linuxserver/wireguard) dialing out with a Pangolin-issued
+                                       wg0.conf that comes from the secret.
 
   workloads/                        Raw manifests, one dir per app, each with its own kustomization.yaml
     storage/                        Cluster-wide `nfs-config` StorageClass (server 10.0.1.111,
@@ -56,6 +60,13 @@ sisyphus/
                                      plus `iperf` — an sshd+iperf3 pod for network testing,
                                      ClusterIP-only, reached by SSH from Termix
     website/                        Cronarch marketing site manifests
+    wireguard/                      Standalone WireGuard client (namespace: wireguard, privileged
+                                     PSA). linuxserver/wireguard runs a Pangolin-issued wg0.conf
+                                     and dials out to the VPS endpoint — no inbound port, no
+                                     Service. The config (client key + Pangolin peer) lives
+                                     SOPS-encrypted in wireguard/secrets/ and mounts at
+                                     /config/wg_confs/wg0.conf. Config is disposable (emptyDir
+                                     /config) — everything meaningful is in the secret.
 ```
 
 ## Workloads (namespace, domain, cluster address, storage)
@@ -76,6 +87,7 @@ sisyphus/
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | Newt | newt | — (tunnel client itself) | n/a | own config PVC |
+| WireGuard | wireguard | — (client; dials out to Pangolin VPS) | n/a — no Service | none — `/config` is an emptyDir; wg0.conf comes from the `wireguard-config` SOPS secret |
 
 NFS server for everything above: `10.0.1.111`. Shares used: `/mnt/styx/data/config`
 (subdivided per-namespace by the `nfs-config` StorageClass) and `/mnt/styx/data/media`
