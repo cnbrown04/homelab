@@ -72,6 +72,10 @@ sisyphus/
 
 ## Workloads (namespace, domain, cluster address, storage)
 
+> **Note:** the "Public domain" column below is the *intended* Pangolin mapping.
+> The blueprint is currently trimmed to only `argocd`, so every other domain here
+> is not actually routed right now (see the Pangolin / Newt section).
+
 | App | Namespace | Public domain (Pangolin) | ClusterIP:Port | Persistent storage |
 |-----|-----------|---------------------------|-----------------|---------------------|
 | Jellyfin | jellyfin | jellyfin.calebbrown.dev | jellyfin.jellyfin.svc.cluster.local:8096 | config: nfs-config; media: NFS PV `/mnt/styx/data/media` |
@@ -104,6 +108,13 @@ HTTP healthcheck. **To expose a new service publicly, add an entry there** — t
 is the actual source of truth, not a separate Pangolin UI config (there isn't one
 tracked in-repo; the UI is only used for one-off things not yet migrated to the
 blueprint, if any).
+
+**Current state: the blueprint has been trimmed to only the `argocd` resource.**
+Every other public route (jellyfin, the media/*arr stack, qbittorrent, seerr,
+termix, calibre, audiobookshelf, cronarch + www) was removed, so those services
+are **not reachable through Pangolin** right now. Their `full-domain` values are
+still listed in the workloads table below as the intended mapping for when they're
+re-added — re-add them under `public-resources` to restore routing.
 
 Resources can also be raw TCP (`mode: tcp` + `proxy-port`, no `full-domain`, and
 no `method` on targets). **A blueprint entry alone is not

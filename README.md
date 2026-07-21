@@ -37,6 +37,9 @@ After that ArgoCD manages everything. Then configure Pangolin routes for each se
 
 ## Workloads
 
+> The Newt blueprint is currently trimmed to only `argocd`, so the other URLs
+> below are the intended Pangolin routes but are not served right now.
+
 | App | URL | ClusterIP:Port |
 |-----|-----|----------------|
 | Jellyfin | jellyfin.calebbrown.dev | jellyfin.jellyfin.svc.cluster.local:8096 |
