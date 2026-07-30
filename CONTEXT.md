@@ -246,6 +246,33 @@ argocd bootstrap values, but that config is applied by the `helm install` in
 needs the repo-server's `argocd-cmp-cm` reloaded. Until then, the sibling-dir
 convention is the workaround.
 
+**Pocket ID on PlanetScale Postgres — the app role cannot bootstrap its own
+database.** Pocket ID connects with a PlanetScale role such as
+`pscale_api_y627xbpqtrm5`, and that role has no rights to create things an admin
+owns. Two steps must be done once, by hand, with the PlanetScale **default
+(admin) role** in the SQL console, on the `pocketid` database:
+
+```sql
+GRANT USAGE, CREATE ON SCHEMA public TO "pscale_api_y627xbpqtrm5";
+CREATE EXTENSION IF NOT EXISTS citext;
+```
+
+Notes that cost time the first go:
+
+- The connection-string username keeps its branch suffix
+  (`pscale_api_y627xbpqtrm5.741wa8z3hq2k`), but SQL `GRANT` statements need the
+  bare role name. The suffix is proxy routing metadata, not part of the role.
+- Postgres 15+ does not grant `CREATE` on `public` by default, so migrations fail
+  with `permission denied for schema public` without the `GRANT`.
+- `citext` is required by the migration that makes usernames case-insensitive.
+  `CREATE EXTENSION` is refused for the app role.
+- A failed migration leaves `schema_migrations` dirty, and the app then refuses to
+  start with `Dirty database version ...`. With no real data, reset rather than
+  force a version: `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` then redo
+  the `GRANT` and the `CREATE EXTENSION`, in that order.
+- Use the direct port 5432, not the 6432 PgBouncer port. Pocket ID migrates at
+  startup, and PlanetScale documents 5432 for DDL.
+
 `.gitleaks.toml` allowlists the Talos placeholder key blob and `.claude/` paths.
 
 ## Adding a new workload (checklist)
