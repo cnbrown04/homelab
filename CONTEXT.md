@@ -247,7 +247,7 @@ convention is the workaround.
    in `sisyphus/workloads/wireguard/haproxy.cfg` on the next free tunnel IP, then
    create a matching Pangolin Resource targeting `http://<tunnel-IP>:<port>` (see
    the Pangolin / WireGuard section).
-4. Update the workloads table in `README.md` (and in this file).
+4. Update the workloads table in this file.
 5. Push to `main` — ArgoCD syncs automatically (`automated: prune, selfHeal`).
 
 ## Cluster facts
