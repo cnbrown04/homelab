@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pocketid-data-pvc
   namespace: pocketid
+  # Uploads only (logos, profile pictures). The database is PlanetScale Postgres.
 spec:
   accessModes:
     - ReadWriteOnce
@@ -23,8 +24,9 @@ spec:
   selector:
     matchLabels:
       app: pocketid
-  # SQLite on a ReadWriteOnce NFS volume. Two pods must never write at the same
-  # time, so do not use RollingUpdate and do not raise the replica count.
+  # The database is external (PlanetScale Postgres), but /app/data is still a
+  # ReadWriteOnce NFS volume for uploads. Two pods must not mount it at once, so
+  # keep Recreate and 1 replica.
   strategy:
     type: Recreate
   template:
@@ -61,6 +63,15 @@ spec:
                 secretKeyRef:
                   name: pocketid-secret
                   key: ENCRYPTION_KEY
+            # PlanetScale Postgres (us-east-2). The string holds the password, so
+            # it lives in the SOPS secret, not here. Port 5432 is the direct port,
+            # NOT 6432 (PgBouncer): Pocket ID runs schema migrations at startup,
+            # and PlanetScale documents 5432 for DDL and migrations.
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: pocketid-secret
+                  key: DB_CONNECTION_STRING
           volumeMounts:
             - name: data
               mountPath: /app/data
