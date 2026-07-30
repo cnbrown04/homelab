@@ -41,6 +41,9 @@ sisyphus/
                                        prowlarr/flaresolverr/qbittorrent/calibre/audiobookshelf) +
                                        qbittorrent-secrets (SOPS) + seerr (own dir) + seerr Helm chart
       tools.yaml                    -> sisyphus/workloads/tools (termix)
+      pocketid.yaml                 -> sisyphus/workloads/pocketid + pocketid-secrets (SOPS,
+                                       sops-decrypt plugin). OIDC provider. Secret is a SIBLING
+                                       dir, not nested — see the sops-decrypt gotcha below.
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
       wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard-secrets (SOPS,
                                        sops-decrypt plugin). Standalone WireGuard client
@@ -56,6 +59,12 @@ sisyphus/
     jellyfin/, sonarr/, radarr/, prowlarr/, flaresolverr/, qbittorrent/, qbittorrent-secrets/,
     seerr/, calibre/, audiobookshelf/    Individual app manifests, referenced by media/kustomization.yaml
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
+    pocketid/                       Pocket ID OIDC provider (namespace: pocketid). SQLite in the
+                                     nfs-config PVC at /app/data. Recreate strategy and 1 replica,
+                                     because SQLite must have one writer.
+    pocketid-secrets/               SOPS-encrypted ENCRYPTION_KEY for Pocket ID. Deliberately a
+                                     SIBLING of pocketid/, not nested inside it — see the
+                                     sops-decrypt gotcha below.
     website/                        Cronarch marketing site manifests
     wireguard/                      Pangolin Basic WireGuard *site* gateway (namespace: wireguard,
                                      privileged PSA). Two containers: linuxserver/wireguard runs a
@@ -94,6 +103,7 @@ sisyphus/
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |
 | Seerr | seerr | seerr.calebbrown.dev | seerr-seerr-chart.seerr.svc.cluster.local:80 | config: nfs-config (via Helm chart values); media: NFS PV `/mnt/styx/data/media` |
 | Termix | tools | termix.calebbrown.dev | termix.tools.svc.cluster.local:8080 | nfs-config PVC |
+| Pocket ID | pocketid | id.calebbrown.dev | pocketid.pocketid.svc.cluster.local:1411 | config+SQLite: nfs-config PVC; ENCRYPTION_KEY from pocketid-secrets (SOPS) |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
 | WireGuard gateway | wireguard | — (client; dials out to Pangolin VPS) | n/a — no Service; binds tunnel IPs `100.89.128.65+` | none — `/config` is an emptyDir; wg0.conf comes from the `wireguard-config` SOPS secret |
