@@ -64,5 +64,5 @@ the git log.
 
 ## History
 
-The script `scripts/strip-commit-bodies.sh` removed the body from each commit in
-the history. Do not add bodies again.
+A one-time rewrite in July 2026 removed the body from each commit in the history.
+Do not add bodies again.
