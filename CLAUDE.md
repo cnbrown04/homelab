@@ -1,5 +1,8 @@
 # CLAUDE.md
 
+Read `AGENTS.md` — it holds the standing rules for agents in this repo, including
+the commit convention (single-line conventional commits, never a message body).
+
 This repo is Talos/Kubernetes GitOps config deployed via ArgoCD. Read `CONTEXT.md`
 before making changes — it maps every workload, where Pangolin routing is defined,
 how secrets are encrypted, and known gotchas (e.g. duplicate Termix deployments).
