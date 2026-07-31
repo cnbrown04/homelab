@@ -40,7 +40,8 @@ sisyphus/
     workloads/
       storage.yaml                  -> sisyphus/workloads/storage (nfs-config StorageClass)
       media.yaml                    -> sisyphus/workloads/media (namespaces + jellyfin/sonarr/radarr/
-                                       prowlarr/flaresolverr/qbittorrent/calibre/audiobookshelf) +
+                                       prowlarr/flaresolverr/qbittorrent/calibre/audiobookshelf/
+                                       chaptarr) +
                                        qbittorrent-secrets (SOPS) + seerr (own dir) + seerr Helm chart
       tools.yaml                    -> sisyphus/workloads/tools (termix)
       pocketid.yaml                 -> sisyphus/workloads/pocketid + pocketid-secrets (SOPS,
@@ -59,7 +60,10 @@ sisyphus/
     media/                          Shared namespaces.yaml + kustomization.yaml that pulls in all
                                      the *arr-stack + media-server workload dirs (see table below)
     jellyfin/, sonarr/, radarr/, prowlarr/, flaresolverr/, qbittorrent/, qbittorrent-secrets/,
-    seerr/, calibre/, audiobookshelf/    Individual app manifests, referenced by media/kustomization.yaml
+    seerr/, calibre/, audiobookshelf/, chaptarr/    Individual app manifests, referenced by
+                                     media/kustomization.yaml. Chaptarr is a book/audiobook *arr
+                                     (Readarr fork); it mounts the whole media share at /media so
+                                     imports hardlink and the paths agree with qBittorrent.
     tools/                          Termix deployment (namespace: tools, includes guacd sidecar)
     pocketid/                       Pocket ID OIDC provider (namespace: pocketid). Database is
                                      EXTERNAL: PlanetScale Postgres (us-east-2, direct port 5432,
@@ -105,6 +109,7 @@ sisyphus/
 | Audiobookshelf | audiobookshelf | audiobooks.calebbrown.dev | audiobookshelf.audiobookshelf.svc.cluster.local:80 | config+metadata: nfs-config; audiobooks: NFS PV `/mnt/styx/data/media/audiobooks` |
 | Sonarr | sonarr | sonarr.calebbrown.dev | sonarr.sonarr.svc.cluster.local:8989 | config: nfs-config; media: NFS PV `/mnt/styx/data/media` |
 | Radarr | radarr | radarr.calebbrown.dev | radarr.radarr.svc.cluster.local:7878 | config: nfs-config; media: NFS PV `/mnt/styx/data/media` |
+| Chaptarr | chaptarr | (add a Pangolin Resource on `100.89.128.77:8789`) | chaptarr.chaptarr.svc.cluster.local:8789 | config: nfs-config (SQLite); media: NFS PV `/mnt/styx/data/media` |
 | Prowlarr | prowlarr | prowlarr.calebbrown.dev | prowlarr.prowlarr.svc.cluster.local:9696 | config: nfs-config |
 | Flaresolverr | flaresolverr | — (internal only, used by prowlarr) | flaresolverr.flaresolverr.svc.cluster.local | none |
 | qBittorrent | qbittorrent | torrent.calebbrown.dev | qbittorrent.qbittorrent.svc.cluster.local:8080 | config: nfs-config; downloads: NFS PV `/mnt/styx/data/media/downloads`; gluetun VPN sidecar, secrets from qbittorrent-secrets |

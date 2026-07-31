@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: chaptarr-media-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nfsvers=4
+    - hard
+    - noatime
+  csi:
+    driver: nfs.csi.k8s.io
+    volumeHandle: chaptarr-media
+    volumeAttributes:
+      server: 10.0.1.111
+      share: /mnt/styx/data/media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: chaptarr-config-pvc
+  namespace: chaptarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-config
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: chaptarr-media-pvc
+  namespace: chaptarr
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: chaptarr-media-pv
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaptarr
+  namespace: chaptarr
+  labels:
+    app: chaptarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chaptarr
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: chaptarr
+    spec:
+      containers:
+        - name: chaptarr
+          image: robertlordhood/chaptarr:0.9.879
+          ports:
+            - containerPort: 8789
+          # No Chaptarr__Postgres__* variables. Chaptarr uses SQLite in /config,
+          # the same as Sonarr, Radarr, and Prowlarr in this cluster.
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          # The whole media share mounts at /media, so books, audiobooks, and
+          # downloads stay on one filesystem. Chaptarr can then hardlink an
+          # import instead of a copy, and the download paths agree with
+          # qBittorrent, which mounts the same share at /media/downloads.
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: chaptarr-config-pvc
+        - name: media
+          persistentVolumeClaim:
+            claimName: chaptarr-media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chaptarr
+  namespace: chaptarr
+spec:
+  selector:
+    app: chaptarr
+  ports:
+    - port: 8789
+      targetPort: 8789

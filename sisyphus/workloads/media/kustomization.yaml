@@ -10,3 +10,4 @@ resources:
   - ../qbittorrent
   - ../calibre
   - ../audiobookshelf
+  - ../chaptarr
