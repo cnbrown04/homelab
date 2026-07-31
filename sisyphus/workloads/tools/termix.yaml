@@ -39,7 +39,7 @@ spec:
       # (and any Termix write) succeeds regardless; `true` keeps the step green.
       initContainers:
         - name: ensure-backups-dir
-          image: busybox:1.37
+          image: busybox:1.38
           command:
             - sh
             - -c
