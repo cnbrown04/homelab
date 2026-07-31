@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: wireguard
-          image: lscr.io/linuxserver/wireguard:latest
+          image: lscr.io/linuxserver/wireguard:1.0.20260223
           securityContext:
             # NET_ADMIN: bring up wg0 + PostUp iptables. SYS_MODULE: modprobe
             # wireguard. Talos already ships the module in-kernel (KubeSpan uses

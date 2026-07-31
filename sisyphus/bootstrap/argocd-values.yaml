@@ -41,7 +41,7 @@ repoServer:
         name: argocd-cmp-cm
   initContainers:
     - name: download-sops
-      image: alpine:3
+      image: alpine:3.24.1
       command:
         - sh
         - -c
