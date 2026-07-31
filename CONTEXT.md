@@ -6,7 +6,9 @@ Living map of this repo. Keep this current — see `CLAUDE.md` for the update ru
 
 GitOps config for `sisyphus`, a Talos Linux Kubernetes cluster, managed by ArgoCD.
 Everything under `sisyphus/apps/` is an ArgoCD `Application`; pushing to `main` is
-the deploy mechanism. There is no CI — ArgoCD polls the repo and self-heals.
+the deploy mechanism. There is no CI — ArgoCD polls the repo and self-heals. The
+Renovate GitHub App is the only bot on the repo; it opens dependency pull requests
+(see the Renovate section below).
 
 External access goes through **Pangolin**, reached via an in-cluster **Basic
 WireGuard site**: a kernel-WireGuard client (`wireguard` namespace) dials the
@@ -274,6 +276,32 @@ Notes that cost time the first go:
   startup, and PlanetScale documents 5432 for DDL.
 
 `.gitleaks.toml` allowlists the Talos placeholder key blob and `.claude/` paths.
+
+## Dependency updates (Renovate)
+
+`renovate.json` in the repo root configures the Renovate GitHub App. Renovate opens
+a pull request when a pinned image tag or a Helm chart version has a new release.
+
+Two managers are on. Neither one has default file patterns, so `renovate.json` sets
+them:
+
+| Manager | Files | What it reads |
+|---------|-------|---------------|
+| `kubernetes` | `sisyphus/workloads/**/*.yaml`, `sisyphus/bootstrap/argocd-values.yaml`, `sisyphus/controlplane.yaml`, `sisyphus/worker.yaml` | `image:` lines |
+| `argocd` | `sisyphus/apps/**/*.yaml` | `chart:` + `targetRevision:` on Application sources |
+
+Rules to know:
+
+- A merge in `sisyphus/workloads/` or `sisyphus/apps/` deploys immediately, because
+  ArgoCD self-heals. Renovate opens normal pull requests for these paths.
+- The Talos machine configs and `argocd-values.yaml` need a manual `talosctl` or
+  `helm upgrade`. Renovate holds these updates on the dependency dashboard issue.
+  Tick the box on the dashboard to get a pull request.
+- Renovate ignores the `*-secrets/` directories and the SOPS-encrypted Talos files.
+- Renovate cannot update an image that has no version tag. Pin every new image to a
+  released version tag, not to `latest`. Two images have no version tag and stay as
+  they are: `21hsmw/flaresolverr:nodriver` (the fork publishes no versioned tag) and
+  `ghcr.io/cronarch/website:<git-sha>` (built from the website repo).
 
 ## Adding a new workload (checklist)
 

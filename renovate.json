@@ -1,0 +1,56 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "timezone": "America/New_York",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "ignorePaths": [
+    "sisyphus/workloads/*-secrets/**",
+    "sisyphus/secrets.yaml",
+    "sisyphus/talosconfig"
+  ],
+  "kubernetes": {
+    "managerFilePatterns": [
+      "sisyphus/workloads/**/*.yaml",
+      "sisyphus/bootstrap/argocd-values.yaml",
+      "sisyphus/controlplane.yaml",
+      "sisyphus/worker.yaml"
+    ]
+  },
+  "argocd": {
+    "managerFilePatterns": [
+      "sisyphus/apps/**/*.yaml"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "ArgoCD syncs sisyphus/workloads and sisyphus/apps automatically. A merge here deploys immediately, so open normal PRs.",
+      "matchFileNames": [
+        "sisyphus/workloads/**",
+        "sisyphus/apps/**"
+      ],
+      "dependencyDashboardApproval": false
+    },
+    {
+      "description": "The Talos machine configs need talosctl to apply them. Hold these updates on the dependency dashboard.",
+      "matchFileNames": [
+        "sisyphus/controlplane.yaml",
+        "sisyphus/worker.yaml"
+      ],
+      "groupName": "talos machine config",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "The ArgoCD install needs a manual helm upgrade. Hold this update on the dependency dashboard.",
+      "matchFileNames": [
+        "sisyphus/bootstrap/argocd-values.yaml"
+      ],
+      "groupName": "argocd bootstrap",
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
