@@ -51,6 +51,30 @@
       ],
       "groupName": "argocd bootstrap",
       "dependencyDashboardApproval": true
+    },
+    {
+      "description": "The linuxserver images keep tags from old version schemes, and those tags sort above the current version. A major update on a container image is therefore often a false one. Review every major on the dependency dashboard.",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "linuxserver/sonarr still carries 2-part tags from 2021, such as 5.14, and Sonarr is on 4.x. Reject a tag that has only 2 parts. Real Sonarr tags have 3.",
+      "matchPackageNames": [
+        "lscr.io/linuxserver/sonarr"
+      ],
+      "allowedVersions": "!/^\\d+\\.\\d+$/"
+    },
+    {
+      "description": "linuxserver/qbittorrent still carries Ubuntu-style tags, 14.3.9 and 20.04.1. Raise this ceiling if qBittorrent ever reaches 14.",
+      "matchPackageNames": [
+        "lscr.io/linuxserver/qbittorrent"
+      ],
+      "allowedVersions": "<14"
     }
   ]
 }

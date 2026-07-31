@@ -303,6 +303,12 @@ Rules to know:
   `helm upgrade`. Renovate holds these updates on the dependency dashboard issue.
   Tick the box on the dashboard to get a pull request.
 - Renovate ignores the `*-secrets/` directories and the SOPS-encrypted Talos files.
+- **The linuxserver images keep tags from old version schemes.** `sonarr:5.14` is
+  from 2021 and `qbittorrent:20.04.1` is Ubuntu-style, but both sort above the
+  current version, so Renovate reads them as a major upgrade. Two guards are in
+  place: every container major update waits for approval on the dependency
+  dashboard, and `renovate.json` rejects those two tag shapes by name. Expect this
+  trap on any new linuxserver image — check its tag list before you trust a major.
 - Renovate cannot update an image that has no version tag. Pin every new image to a
   released version tag, not to `latest`. Two images have no version tag and stay as
   they are: `21hsmw/flaresolverr:nodriver` (the fork publishes no versioned tag) and
