@@ -7,4 +7,5 @@ resources:
   - workloads/tools.yaml
   - workloads/pocketid.yaml
   - workloads/website.yaml
+  - workloads/personal-website.yaml
   - workloads/wireguard.yaml

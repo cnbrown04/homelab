@@ -48,6 +48,8 @@ sisyphus/
                                        sops-decrypt plugin). OIDC provider. Secret is a SIBLING
                                        dir, not nested — see the sops-decrypt gotcha below.
       website.yaml                  -> sisyphus/workloads/website (cronarch.com marketing site)
+      personal-website.yaml         -> sisyphus/workloads/personal-website (personal site,
+                                       built from the cnbrown04/website repo)
       wireguard.yaml                -> sisyphus/workloads/wireguard + wireguard-secrets (SOPS,
                                        sops-decrypt plugin). Standalone WireGuard client
                                        (linuxserver/wireguard) dialing out with a Pangolin-issued
@@ -79,6 +81,7 @@ sisyphus/
                                      SIBLING of pocketid/, not nested inside it — see the
                                      sops-decrypt gotcha below.
     website/                        Cronarch marketing site manifests
+    personal-website/               Personal site manifests (cnbrown04/website)
     wireguard/                      Pangolin Basic WireGuard *site* gateway (namespace: wireguard,
                                      privileged PSA). Two containers: linuxserver/wireguard runs a
                                      Pangolin-issued wg0.conf (kernel WG, dials out, no inbound) and
@@ -121,6 +124,7 @@ sisyphus/
 | Pocket ID | pocketid | id.calebbrown.dev | pocketid.pocketid.svc.cluster.local:1411 | none in-cluster — DB is EXTERNAL (PlanetScale Postgres, us-east-2) and uploads go there too (FILE_BACKEND=database); ENCRYPTION_KEY + DB_CONNECTION_STRING from pocketid-secrets (SOPS) |
 | ArgoCD | argocd | argocd.calebbrown.dev | argocd-server.argocd.svc.cluster.local:80 | n/a |
 | Cronarch website | website | cronarch.com, www.cronarch.com | website.website.svc.cluster.local:3000 | none |
+| Personal website | personal-website | (add a Pangolin Resource on `100.89.128.79:3000`) | personal-website.personal-website.svc.cluster.local:3000 | none |
 | WireGuard gateway | wireguard | — (client; dials out to Pangolin VPS) | n/a — no Service; binds tunnel IPs `100.89.128.65+` | none — `/config` is an emptyDir; wg0.conf comes from the `wireguard-config` SOPS secret |
 
 NFS server for everything above: `10.0.1.111`. Shares used: `/mnt/styx/data/config`
@@ -313,9 +317,11 @@ Rules to know:
   dashboard, and `renovate.json` rejects those two tag shapes by name. Expect this
   trap on any new linuxserver image — check its tag list before you trust a major.
 - Renovate cannot update an image that has no version tag. Pin every new image to a
-  released version tag, not to `latest`. Two images have no version tag and stay as
-  they are: `21hsmw/flaresolverr:nodriver` (the fork publishes no versioned tag) and
-  `ghcr.io/cronarch/website:<git-sha>` (built from the website repo).
+  released version tag, not to `latest`. Three images have no version tag and stay as
+  they are: `21hsmw/flaresolverr:nodriver` (the fork publishes no versioned tag),
+  `ghcr.io/cronarch/website:<git-sha>` (built from the Cronarch website repo), and
+  `ghcr.io/cnbrown04/website:<git-sha>` (built from the personal website repo). Bump
+  the two website images by hand after the build workflow pushes a new git SHA.
 
 ## Adding a new workload (checklist)
 
