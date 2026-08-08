@@ -67,7 +67,7 @@ spec:
     spec:
       containers:
         - name: chaptarr
-          image: robertlordhood/chaptarr:0.9.879
+          image: robertlordhood/chaptarr:0.9.911
           ports:
             - containerPort: 8789
           # No Chaptarr__Postgres__* variables. Chaptarr uses SQLite in /config,
