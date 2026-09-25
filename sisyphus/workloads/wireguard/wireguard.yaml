@@ -89,7 +89,7 @@ spec:
         # configMapGenerator → hash suffix → editing it rolls the pod). Shares the
         # pod netns, so it sees wg0 and the local route the wg container installs.
         - name: haproxy
-          image: haproxy:3.1-alpine
+          image: haproxy:3.4-alpine
           securityContext:
             capabilities:
               # `bind ... transparent` (IP_TRANSPARENT) needs NET_ADMIN so HAProxy
